@@ -4,7 +4,6 @@ import { allProjects } from "contentlayer/generated";
 import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
 import { Article } from "./article";
-import { Eye } from "lucide-react";
 
 
 
@@ -59,10 +58,7 @@ export default async function ProjectsPage() {
                       <span></span>
                     )}
                   </div>
-                  <span className="flex items-center gap-1 text-xs text-zinc-500">
-                    <Eye className="w-4 h-4" />{" "}
-                
-                  </span>
+
                 </div>
 
                 <h2
