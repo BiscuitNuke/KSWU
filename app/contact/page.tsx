@@ -29,7 +29,7 @@ export default function Example() {
 	return (
 		<div className=" bg-gradient-to-tl from-black via-zinc-400/20 to-black">
 			<Navigation />
-			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
+			<div className="container font-naut flex items-center justify-center min-h-screen px-4 mx-auto">
 				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
 					{socials.map((s) => (
 						<Card>
