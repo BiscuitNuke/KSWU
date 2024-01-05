@@ -16,7 +16,7 @@ export default function Home() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm duration-500 text-zinc-200 hover:text-zinc-500"
+              className="text-l duration-500 text-zinc-200 hover:text-zinc-500"
             >
               {item.name}
             </Link>
@@ -26,10 +26,11 @@ export default function Home() {
       <div className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-zinc-300/0" />
       <Particles
         className="absolute inset-0 -z-10 animate-fade-in"
-        quantity={200}
+        quantity={100}
       />
-      <h1 className="z-10 text-6xl text-transparent duration-500 bg-amber-600 cursor-default text-edge-outline animate-title font-display sm:text-8xl md:text-9xl whitespace-nowrap bg-clip-text ">
-        KSW.dev
+      <h1 className="z-10 text-6xl text-transparent duration-500 bg-amber-600 cursor-default text-edge-outline  animate-title font-display sm:text-8xl md:text-9xl whitespace-nowrap bg-clip-text ">
+       KSW.dev 
+
       </h1>
 
       <div className="hidden w-screen  h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-amber-300/0" />

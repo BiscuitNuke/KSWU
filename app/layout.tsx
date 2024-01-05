@@ -51,7 +51,7 @@ const inter = Inter({
 });
 
 const calSans = LocalFont({
-  src: "../public/fonts/InstallerReg.ttf",
+  src: "../public/fonts/venite.ttf",
   variable: "--font-calsans",
 });
 
