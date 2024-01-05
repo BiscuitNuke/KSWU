@@ -28,7 +28,7 @@ export default function Home() {
         className="absolute inset-0 -z-10 animate-fade-in"
         quantity={200}
       />
-      <h1 className="z-10 text-4xl text-transparent duration-500 bg-amber-600 cursor-default text-edge-outline animate-title font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text ">
+      <h1 className="z-10 text-6xl text-transparent duration-500 bg-amber-600 cursor-default text-edge-outline animate-title font-display sm:text-8xl md:text-9xl whitespace-nowrap bg-clip-text ">
         KSW.dev
       </h1>
 
