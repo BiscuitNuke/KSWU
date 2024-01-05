@@ -16,14 +16,14 @@ export default function Home() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-l duration-500 text-zinc-200 hover:text-zinc-500"
+              className="text-l font-naut duration-500 text-zinc-200 hover:text-zinc-500"
             >
               {item.name}
             </Link>
           ))}
         </ul>
       </nav>
-      <div className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-zinc-300/0" />
+      <div className="hidden w-screen font-naut h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-zinc-300/0" />
       <Particles
         className="absolute inset-0 -z-10 animate-fade-in"
         quantity={100}
@@ -33,9 +33,9 @@ export default function Home() {
 
       </h1>
 
-      <div className="hidden w-screen  h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-amber-300/0" />
+      <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-amber-300/0 via-amber-300/50 to-amber-300/0" />
       <div className="my-16 text-center animate-fade-in">
-        <h2 className="text-sm text-slate-50 ">
+        <h2 className=" font-naut text-md text-slate-50 ">
           My  name is Kieran Wittstruck, and I'm a {" "}
           <Link
             target="_blank"

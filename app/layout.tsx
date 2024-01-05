@@ -55,13 +55,19 @@ const calSans = LocalFont({
   variable: "--font-calsans",
 });
 
+const naut = LocalFont({
+  src: "../public/fonts/naut.ttf",
+  variable: "--font-naut",
+});
+
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
+    <html lang="en" className={[inter.variable, calSans.variable, naut.variable].join(" ")}>
       <head>
 
       </head>
