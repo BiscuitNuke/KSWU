@@ -12,9 +12,9 @@ export const revalidate = 60;
 export default async function ProjectsPage() {
     
 
-  const featured = allProjects.find((project) => project.slug === "unkey")!;
-  const top2 = allProjects.find((project) => project.slug === "planetfall")!;
-  const top3 = allProjects.find((project) => project.slug === "highstorm")!;
+  const featured = allProjects.find((project) => project.slug === "ksw")!;
+  const top2 = allProjects.find((project) => project.slug === "nullifyone")!;
+  const top3 = allProjects.find((project) => project.slug === "oldmysdr")!;
   const sorted = allProjects
     .filter((p) => p.published)
     .filter(
