@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     url: "https://ksw.dev",
     siteName: "ksw.dev",
     images: [
-      {
-        url: "https://ksw.dev/og.png",
-        width: 1920,
-        height: 1080,
-      },
+      // {
+      //   url: "https://ksw.dev/og.png",
+      //   width: 1920,
+      //   height: 1080,
+      // },
     ],
     locale: "en-US",
     type: "website",
