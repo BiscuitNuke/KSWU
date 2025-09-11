@@ -12,8 +12,8 @@ export default async function ProjectsPage() {
     
 
   const featured = allProjects.find((project) => project.slug === "ksw")!;
-  const top2 = allProjects.find((project) => project.slug === "nullifyone")!;
-  const top3 = allProjects.find((project) => project.slug === "oldmysdr")!;
+  const top2 = allProjects.find((project) => project.slug === "\1") ?? null;
+  const top3 = allProjects.find((project) => project.slug === "\1") ?? null;
   const sorted = allProjects
     .filter((p) => p.published)
     .filter(
@@ -80,7 +80,7 @@ export default async function ProjectsPage() {
           </Card>
 
           <div className="flex flex-col  w-full gap-8 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0 ">
-            {[top2, top3].map((project) => (
+            {[top2, top3].filter(Boolean).map((project) => (
               <Card key={project.slug}>
                 <Article project={project} />
               </Card>

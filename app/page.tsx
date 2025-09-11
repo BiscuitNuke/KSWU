@@ -40,11 +40,11 @@ export default function Home() {
           My  name is Kieran Wittstruck, and I'm a {" "}
           <Link
             target="_blank"
-            href="https://www.malwaremart.com"
+            href="https://www.kswphotos.com"
             className="underline duration-500 hover:text-zinc-300"
           >
-            Cybersecurity Student
-          </Link>, Developer, Photographer, and Project-Seeker.
+            Photographer
+          </Link>, Developer, and too many other things to count. 
         </h2>
       </div>
     </div>
