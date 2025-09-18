@@ -12,8 +12,8 @@ type PageProps = {
 
 export default async function ProjectsPage(_props: PageProps) {
   const featured = allProjects.find((p) => p.slug === "ksw")!;
-  const top2 = allProjects.find((p) => p.slug === "oldmysdr") ?? null;
-  const top3 = allProjects.find((p) => p.slug === "nullifyone") ?? null;
+  const top2 = allProjects.find((p) => p.slug === "baja") ?? null;
+  const top3 = allProjects.find((p) => p.slug === "hamlab") ?? null;
 
   const sorted = allProjects
     .filter((p) => p.published)
