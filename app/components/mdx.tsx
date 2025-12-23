@@ -1,14 +1,13 @@
 "use client";
 
-// @ts-nocheck
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMDXComponent } from "next-contentlayer/hooks";
 
 function clsx(...args: any) {
 	return args.filter(Boolean).join(" ");
 }
+
 const components = {
 	h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
 		<h1
@@ -103,7 +102,6 @@ const components = {
 		alt,
 		...props
 	}: React.ImgHTMLAttributes<HTMLImageElement>) => (
-		// eslint-disable-next-line @next/next/no-img-element
 		<img
 			className={clsx("rounded-md border border-zinc-200", className)}
 			alt={alt}
@@ -171,11 +169,9 @@ interface MdxProps {
 }
 
 export function Mdx({ code }: MdxProps) {
-	const Component = useMDXComponent(code);
-
 	return (
 		<div className="mdx">
-			<Component components={components} />
+			<div dangerouslySetInnerHTML={{ __html: code }} />
 		</div>
 	);
 }

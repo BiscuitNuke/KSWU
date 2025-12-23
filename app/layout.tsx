@@ -75,6 +75,7 @@ export default function RootLayout({
         className={`bg-black ${process.env.NODE_ENV === "development" ? "" : undefined
           }`}
       >
+        {/* Corner badge is shown only on the home page now */}
         {children}
       </body>
     </html>

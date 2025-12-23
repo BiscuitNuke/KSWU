@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allProjects } from "contentlayer/generated";
+import { getAllProjects, getProjectBySlug } from "@/lib/mdx";
 import MdxClient from "./MdxClient";
 import { Header } from "./header";
 import "./mdx.css";
@@ -13,6 +13,7 @@ type PageProps = {
 };
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const allProjects = await getAllProjects();
   return allProjects
     .filter((p) => !!p.published)
     .map((p) => ({ slug: p.slug }));
@@ -21,8 +22,11 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 export default async function PostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const project =
-    allProjects.find((p) => p.slug === slug) ?? notFound();
+  const project = await getProjectBySlug(slug);
+  
+  if (!project) {
+    notFound();
+  }
 
   return (
     <div className="bg-zinc-50 font-naut min-h-screen">

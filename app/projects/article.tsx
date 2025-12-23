@@ -1,4 +1,4 @@
-import type { Project } from "@/.contentlayer/generated";
+import type { Project } from "@/types/project";
 import Link from "next/link";
 
 type Props = {

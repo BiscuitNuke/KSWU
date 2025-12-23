@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { allProjects } from "contentlayer/generated";
+import { getAllProjects } from "@/lib/mdx";
 import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
 import { Article } from "./article";
@@ -11,6 +11,7 @@ type PageProps = {
 };
 
 export default async function ProjectsPage(_props: PageProps) {
+  const allProjects = await getAllProjects();
   const featured = allProjects.find((p) => p.slug === "ksw")!;
   const top2 = allProjects.find((p) => p.slug === "baja") ?? null;
   const top3 = allProjects.find((p) => p.slug === "hamlab") ?? null;
