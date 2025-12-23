@@ -25,9 +25,7 @@ export default function CornerBadge({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Keep ribbon static: no entrance or hover movement animations
 
-  // Animate popup when it opens
   React.useEffect(() => {
     if (open && popupRef.current) {
       gsap.fromTo(
@@ -50,7 +48,7 @@ export default function CornerBadge({
         className="relative block w-44 h-44 text-white pointer-events-auto"
       >
         <span
-          className="absolute top-6 -right-14 rotate-45 w-[220px] h-8 bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-xl flex items-center justify-center"
+          className="absolute top-6 -right-14 rotate-45 w-[220px] h-8 bg-red-600 text-white text-xs\ uppercase tracking-wide shadow-xl flex items-center justify-center"
           style={{ transformOrigin: "center" }}
         >
           {label}
