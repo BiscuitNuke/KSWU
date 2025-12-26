@@ -5,5 +5,18 @@ published: true
   
 ---
 
+Welcome to HamLab — my personal homelab and testing platform for cybersecurity projects, development, and experimentation. It's a serious setup that's evolved into a full-scale infrastructure for learning, testing, and hosting services.
 
-##### Coming soon
+<Image src="/images/hamlab/Hamlab1.jpg" alt="HamLab server rack and networking setup" width={800} height={600} />
+
+### The Infrastructure
+The lab currently runs **ESXi 8.0 with vCenter** across a cluster of **5 EPYC servers** featuring a combined **512GB of DDR4 RAM** and a pooled total of **100TB of storage**. This gives me plenty of resources to spin up virtual machines, test configurations, and run production-grade services.
+
+I'm running **Rancher** for managing a **K3s Kubernetes cluster** and **Wazuh** as my SIEM solution, with agents deployed across multiple VMs to monitor security events and system health.
+
+### Network Design
+All Ethernet ports throughout the house terminate at this central location. I personally wired the infrastructure, including two **WiFi 7 access points** connected to **Ubiquiti networking gear** for PoE support. This allows devices to connect either wirelessly or directly into the network stack.
+
+<Image src="/images/hamlab/Hamlab2.jpg" alt="Network switch and connectivity panel" width={800} height={600} />
+
+For security, the network is segmented: household users connect to a public-facing WiFi and VLAN, while the cluster operates on a separate, isolated network. This segregation ensures that experimental work and sensitive infrastructure remain protected from the general network traffic.
