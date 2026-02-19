@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-function clsx(...args: any) {
+function clsx(...args: (string | undefined | null | false | 0)[]) {
 	return args.filter(Boolean).join(" ");
 }
 

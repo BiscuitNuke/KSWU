@@ -6,11 +6,7 @@ import { Article } from "./article";
 
 export const revalidate = 60;
 
-type PageProps = {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function ProjectsPage(_props: PageProps) {
+export default async function ProjectsPage() {
   const allProjects = await getAllProjects();
   const featured = allProjects.find((p) => p.slug === "ksw")!;
   const top2 = allProjects.find((p) => p.slug === "baja") ?? null;

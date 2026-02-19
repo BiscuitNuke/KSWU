@@ -31,5 +31,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // TODO: increment your counter here, keyed by { slug, ipHash } to de-dup
   }
 
-  return res.status(200).json({ ok: true, slug, ipHash: ipHash ?? null });
+  return res.status(200).json({ ok: true });
 }

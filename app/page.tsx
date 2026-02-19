@@ -19,7 +19,7 @@ export default function Home() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-l font-naut duration-500 text-zinc-200 hover:text-zinc-500"
+              className="text-lg font-naut duration-500 text-zinc-200 hover:text-zinc-500"
             >
               {item.name}
             </Link>
@@ -42,6 +42,7 @@ export default function Home() {
           My  name is Kieran Wittstruck, and I'm a {" "}
           <Link
             target="_blank"
+            rel="noopener noreferrer"
             href="https://www.malwaremart.com"
             className="underline duration-500 hover:text-zinc-300"
           >

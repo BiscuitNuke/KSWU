@@ -80,7 +80,9 @@ export async function getAllProjects(): Promise<ProjectData[]> {
   );
 
   return projects;
-}export async function getProjectBySlug(slug: string): Promise<ProjectData | null> {
+}
+
+export async function getProjectBySlug(slug: string): Promise<ProjectData | null> {
   const projects = await getAllProjects();
   return projects.find((p) => p.slug === slug) || null;
 }
