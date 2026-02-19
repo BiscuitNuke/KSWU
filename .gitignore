@@ -2,3 +2,6 @@ node_modules
 .next
 .contentlayer
 out
+.env
+.env.local
+.env*.local

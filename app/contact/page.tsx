@@ -1,5 +1,5 @@
 "use client";
-import { Apple, Gamepad, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
@@ -25,7 +25,7 @@ const socials = [
 	},
 ];
 
-export default function Example() {
+export default function ContactPage() {
 	return (
 		<div className=" bg-gradient-to-tl from-black via-zinc-400/20 to-black">
 			<Navigation />
@@ -36,6 +36,7 @@ export default function Example() {
 							<Link
 								href={s.href}
 								target="_blank"
+								rel="noopener noreferrer"
 								className="p-4 relative flex flex-col items-center gap-4 duration-700 group md:gap-8 md:py-24  lg:pb-48  md:p-16"
 							>
 								<span

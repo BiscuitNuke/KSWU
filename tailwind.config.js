@@ -37,11 +37,15 @@ module.exports = {
 				"gradient-radial":
 					"radial-gradient(50% 50% at 50% 50%, var(--tw-gradient-stops))",
 			},
+			dropShadow: {
+				orange: "0 0 8px rgba(251, 146, 60, 0.6)",
+			},
 			animation: {
 				"fade-in": "fade-in 3s ease-in-out forwards",
 				title: "title 3s ease-out forwards",
 				"fade-left": "fade-left 3s ease-in-out forwards",
 				"fade-right": "fade-right 3s ease-in-out forwards",
+				glow: "glow 2s ease-in-out infinite",
 			},
 			keyframes: {
 				"fade-in": {
@@ -100,6 +104,14 @@ module.exports = {
 					"100%": {
 						"line-height": "100%",
 						opacity: "100%",
+					},
+				},
+				glow: {
+					"0%, 100%": {
+						opacity: "1",
+					},
+					"50%": {
+						opacity: "0.5",
 					},
 				},
 			},
