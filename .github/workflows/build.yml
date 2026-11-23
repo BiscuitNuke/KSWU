@@ -1,0 +1,125 @@
+name: Build portfolio
+
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths-ignore: ['deploy/compose.yaml', '**/*.md']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 13 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Verify export
+        run: test -s out/index.html && test -s out/404.html
+      - name: Package and smoke test preview container
+        run: |
+          docker build --pull -f deploy/Dockerfile -t kswu-check .
+          bash deploy/smoke-container.sh kswu-check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-preview-${{ github.run_id }}
+          path: out/
+          retention-days: 7
+
+  publish-image:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Refresh public activity and build
+        run: npm run build
+      - name: Verify export
+        run: test -s out/index.html && test -s out/404.html
+      - name: Record refreshed public data
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/activity.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh public project activity [skip ci]'
+            git push origin HEAD:main
+          fi
+      - name: Identify source
+        id: source
+        shell: bash
+        run: |
+          source_sha=$(git rev-parse HEAD)
+          remote_sha=$(git ls-remote origin refs/heads/main | cut -f1)
+          test "$source_sha" = "$remote_sha" || { echo 'Main advanced; refusing stale image promotion.'; exit 1; }
+          echo "sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}:sha-$source_sha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - name: Package validated export
+        run: docker build --pull -f deploy/Dockerfile -t kswu-check .
+      - name: Smoke test hardened container
+        run: bash deploy/smoke-container.sh kswu-check
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push immutable source image
+        env:
+          IMAGE: ${{ steps.source.outputs.image }}
+        run: |
+          docker tag kswu-check "$IMAGE"
+          docker push "$IMAGE"
+      - name: Pin image for Dockhand
+        env:
+          IMAGE: ${{ steps.source.outputs.image }}
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+        shell: bash
+        run: |
+          remote_sha=$(git ls-remote origin refs/heads/main | cut -f1)
+          test "$SOURCE_SHA" = "$remote_sha" || { echo 'Main advanced; refusing stale deployment pin.'; exit 1; }
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          path = Path('deploy/compose.yaml')
+          text = path.read_text()
+          text, count = re.subn(r'(?m)^(\s*image: )ghcr\.io/biscuitnuke/kswu:[^\s]+', lambda m: m[1] + os.environ['IMAGE'], text)
+          if count != 1:
+              raise SystemExit('Expected exactly one portfolio image')
+          path.write_text(text)
+          PY
+          git add deploy/compose.yaml
+          git diff --cached --quiet && exit 0
+          git commit -m "Pin portfolio image to $SOURCE_SHA [skip ci]"
+          git push origin HEAD:main

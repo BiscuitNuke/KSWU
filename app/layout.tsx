@@ -1,82 +1,15 @@
 import "../global.css";
-import { Inter } from "next/font/google";
-import LocalFont from "next/font/local";
-import { Metadata } from "next";
-
+import type { Metadata } from "next";
+import { profile } from "../lib/profile";
 
 export const metadata: Metadata = {
-  title: {
-    default: "ksw.dev",
-    template: "%s | ksw.dev",
-  },
-  description: "Photographer, Developer, and Tech Enthusiast",
-  openGraph: {
-    title: "ksw.dev",
-    description:
-      "Photographer, Developer, and Tech Enthusiast",
-    url: "https://ksw.dev",
-    siteName: "ksw.dev",
-    images: [
-      // {
-      //   url: "https://ksw.dev/og.png",
-      //   width: 1920,
-      //   height: 1080,
-      // },
-    ],
-    locale: "en-US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  twitter: {
-    title: "KSWDev",
-    card: "summary_large_image",
-  },
-  icons: {
-    shortcut: "/favicon.png",
-  },
+    metadataBase: new URL("https://ksw.dev"),
+    title: { default: "Kieran Wittstruck — Infrastructure & Security", template: "%s | Kieran Wittstruck" },
+    description: "Infrastructure, security engineering, and incident response. Selected work and experience from Kieran Wittstruck, a cybersecurity B.S./M.S. student at RIT.",
+    openGraph: { title: "Kieran Wittstruck", description: profile.focus, url: "https://ksw.dev", siteName: "ksw.dev", type: "website" },
+    robots: { index: true, follow: true },
+    icons: { icon: "/favicon.svg" },
 };
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const calSans = LocalFont({
-  src: "../public/fonts/bee.ttf",
-  variable: "--font-calsans",
-});
-
-const naut = LocalFont({
-  src: "../public/fonts/naut.ttf",
-  variable: "--font-naut",
-});
-
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={[inter.variable, calSans.variable, naut.variable].join(" ")}>
-      <head>
-
-      </head>
-      <body
-        className={`bg-black ${process.env.NODE_ENV === "development" ? "" : undefined
-          }`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return <html lang="en"><body><a className="skip-link" href="#main">Skip to content</a>{children}</body></html>;
 }

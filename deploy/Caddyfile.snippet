@@ -1,0 +1,12 @@
+# Apply on the live gateway only after the internal service and TLS/DNS are ready.
+# Set KSWU_UPSTREAM in the gateway Caddy container environment, e.g. private-ip:8088.
+# Reuse the existing common snippet. This portfolio is PUBLIC: do not import gate.
+ksw.dev {
+    import common
+    reverse_proxy {$KSWU_UPSTREAM}
+}
+
+www.ksw.dev {
+    import common
+    redir https://ksw.dev{uri} permanent
+}
