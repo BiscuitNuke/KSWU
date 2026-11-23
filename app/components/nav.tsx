@@ -3,11 +3,11 @@ import { ThemeToggle } from "./theme";
 
 // Old site had "Projects | Contact". Kept the pipe.
 const navigation = [
-    { name: "Work", href: "/#work", wide: true },
+    { name: "Projects", href: "/projects/" },
     { name: "Lab", href: "/#lab", wide: true },
-    { name: "Writeups", href: "/writeups/" },
-    { name: "Now", href: "/now/" },
-    { name: "Resume", href: "/resume/", wide: true },
+    { name: "Writeups", href: "/writeups/", wide: true },
+    { name: "Now", href: "/now/", wide: true },
+    { name: "Resume", href: "/resume/" },
 ];
 
 export function Navigation() {

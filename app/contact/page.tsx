@@ -29,6 +29,7 @@ export default function Contact() {
                 </li>)}
             </ul>
             <p className="muted">RIT Cybersecurity BS May 2027, MS December 2027. Based in {profile.location}. <Link className="text-link" href="/resume/">Resume</Link></p>
+            <p className="pgp-line">PGP · <a className="text-link" href="/pgp.asc">pgp.asc</a> · E31A 2EAC 2821 6EF1 71E6 3534 C64E D3AA 54AD 6937</p>
         </main>
         <Footer />
     </>;
