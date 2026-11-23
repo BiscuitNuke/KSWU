@@ -24,7 +24,7 @@ export default function Home() {
         <Navigation />
         <main id="main">
             <section className="hero wrap" aria-labelledby="hero-title">
-                <p className="label hero-label">Kieran Wittstruck — Rochester, NY</p>
+                <p className="label hero-label" data-profile="K. WITTSTRUCK|ROLE:Network tech, RIT NetComm|STUDY:Computing Security BS/MS|CALL:K2KSW|THREAT:Friendly · low">Kieran Wittstruck — Rochester, NY</p>
                 <MaskText as="h1" id="hero-title" className="hero-title" lines={["I build networks.", "Then I figure out", "how they break."]} />
                 <div className="glow-line" aria-hidden="true" />
                 <div className="hero-grid">
@@ -71,14 +71,14 @@ export default function Home() {
                 </div>
                 <div className="metal-grid">
                     <div className="metal-rack">
-                        <Fig n="02" title="HamLab rack" meta="basement · 48U" className="fig-rack"><Rack /></Fig>
+                        <Fig n="02" title="N1 · HamLab rack" meta="basement · 48U" className="fig-rack" profile="N1|ROLE:HamLab core|SIZE:48U|HOSTS:4× PowerEdge, HL15|STATUS:Online"><Rack /></Fig>
                         <p className="metal-copy">Every Ethernet run in the house lands here. Four PowerEdge hosts run vSphere HA. The HL15 is TrueNAS, their shared storage over iSCSI. The UDM up top is the edge for everything. <Link className="text-link" href="/projects/hamlab/">HamLab</Link></p>
                     </div>
                     <div className="metal-side">
-                        <Fig n="03" title="N2 · Raskal" meta="under my monitor"><NodeN2 /></Fig>
+                        <Fig n="03" title="N2 · Raskal" meta="under my monitor" profile="N2|ROLE:Raskal host|HW:Minisforum MS-01|HYPERVISOR:ESXi|STATUS:Online"><NodeN2 /></Fig>
                         <p className="metal-copy">One MS-01 runs every Raskal VM: the gateway, Authentik, GitLab, the game server, and the Docker host this site is on. 10G fiber back to the rack, and a GL.iNet Comet KVM on top for when ESXi won't answer. <Link className="text-link" href="/projects/raskal/">Raskal</Link></p>
-                        <Fig n="04" title="The desk PC" meta="2 systems · 1 loop"><Desktop /></Fig>
-                        <p className="metal-copy">Two PCs in one case on one hardline loop, with twin reservoirs. Yes, there's a playing card in there.</p>
+                        <Fig n="04" title="The desk PC" meta="2 systems · 2 loops" profile="DESK|SYSTEMS:2 in one case|COOLING:2 hardline loops|CARD:8 of clubs|STATUS:Online"><Desktop /></Fig>
+                        <p className="metal-copy">Two PCs in one case, each on its own hardline loop with its own reservoir. Yes, that's an eight of clubs in there.</p>
                     </div>
                 </div>
             </section>
@@ -91,7 +91,7 @@ export default function Home() {
                 </div>
                 <ol className="work-list">
                     {work.map((project, i) => <li key={project.slug}>
-                        <Link className="work-row" href={"/projects/" + project.slug + "/"}>
+                        <Link className="work-row" href={"/projects/" + project.slug + "/"} data-profile={project.name.toUpperCase() + "|TYPE:" + project.kind + "|STATUS:" + project.status + "|SINCE:" + project.dates + "|THREAT:low"}>
                             <span className="work-num">{String(i + 1).padStart(2, "0")}</span>
                             <span className="work-name">{project.name}</span>
                             <span className="work-summary">{project.summary}</span>

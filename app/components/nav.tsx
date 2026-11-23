@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "./theme";
 
 // Old site had "Projects | Contact". Kept the pipe.
 const navigation = [
@@ -16,6 +17,7 @@ export function Navigation() {
             {navigation.map(item => <Link key={item.href} href={item.href} className={item.wide ? "nav-wide" : undefined}>{item.name}</Link>)}
             <span className="pipe" aria-hidden="true">|</span>
             <Link href="/contact/" className="nav-contact">Contact</Link>
+            <ThemeToggle />
         </nav>
     </header>;
 }
