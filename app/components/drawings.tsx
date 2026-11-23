@@ -304,52 +304,162 @@ export function Desktop() {
     </Frame>;
 }
 
-/* ───────────── Baja: orange wireframe, traced from my photo of it ─────────────
-   lib/baja-trace.json comes from the photo: GrabCut to cut the truck out,
-   then Canny edges inside it. 1400 × 879 units. Lines draw in left to right. */
-const bajaMarks = [
-    { n: 1, x: 500, y: 316 },   // hood scoop
-    { n: 2, x: 1062, y: 40 },   // C3 platform
-    { n: 3, x: 330, y: 474 },   // grille pods
-    { n: 4, x: 881, y: 672 },   // front tire
-    { n: 5, x: 1330, y: 330 },  // the bed
+/* ───────────── Baja: orange wireframe of my truck ─────────────
+   The outline and body lines in lib/baja-trace.json come from my photo
+   (GrabCut cutout, Canny edges, only the long lines, smoothed).
+   The busy parts are drawn clean by hand on top: wheels, lights, grille, glass, pods.
+   Hand shapes use the photo's 750-wide coordinates; p() maps them into the 1400-wide trace. */
+const BK = 1400 / 712;
+const bx = (x: number) => +(x * BK).toFixed(1);
+const by = (y: number) => +((y - 265) * BK).toFixed(1);
+const bpoly = (pts: number[][]) => "M" + pts.map(([x, yy]) => bx(x) + " " + by(yy)).join(" L") + " Z";
+const bell = (cx: number, cy: number, rx: number, ry: number) => ellipsePathB(bx(cx), by(cy), rx * BK, ry * BK);
+function ellipsePathB(cx: number, cy: number, rx: number, ry: number) {
+    return "M" + (cx - rx).toFixed(1) + " " + cy + " a" + rx.toFixed(1) + " " + ry.toFixed(1) + " 0 1 0 " + (2 * rx).toFixed(1) + " 0 a" + rx.toFixed(1) + " " + ry.toFixed(1) + " 0 1 0 " + (-2 * rx).toFixed(1) + " 0";
+}
+
+function BajaWheel({ cx, cy, rx, ry, rim, d }: { cx: number; cy: number; rx: number; ry: number; rim: { x: number; rx: number; ry: number }; d: number }) {
+    const spokes = [0, 60, 120, 180, 240, 300].map(a => {
+        const t = (a * Math.PI) / 180, c = Math.cos(t), sn = Math.sin(t);
+        return "M" + bx(rim.x + rim.rx * 0.28 * c) + " " + by(cy + rim.ry * 0.28 * sn) + " L" + bx(rim.x + rim.rx * 0.86 * c) + " " + by(cy + rim.ry * 0.86 * sn);
+    }).join(" ");
+    return <g style={at(d)}>
+        <path className="draw" d={bell(cx, cy, rx, ry)} pathLength={1} />
+        <path className="draw thin" d={bell(cx + 3, cy + 1, rx * 0.8, ry * 0.85)} pathLength={1} />
+        <path className="draw" d={bell(rim.x, cy, rim.rx, rim.ry)} pathLength={1} />
+        <path className="draw thin" d={bell(rim.x, cy, rim.rx * 0.24, rim.ry * 0.24)} pathLength={1} />
+        <path className="fade thin-line" d={spokes} />
+    </g>;
+}
+
+// Lights: the four on the roof bar, two in the grille, two in the lower bumper.
+const bajaLights = [[300, 286], [316, 286], [484, 283], [500, 283], [137, 500], [181, 501], [85, 580], [187, 590]];
+
+// Numbered callouts, like a technical manual. t = target on the truck (photo coords), b = balloon (drawing units).
+const bajaCallouts = [
+    { n: 1, t: [255, 425], b: [290, 150] },
+    { n: 2, t: [308, 292], b: [500, -95] },
+    { n: 3, t: [143, 506], b: [-40, 400] },
+    { n: 4, t: [92, 588], b: [-40, 640] },
+    { n: 5, t: [323, 610], b: [560, 905] },
+    { n: 6, t: [448, 694], b: [760, 935] },
+    { n: 7, t: [690, 420], b: [1440, 180] },
 ];
-const bajaGlow = [[281, 472, 9], [368, 474, 9], [181, 635, 10], [381, 655, 10], [602, 53, 8], [635, 53, 8], [963, 47, 8], [997, 47, 8], [635, 657, 12]];
 
 export function Baja() {
-    return <Frame label="Orange wireframe of my 2005 Subaru Baja Turbo, traced from a photo of it from the front left: black hood with the scoop, amber pods in the grille, bumper, and roof platform, and all-terrain tires." view="-20 -30 1440 930" className="baja wf">
-        <path className="draw outline" d={bajaTrace.outline} pathLength={1} style={at(0)} />
-        {bajaTrace.lines.map((d, i) => <path key={i} className="draw wire-line" d={d} pathLength={1} style={at(0.3 + (bajaTrace.xs[i] / bajaTrace.w) * 1.8)} />)}
-        {bajaGlow.map(([x, yy, r], i) => <circle key={i} className="glow-dot" cx={x} cy={yy} r={r} data-blink />)}
-        {bajaMarks.map(m => <g key={m.n} className="mark" style={at(2.4 + m.n * 0.1)}>
-            <circle className="fade mark-ring" cx={m.x} cy={m.y} r="22" />
-            <text className="fade mark-n" x={m.x} y={m.y + 8} textAnchor="middle">{m.n}</text>
+    const zonesX = [0, 1, 2, 3, 4, 5].map(i => -60 + 130 + i * 260);
+    const zonesY = [0, 1, 2, 3].map(i => -120 + 140 + i * 280);
+    return <Frame label="Technical drawing of my 2005 Subaru Baja Turbo from the front left, as an orange wireframe with numbered callouts for the hood scoop, roof lights, grille lights, bumper lights, fog light, tires, and bed, plus a title block." view="-100 -160 1640 1190" className="baja wf mil">
+        {/* sheet border and zone grid */}
+        <g style={at(0)}>
+            <rect className="draw sheet" x="-80" y="-140" width="1600" height="1150" pathLength={1} />
+            <rect className="draw sheet-in" x="-60" y="-120" width="1560" height="1110" pathLength={1} />
+        </g>
+        <g className="fade zone" style={at(0.2)}>
+            {zonesX.map((x, i) => <g key={x}>
+                <text x={x} y="-126" textAnchor="middle">{6 - i}</text>
+                <text x={x} y="1004" textAnchor="middle">{6 - i}</text>
+                {i > 0 && <path d={"M" + (x - 130) + " -140 V-120 M" + (x - 130) + " 990 V1010"} />}
+            </g>)}
+            {zonesY.map((yy, i) => <g key={yy}>
+                <text x="-70" y={yy + 5} textAnchor="middle">{"DCBA"[i]}</text>
+                <text x="1510" y={yy + 5} textAnchor="middle">{"DCBA"[i]}</text>
+                {i > 0 && <path d={"M-80 " + (yy - 140) + " H-60 M1500 " + (yy - 140) + " H1520"} />}
+            </g>)}
+        </g>
+
+        {/* the truck */}
+        <path className="draw outline" d={bajaTrace.outline} pathLength={1} style={at(0.3)} />
+        {bajaTrace.lines.map((d, i) => <path key={i} className="draw body-line" d={d} pathLength={1} style={at(0.6 + (bajaTrace.xs[i] / bajaTrace.w) * 1.4)} />)}
+
+        {/* glass */}
+        <g style={at(0.8)}>
+            <path className="draw" d={bpoly([[296, 330], [512, 322], [506, 420], [202, 408]])} pathLength={1} />
+            <path className="draw thin" d={bpoly([[518, 332], [573, 330], [575, 410], [520, 416]])} pathLength={1} />
+            <path className="draw thin" d={bpoly([[580, 330], [622, 338], [632, 402], [580, 408]])} pathLength={1} />
+            <path className="draw thin" d={bpoly([[525, 388], [578, 383], [582, 412], [528, 416]])} pathLength={1} />
+        </g>
+        {/* roof bar slats */}
+        <path className="draw thin" d={[560, 590, 620, 650].map(x => "M" + bx(x) + " " + by(285 + (x - 540) * 0.13) + " L" + bx(x + 2) + " " + by(312)).join(" ")} pathLength={1} style={at(1)} />
+        {/* hood scoop */}
+        <path className="draw" d={"M" + bx(197) + " " + by(425) + " C" + bx(205) + " " + by(415) + " " + bx(305) + " " + by(415) + " " + bx(312) + " " + by(426) + " C" + bx(300) + " " + by(434) + " " + bx(208) + " " + by(434) + " " + bx(197) + " " + by(425) + " Z"} pathLength={1} style={at(1.1)} />
+        {/* headlights, grille, intake, fogs */}
+        <g style={at(1.2)}>
+            <path className="draw" d={bpoly([[258, 480], [378, 468], [392, 478], [388, 522], [262, 524], [256, 510]])} pathLength={1} />
+            <path className="draw thin" d={bell(318, 500, 15, 14)} pathLength={1} />
+            <path className="draw thin" d={bell(366, 495, 10, 11)} pathLength={1} />
+            <path className="draw" d={bpoly([[45, 458], [66, 460], [68, 506], [27, 500], [30, 472]])} pathLength={1} />
+            <path className="draw" d={bpoly([[75, 482], [245, 490], [247, 526], [82, 516]])} pathLength={1} />
+            <path className="draw thin" d={"M" + bx(160) + " " + by(486) + " L" + bx(162) + " " + by(521) + " M" + bx(80) + " " + by(499) + " L" + bx(160) + " " + by(503) + " M" + bx(162) + " " + by(505) + " L" + bx(245) + " " + by(508)} pathLength={1} />
+            <path className="draw" d={bpoly([[58, 566], [250, 572], [262, 612], [65, 604]])} pathLength={1} />
+            <path className="draw" d={bell(323, 599, 21, 21)} pathLength={1} />
+            <path className="draw thin" d={bell(323, 599, 12, 12)} pathLength={1} />
+            <path className="draw thin" d={bell(28, 572, 10, 11)} pathLength={1} />
+        </g>
+        {/* lights: housing + lens */}
+        {bajaLights.map(([x, yy], i) => <g key={i} style={at(1.3 + i * 0.03)}>
+            <rect className="draw thin" x={bx(x)} y={by(yy)} width={13 * BK} height={12 * BK} rx="4" pathLength={1} />
+            <circle className="lens" cx={bx(x + 6.5)} cy={by(yy + 6)} r="6" data-blink />
         </g>)}
+        {/* wheels */}
+        <path className="draw thin" d={"M" + bx(66) + " " + by(612) + " C" + bx(70) + " " + by(660) + " " + bx(172) + " " + by(668) + " " + bx(182) + " " + by(618)} pathLength={1} style={at(1.4)} />
+        <BajaWheel cx={448} cy={607} rx={61} ry={87} rim={{ x: 470, rx: 34, ry: 60 }} d={1.4} />
+        <BajaWheel cx={647} cy={546} rx={35} ry={60} rim={{ x: 661, rx: 17, ry: 38 }} d={1.5} />
+
+        {/* callouts */}
+        {bajaCallouts.map(c => {
+            const tx = bx(c.t[0]), ty = by(c.t[1]), [cx, cy] = c.b;
+            const dx = tx - cx, dy = ty - cy, len = Math.hypot(dx, dy) || 1;
+            const sx = cx + (dx / len) * 24, sy = cy + (dy / len) * 24;
+            return <g key={c.n} style={at(2 + c.n * 0.08)}>
+                <path className="draw leader" d={"M" + sx.toFixed(1) + " " + sy.toFixed(1) + " L" + tx + " " + ty} pathLength={1} />
+                <circle className="fade tip" cx={tx} cy={ty} r="5" />
+                <circle className="fade balloon" cx={cx} cy={cy} r="24" />
+                <text className="fade balloon-n" x={cx} y={cy + 8} textAnchor="middle">{c.n}</text>
+            </g>;
+        })}
+
+        {/* title block */}
+        <g style={at(2.6)}>
+            <rect className="draw tb" x="1060" y="820" width="440" height="170" pathLength={1} />
+            <path className="draw tb" d="M1060 880 H1500 M1060 935 H1500 M1190 935 V990 M1300 935 V990" pathLength={1} />
+            <text className="fade tb-big" x="1076" y="862">SUBARU BAJA TURBO</text>
+            <text className="fade tb-s" x="1076" y="915">MODEL 2005 · 5-SPEED · AWD</text>
+            <text className="fade tb-k" x="1076" y="955">DWG NO</text><text className="fade tb-s" x="1076" y="978">BAJA-01</text>
+            <text className="fade tb-k" x="1204" y="955">SCALE</text><text className="fade tb-s" x="1204" y="978">NONE</text>
+            <text className="fade tb-k" x="1314" y="955">DRAWN</text><text className="fade tb-s" x="1314" y="978">K. WITTSTRUCK</text>
+        </g>
     </Frame>;
 }
 
-// The facts next to the drawing. Numbers match the marks on the truck.
+// The legend. Item numbers match the balloons.
 const bajaFacts: { n?: number; k: string; v: string }[] = [
-    { k: "Truck", v: "2005 Subaru Baja Turbo · 5-speed manual · AWD" },
-    { k: "Stock", v: "2.5 L turbo flat-four, 210 hp" },
-    { k: "Size", v: "193.3 in long · 104.3 in wheelbase · 41.5 in bed" },
-    { n: 1, k: "Engine", v: "IAG 750 closed-deck long block, FP Red turbo, ETS front-mount intercooler" },
+    { n: 1, k: "Hood scoop", v: "IAG 750 closed-deck long block, FP Red turbo, ETS front-mount intercooler under it" },
+    { n: 2, k: "Roof lights", v: "Four on the roof bar. Antennas go up here next" },
+    { n: 3, k: "Grille lights", v: "Two auxiliary lights in the grille" },
+    { n: 4, k: "Bumper lights", v: "Two auxiliary lights in the lower bumper" },
+    { n: 5, k: "Fog light", v: "Round fog light in the lower bumper" },
+    { n: 6, k: "Tires", v: "All-terrains on black wheels. Control arms and CV axles replaced first" },
+    { n: 7, k: "Bed", v: "Wardriving rig, planned: power, network, radios" },
+    { k: "Vehicle", v: "2005 Subaru Baja Turbo, 5-speed manual, AWD" },
+    { k: "Engine, stock", v: "2.5 L turbo flat-four, 210 hp" },
     { k: "Fuel", v: "ID1300XDS injectors, Radium dual-pump hanger" },
-    { n: 2, k: "Roof", v: "C3 platform with amber pods. Antennas go here next" },
-    { n: 3, k: "Lights", v: "Amber pods in the grille and the bumper" },
-    { n: 4, k: "Wheels", v: "All-terrains on black wheels. Control arms and CV axles replaced first" },
-    { n: 5, k: "Bed", v: "Wardriving rig, planned: power, network, radios" },
+    { k: "Dimensions", v: "193.3 in long, 104.3 in wheelbase, 41.5 in bed" },
 ];
 
 function BajaSheet() {
     return <div className="baja-sheet">
         <Baja />
-        <dl className="spec-sheet">
-            {bajaFacts.map(f => <div key={f.k}>
-                <dt><span className="spec-n">{f.n ? String(f.n).padStart(2, "0") : "··"}</span>{f.k}</dt>
-                <dd>{f.v}</dd>
-            </div>)}
-        </dl>
+        <table className="legend">
+            <thead><tr><th>Item</th><th>Nomenclature</th><th>Note</th></tr></thead>
+            <tbody>
+                {bajaFacts.map(f => <tr key={f.k}>
+                    <td className="legend-n">{f.n ? f.n : "–"}</td>
+                    <td>{f.k}</td>
+                    <td>{f.v}</td>
+                </tr>)}
+            </tbody>
+        </table>
     </div>;
 }
 
@@ -528,7 +638,7 @@ const drawings: Record<string, D[]> = {
         { C: AuthFlow, title: "Opening a private app", meta: "Caddy forward auth" },
     ],
     hamlab: [{ C: Rack, title: "The HamLab rack", meta: "48U · hover a unit" }],
-    baja: [{ C: BajaSheet, title: "2005 Baja Turbo", meta: "traced from a photo" }],
+    baja: [{ C: BajaSheet, title: "2005 Baja Turbo", meta: "front left · traced from a photo" }],
     hambot: [{ C: BotPipeline, title: "Push to running", meta: "≤ 15 min" }],
     "flight-wall": [{ C: SignalChain, title: "Window to wall", meta: "1090 MHz" }],
     roamarc: [{ C: PhoneRoads, title: "How road credit works", meta: "SwiftUI" }],
