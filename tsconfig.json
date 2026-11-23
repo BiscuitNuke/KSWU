@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,7 +23,6 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
@@ -41,4 +40,3 @@
     "node_modules"
   ]
 }
-
