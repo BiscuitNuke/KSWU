@@ -2,6 +2,7 @@ import "../global.css";
 import type { Metadata, Viewport } from "next";
 import LocalFont from "next/font/local";
 import { profile } from "../lib/profile";
+import { SmoothScroll } from "./components/animate";
 
 const description = "Cybersecurity BS/MS at RIT. I build networks, run a homelab with my own SSO, and work on keeping it all secure. Looking for infrastructure, security engineering, and IR work.";
 
@@ -40,6 +41,7 @@ const bee = LocalFont({ src: "../public/fonts/bee.ttf", variable: "--font-bee", 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return <html lang="en" className={naut.variable + " " + bee.variable}>
         <body>
+            <SmoothScroll />
             <a className="skip-link" href="#main">Skip to content</a>
             {children}
         </body>
