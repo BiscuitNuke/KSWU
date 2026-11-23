@@ -34,7 +34,7 @@ This mirrors the **Raskal-QoL (Ops)** pattern: GitHub is authoritative, GHCR sto
 3. Set `KSWU_BIND_IP` to the chosen web host's private address and `KSWU_PORT` to an unused port (default 8088). The safe default binds loopback only and is intentionally unreachable from a different gateway VM.
 4. Permit the existing Caddy gateway to reach that one TCP port. Block other clients from the published port. Docker's published ports require host/router firewall enforcement, not an assumption that UFW alone protects them.
 5. Prefer a dedicated web VM/network. Reusing RaskalDev is possible with a gateway-only firewall rule, but keep the portfolio separate from the QoL stack, its volumes, credentials, and Docker socket.
-6. Check `/healthz`, `/`, a case study, the resume download, fonts/assets, and an unknown route over the internal connection. Check `docker compose ps` and logs.
+6. Check `/healthz`, `/`, a case study, the printable resume page, fonts/assets, and an unknown route over the internal connection. Check `docker compose ps` and logs.
 
 ## Public gateway and cutover
 
@@ -42,7 +42,7 @@ Use `Caddyfile.snippet` as a reviewed addition to the live gateway config, after
 
 Before applying, validate the complete Caddy config using the gateway's existing Caddy container, check that `ksw.dev` and `www.ksw.dev` will reach it, and confirm TLS issuance with the current DNS/proxy setup. The current gateway publishes 443 only and disables the HTTP ACME challenge; this package does not change those settings. A temporary test hostname can be used before changing production DNS, but it needs its own DNS/TLS setup.
 
-Keep the current Cloudflare Pages deployment and existing DNS values available during verification. After a successful preview, point the domains at the intended gateway, verify external HTTPS, assets, redirects, correct 404 status, resume download, and public accessibility without a login. The snippet makes `https://ksw.dev` canonical and redirects `www`; change that explicitly if another canonical name is desired.
+Keep the current Cloudflare Pages deployment and existing DNS values available during verification. After a successful preview, point the domains at the intended gateway, verify external HTTPS, assets, redirects, correct 404 status, the resume page's print/save-to-PDF flow, and public accessibility without a login. The snippet makes `https://ksw.dev` canonical and redirects `www`; change that explicitly if another canonical name is desired.
 
 **Raskal-Infra is a snapshot record, not deployment source.** Do not edit its GitHub host folders to deploy this. Apply a reviewed config on the VM; its next snapshot records the result.
 
