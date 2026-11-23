@@ -33,10 +33,11 @@ function Frame({ children, label, view }: { children: React.ReactNode; label: st
     </InView>;
 }
 
-/* HamLab rack, traced from the build photo. Top to bottom, same order as real life. */
+/* HamLab rack, traced from the photo. Top to bottom, same order as real life. */
 const U = 22;
 const top = 60;
 const y = (u: number) => top + u * U;
+const RACK_U = 35;
 
 function hexes(cx0: number, cy: number) {
     const out = [];
@@ -54,103 +55,223 @@ function hexes(cx0: number, cy: number) {
     return out;
 }
 
-function ports(x: number, yy: number, n: number, rows = 1) {
+function ports(x: number, yy: number, n: number, rows = 1, gap = 9) {
     const out = [];
-    for (let r = 0; r < rows; r++) for (let i = 0; i < n; i++) out.push(<rect key={r + "-" + i} x={x + i * 9} y={yy + r * 8} width="6" height="5" />);
+    for (let r = 0; r < rows; r++) for (let i = 0; i < n; i++) out.push(<rect key={r + "-" + i} x={x + i * gap} y={yy + r * 8} width={gap - 3} height="5" />);
     return out;
+}
+
+// A big fan: outer ring, inner ring, and a few spokes.
+function fan(cx: number, cy: number, r: number) {
+    return <g>
+        <circle cx={cx} cy={cy} r={r} />
+        <circle cx={cx} cy={cy} r={r * 0.62} />
+        <circle cx={cx} cy={cy} r={r * 0.2} />
+        <path d={"M" + (cx - r) + " " + cy + " H" + (cx + r) + " M" + cx + " " + (cy - r) + " V" + (cy + r)} />
+    </g>;
 }
 
 const rackLabels = [
     { u: 1.5, text: "Spectrum modem" },
-    { u: 3.5, text: "UDM Pro Max · the edge", hot: true },
-    { u: 5, text: "Switch + patch panel" },
-    { u: 10, text: "Small nodes shelf" },
-    { u: 16, text: "4× Dell PowerEdge · vSphere HA", hot: true },
-    { u: 25, text: "Room to grow" },
-    { u: 34, text: "2× UPS" },
+    { u: 3.4, text: "UDM Pro Max · the edge", hot: true },
+    { u: 5.4, text: "UniFi switch" },
+    { u: 6.9, text: "Cat6 + Cat6A patch" },
+    { u: 8.4, text: "Juniper EX4400 · core", hot: true },
+    { u: 11, text: "Small nodes" },
+    { u: 16.5, text: "4× PowerEdge · vSphere HA", hot: true },
+    { u: 22.5, text: "HL15 BEAST · TrueNAS", hot: true },
+    { u: 31.5, text: "2× CyberPower UPS" },
 ];
 
 export function Rack() {
     const rails = [];
-    for (let u = 0; u <= 37; u++) {
+    for (let u = 0; u <= RACK_U; u++) {
         rails.push(<circle key={"l" + u} cx="58" cy={y(u) + 4} r="1.6" />, <circle key={"r" + u} cx="322" cy={y(u) + 4} r="1.6" />);
     }
+    const bottom = y(RACK_U) + 10;
     return <InView className="drawing-wrap rack-wrap">
-        <svg className="drawing rack" viewBox="0 0 640 940" role="img" aria-label="Line drawing of the HamLab rack: modem, UDM Pro Max, switch and patch panel, a shelf of small nodes, four Dell PowerEdge servers, open space, and two UPS units.">
+        <svg className="drawing rack" viewBox={"0 0 660 " + (bottom + 50)} role="img" aria-label="Line drawing of the HamLab rack, top to bottom: PDU, Spectrum modem, UDM Pro Max, UniFi switch, two patch panels, Juniper EX4400 core switch, two shelves of small nodes, four Dell PowerEdge servers, a 45HomeLab HL15 storage server, two CyberPower UPS units, and a PDU.">
             {/* cabinet */}
-            <rect className="draw" x="30" y="20" width="320" height="900" rx="3" pathLength={1} style={at(0)} />
-            <path className="draw" d="M30 50 H350 M30 890 H350" pathLength={1} style={at(0.2)} />
-            <path className="draw" d="M48 50 V890 M332 50 V890" pathLength={1} style={at(0.3)} />
+            <rect className="draw" x="30" y="20" width="320" height={bottom + 10} rx="3" pathLength={1} style={at(0)} />
+            <path className="draw" d={"M30 50 H350 M30 " + bottom + " H350"} pathLength={1} style={at(0.2)} />
+            <path className="draw" d={"M48 50 V" + bottom + " M332 50 V" + bottom} pathLength={1} style={at(0.3)} />
             <g className="fade dots" style={at(0.6)}>{rails}</g>
 
-            {/* PDU strip */}
+            {/* PDU */}
             <g style={at(0.4)}>
                 <rect className="draw" x="70" y={y(0)} width="240" height={U - 4} pathLength={1} />
-                <g className="fade small">{ports(82, y(0) + 6, 18)}</g>
                 <circle className="fade led" cx="298" cy={y(0) + 9} r="3" />
             </g>
             {/* modem */}
             <g style={at(0.5)}>
                 <rect className="draw" x="70" y={y(1)} width="240" height={2 * U - 4} pathLength={1} />
-                <rect className="draw" x="150" y={y(1) + 12} width="90" height="16" pathLength={1} />
+                <rect className="draw" x="150" y={y(1) + 10} width="96" height="18" pathLength={1} />
             </g>
             {/* UDM Pro Max */}
             <g style={at(0.6)} className="hot">
                 <rect className="draw" x="70" y={y(3)} width="240" height={U - 4} pathLength={1} />
-                <g className="fade small">{ports(210, y(3) + 5, 8)}</g>
                 <rect className="fade" x="84" y={y(3) + 5} width="70" height="8" />
+                <g className="fade small">{ports(214, y(3) + 3, 4, 2)}</g>
             </g>
-            {/* switch + patch panel */}
+            {/* cable manager, UniFi switch, two patch panels */}
             <g style={at(0.7)}>
                 <rect className="draw" x="70" y={y(4)} width="240" height={U - 4} pathLength={1} />
-                <g className="fade small">{ports(96, y(4) + 2, 22, 2)}</g>
                 <rect className="draw" x="70" y={y(5)} width="240" height={U - 4} pathLength={1} />
-                <g className="fade small">{ports(84, y(5) + 6, 24)}</g>
-            </g>
-            {/* blanks */}
-            <g style={at(0.8)}>
+                <g className="fade small">{ports(96, y(5) + 2, 22, 2)}</g>
                 <rect className="draw" x="70" y={y(6)} width="240" height={U - 4} pathLength={1} />
-                <path className="draw" d={"M90 " + (y(6) + 9) + " H290"} pathLength={1} />
+                <g className="fade small">{ports(84, y(6) + 6, 24)}</g>
                 <rect className="draw" x="70" y={y(7)} width="240" height={U - 4} pathLength={1} />
+                <g className="fade small">{ports(84, y(7) + 6, 24)}</g>
             </g>
-            {/* small nodes shelf */}
-            <g style={at(0.9)}>
-                <rect className="draw" x="70" y={y(8)} width="240" height={4 * U - 4} pathLength={1} />
-                <rect className="draw" x="140" y={y(8) + 6} width="100" height="30" pathLength={1} />
-                <circle className="fade led" cx="154" cy={y(8) + 21} r="2.5" />
-                {[0, 1].map(r => [0, 1].map(c => <rect key={r + "" + c} className="draw" x={84 + c * 112} y={y(10) + 2 + r * 20} width="100" height="15" pathLength={1} />))}
+            {/* Juniper core */}
+            <g style={at(0.85)} className="hot">
+                <rect className="draw" x="70" y={y(8)} width="240" height={U - 4} pathLength={1} />
+                <g className="fade small">{ports(80, y(8) + 2, 24, 2, 8.4)}</g>
+            </g>
+            {/* two small-node shelves */}
+            <g style={at(0.95)}>
+                <rect className="draw" x="70" y={y(9)} width="240" height={2 * U - 4} pathLength={1} />
+                <rect className="draw" x="140" y={y(9) + 8} width="100" height="22" pathLength={1} />
+                <circle className="fade led" cx="190" cy={y(9) + 19} r="2.5" />
+                <rect className="draw" x="70" y={y(11)} width="240" height={2 * U - 4} pathLength={1} />
+                <path className="draw" d={"M90 " + (y(13) - 10) + " H290 M200 " + (y(13) - 10) + " l40 -10 h20"} pathLength={1} />
             </g>
             {/* 4x PowerEdge */}
             {[0, 1, 2, 3].map(i => <g key={i} style={at(1.1 + i * 0.15)} className="server">
-                <rect className="draw" x="70" y={y(12 + i * 2)} width="240" height={2 * U - 3} pathLength={1} />
-                <g className="fade hex">{hexes(90, y(12 + i * 2) + 13)}</g>
-                <circle className="fade led" cx="300" cy={y(12 + i * 2) + 10} r="2" />
+                <rect className="draw" x="70" y={y(13 + i * 2)} width="240" height={2 * U - 3} pathLength={1} />
+                <g className="fade hex">{hexes(90, y(13 + i * 2) + 13)}</g>
+                <circle className="fade led" cx="300" cy={y(13 + i * 2) + 10} r="2" />
             </g>)}
-            {/* open space */}
-            <path className="draw faint" d={"M100 " + y(22) + " C140 " + y(25) + " 220 " + y(23) + " 260 " + y(27)} pathLength={1} style={at(1.8)} />
-            {/* blank + UPS */}
-            <g style={at(1.9)}>
-                <rect className="draw" x="70" y={y(30)} width="240" height={2 * U - 4} pathLength={1} />
+            {/* HL15 BEAST: 4U, three big fans */}
+            <g style={at(1.8)} className="hot">
+                <rect className="draw" x="70" y={y(21) + 4} width="240" height={4 * U - 6} pathLength={1} />
+                <g className="fade fans">{[0, 1, 2].map(i => fan(112 + i * 78, y(21) + 40, 30))}</g>
+                <path className="draw" d={"M78 " + (y(25) - 12) + " H302"} pathLength={1} />
             </g>
-            {[0, 1].map(i => <g key={i} style={at(2 + i * 0.15)}>
-                <rect className="draw" x="70" y={y(32 + i * 2)} width="240" height={2 * U - 4} pathLength={1} />
-                <path className="fade" d={Array.from({ length: 12 }, (_, k) => "M" + (84 + k * 10) + " " + (y(32 + i * 2) + 8) + " v24").join(" ")} />
-                <rect className="draw" x="240" y={y(32 + i * 2) + 9} width="40" height="22" pathLength={1} />
+            {/* cables */}
+            <path className="draw faint" d={"M90 " + (y(26) + 4) + " c30 30 60 -10 90 20 s60 -20 110 10"} pathLength={1} style={at(2)} />
+            {/* blank, 2x UPS, PDU */}
+            <g style={at(2)}>
+                <rect className="draw" x="70" y={y(28)} width="240" height={2 * U - 4} pathLength={1} />
+            </g>
+            {[0, 1].map(i => <g key={i} style={at(2.1 + i * 0.15)}>
+                <rect className="draw" x="70" y={y(30 + i * 2)} width="240" height={2 * U - 4} pathLength={1} />
+                <path className="fade" d={Array.from({ length: 12 }, (_, k) => "M" + (84 + k * 10) + " " + (y(30 + i * 2) + 8) + " v24").join(" ")} />
+                <rect className="draw" x="240" y={y(30 + i * 2) + 9} width="40" height="22" pathLength={1} />
             </g>)}
-            {/* bottom PDU */}
-            <g style={at(2.3)}>
-                <rect className="draw" x="70" y={y(36)} width="240" height={U - 4} pathLength={1} />
-                <g className="fade small">{ports(120, y(36) + 6, 12)}</g>
-                <circle className="fade led" cx="298" cy={y(36) + 9} r="3" />
+            <g style={at(2.4)}>
+                <rect className="draw" x="70" y={y(34)} width="240" height={U - 4} pathLength={1} />
+                <g className="fade small">{ports(120, y(34) + 6, 12)}</g>
+                <circle className="fade led" cx="298" cy={y(34) + 9} r="3" />
             </g>
 
             {/* labels */}
-            {rackLabels.map((l, i) => <g key={l.text} style={at(2.4 + i * 0.1)} className={l.hot ? "hot" : ""}>
-                <path className="draw leader" d={"M312 " + (y(l.u) + 2) + " H380"} pathLength={1} />
-                <text className="fade lab" x="390" y={y(l.u) + 6}>{l.text}</text>
+            {rackLabels.map((l, i) => <g key={l.text} style={at(2.5 + i * 0.08)} className={l.hot ? "hot" : ""}>
+                <path className="draw leader" d={"M312 " + (y(l.u) + 2) + " H372"} pathLength={1} />
+                <circle className="fade tick" cx="372" cy={y(l.u) + 2} r="2" />
+                <text className="fade lab big" x="384" y={y(l.u) + 7}>{l.text}</text>
             </g>)}
         </svg>
     </InView>;
+}
+
+/* N2: the box Raskal runs on, under my monitor */
+export function NodeN2() {
+    const labels = [
+        { x: 640, y: 150, t: "N2 · MS-01 · ESXi", s: "every Raskal VM lives here", hot: true, from: "M590 190 L630 150" },
+        { x: 640, y: 290, t: "8-port switch · 2× SFP+", s: "under the node", from: "M600 330 L630 290" },
+        { x: 640, y: 430, t: "10G fiber", s: "back to the core in the rack", hot: true, from: "M560 430 H630" },
+    ];
+    return <Frame label="Line drawing of N2: a Minisforum MS-01 running ESXi, sitting on a small switch with two fiber uplinks, under a monitor." view="0 0 900 520">
+        {/* monitor edge */}
+        <path className="draw" d="M20 40 H880 M20 52 H880" pathLength={1} style={at(0)} />
+        <path className="draw faint" d="M20 470 H880" pathLength={1} style={at(0.1)} />
+        {/* puck on top */}
+        <rect className="draw" x="250" y="70" width="190" height="56" rx="26" pathLength={1} style={at(0.3)} />
+        {/* MS-01 */}
+        <g style={at(0.5)} className="hot">
+            <rect className="draw" x="150" y="130" width="440" height="140" rx="4" pathLength={1} />
+            <path className="fade vents" d={Array.from({ length: 14 }, (_, k) => "M" + (340 + k * 16) + " 150 l-34 100").join(" ")} />
+            <rect className="draw" x="110" y="150" width="140" height="110" pathLength={1} />
+            <text className="fade n2" x="128" y="228">N 2</text>
+            <circle className="fade led green" cx="560" cy="200" r="3" />
+        </g>
+        {/* switch */}
+        <g style={at(0.8)}>
+            <rect className="draw" x="120" y="270" width="500" height="120" rx="6" pathLength={1} />
+            <g className="fade small">{Array.from({ length: 8 }, (_, i) => <rect key={i} x={160 + i * 36} y="330" width="28" height="22" />)}</g>
+            {[0, 1].map(i => <g key={i}>
+                <rect className="draw" x={470 + i * 60} y="330" width="44" height="26" pathLength={1} />
+                <circle className="fade led" cx={492 + i * 60} cy="318" r="2.5" />
+            </g>)}
+        </g>
+        {/* copper out the front */}
+        <path className="draw" d="M290 352 c0 60 -60 80 -120 110 M326 352 c0 70 40 90 120 100 M218 352 c-20 60 -120 60 -190 90" pathLength={1} style={at(1.1)} />
+        {/* fiber pairs */}
+        <path className="draw hot" d="M486 356 c0 60 -40 80 -60 110 M498 356 c0 60 -20 80 -30 110 M546 356 c0 50 40 70 30 110 M558 356 c0 50 50 70 50 110" pathLength={1} style={at(1.3)} />
+        {labels.map((l, i) => <g key={l.t} style={at(1.5 + i * 0.15)} className={l.hot ? "hot" : ""}>
+            <path className="draw leader" d={l.from} pathLength={1} />
+            <text className="fade t" x={l.x} y={l.y}>{l.t}</text>
+            <text className="fade s" x={l.x} y={l.y + 20}>{l.s}</text>
+        </g>)}
+    </Frame>;
+}
+
+/* My desk PC: two systems in one case, one hardline loop */
+export function Desktop() {
+    const ram = [0, 1, 2, 3].map(i => <rect key={i} className="draw" x={380 + i * 12} y="90" width="7" height="90" pathLength={1} />);
+    return <Frame label="Line drawing of a dual-system PC case with two reservoirs, hardline water-cooling tubes, a GPU, RAM, and a second small system at the bottom." view="0 0 900 600">
+        {/* case and glass */}
+        <rect className="draw" x="30" y="20" width="600" height="540" rx="6" pathLength={1} style={at(0)} />
+        <rect className="draw faint" x="44" y="34" width="572" height="512" rx="3" pathLength={1} style={at(0.15)} />
+        {/* top rad */}
+        <g style={at(0.3)}>
+            <rect className="draw" x="70" y="44" width="520" height="30" pathLength={1} />
+        </g>
+        {/* PC 1: board, RAM, CPU block, GPU */}
+        <g style={at(0.45)}>
+            <rect className="draw" x="90" y="84" width="340" height="300" pathLength={1} />
+            <g className="ram">{ram}</g>
+            <rect className="draw hot" x="230" y="110" width="80" height="70" rx="6" pathLength={1} />
+            <rect className="draw" x="110" y="210" width="300" height="70" rx="4" pathLength={1} />
+            <path className="fade" d="M130 245 H390 M130 260 H390" />
+        </g>
+        {/* PC 2: small board low in the case */}
+        <g style={at(0.7)}>
+            <rect className="draw" x="70" y="420" width="200" height="120" pathLength={1} />
+            <rect className="draw" x="90" y="440" width="90" height="70" pathLength={1} />
+            <circle className="fade" cx="135" cy="475" r="18" />
+            <circle className="fade" cx="135" cy="475" r="6" />
+        </g>
+        {/* two reservoirs + pumps */}
+        {[0, 1].map(i => { const x = 450 + i * 90; return <g key={i} style={at(0.9 + i * 0.15)} className="hot">
+            <rect className="draw" x={x} y="120" width="60" height="290" rx="8" pathLength={1} />
+            <path className="draw" d={"M" + x + " 140 H" + (x + 60) + " M" + x + " 390 H" + (x + 60)} pathLength={1} />
+            <rect className="draw" x={x - 6} y="420" width="72" height="60" rx="6" pathLength={1} />
+            <ellipse className="fade glow" cx={x + 30} cy="420" rx="34" ry="6" />
+        </g>; })}
+        {/* hardline: straight runs, hard bends */}
+        <path className="draw tube" d="M270 110 V76 H480 V120" pathLength={1} style={at(1.3)} />
+        <path className="draw tube" d="M310 145 H360 V60 H570 V120" pathLength={1} style={at(1.4)} />
+        <path className="draw tube" d="M480 480 V520 H300 V300 H260" pathLength={1} style={at(1.5)} />
+        <path className="draw tube" d="M570 480 V530 H220 V470" pathLength={1} style={at(1.6)} />
+        {/* the card stuck in the loop */}
+        <g style={at(1.8)}>
+            <rect className="draw" x="330" y="315" width="40" height="56" rx="3" pathLength={1} transform="rotate(-12 350 343)" />
+            <text className="fade s" x="338" y="350" transform="rotate(-12 350 343)">8♣</text>
+        </g>
+        {/* labels */}
+        {[
+            { y: 150, t: "PC 1", s: "main board + GPU", from: "M630 150 H660" },
+            { y: 260, t: "2 reservoirs", s: "two pumps, one loop", hot: true, from: "M630 260 H660" },
+            { y: 380, t: "Hardline", s: "rigid tube, hard bends", hot: true, from: "M630 380 H660" },
+            { y: 480, t: "PC 2", s: "second system, same case", from: "M630 480 H660" },
+        ].map((l, i) => <g key={l.t} style={at(1.9 + i * 0.12)} className={l.hot ? "hot" : ""}>
+            <path className="draw leader" d={l.from} pathLength={1} />
+            <text className="fade t" x="672" y={l.y + 4}>{l.t}</text>
+            <text className="fade s" x="672" y={l.y + 24}>{l.s}</text>
+        </g>)}
+    </Frame>;
 }
 
 /* Raskal: what happens when you hit a private app */
@@ -301,31 +422,49 @@ export function KillSwitch() {
     </Frame>;
 }
 
-const drawings: Record<string, () => React.ReactElement> = {
-    raskal: AuthFlow,
-    hamlab: Rack,
-    hambot: BotPipeline,
-    "flight-wall": SignalChain,
-    roamarc: PhoneRoads,
-    wannacry: KillSwitch,
+// Every drawing sits in a figure with a blueprint-style caption.
+export function Fig({ n, title, meta, children, className = "" }: { n: string; title: string; meta?: string; children: React.ReactNode; className?: string }) {
+    return <figure className={"fig " + className}>
+        <figcaption><span className="fig-n">FIG. {n}</span><span>{title}</span>{meta && <span className="fig-meta">{meta}</span>}</figcaption>
+        {children}
+    </figure>;
+}
+
+type D = { C: () => React.ReactElement; title: string; meta: string };
+const drawings: Record<string, D[]> = {
+    raskal: [
+        { C: NodeN2, title: "N2, the box Raskal runs on", meta: "MS-01 · ESXi · 10G" },
+        { C: AuthFlow, title: "Opening a private app", meta: "Caddy forward auth" },
+    ],
+    hamlab: [{ C: Rack, title: "The HamLab rack", meta: "traced from a photo" }],
+    hambot: [{ C: BotPipeline, title: "Push to running", meta: "≤ 15 min" }],
+    "flight-wall": [{ C: SignalChain, title: "Window to wall", meta: "1090 MHz" }],
+    roamarc: [{ C: PhoneRoads, title: "How road credit works", meta: "SwiftUI" }],
+    wannacry: [{ C: KillSwitch, title: "Phases and the kill switch", meta: "CSEC 202" }],
 };
 
 export function ProjectDrawing({ slug }: { slug: string }) {
-    const Drawing = drawings[slug];
-    return Drawing ? <Drawing /> : null;
+    return <>{(drawings[slug] || []).map((d, i) => <Fig key={d.title} n={String(i + 1).padStart(2, "0")} title={d.title} meta={d.meta} className={d.C === Rack ? "fig-rack" : ""}><d.C /></Fig>)}</>;
 }
 
-/* Small icons for "Off the clock" */
+/* Icons for "Off the clock". Each one is a few strokes that draw in one after another. */
+const ring = (cx: number, cy: number, r: number) => "M" + (cx - r) + " " + cy + " a" + r + " " + r + " 0 1 0 " + 2 * r + " 0 a" + r + " " + r + " 0 1 0 " + -2 * r + " 0";
+
+const icons: Record<string, string[]> = {
+    // A7R V: body, grip, lens rings, hot shoe
+    Photos: ["M8 22 H20 L24 15 H40 L44 22 H56 V50 H8 Z", "M8 28 H15 V50", ring(34, 36, 11), ring(34, 36, 5.5), "M27 15 V12 H37 V15", "M48 27 h4"],
+    // WRX: hood scoop, wing, wheels
+    Subarus: ["M5 43 V37 L13 35 L22 26 H41 L49 34 L59 36 V43", "M52 43 H59 M40 43 H24 M5 43 H11", ring(17.5, 43, 6), ring(46, 43, 6), "M43 33 h6 l1.5 -2", "M55 35 V29 H61", "M25 27 V34 M38 27 V34"],
+    // HT with whip, screen, keypad, and RF
+    Radio: ["M22 24 H40 V58 H22 Z", "M27 24 V5", "M26 29 H36 V37 H26 Z", "M26 42 h2 M31 42 h2 M36 42 h0.5 M26 47 h2 M31 47 h2 M36 47 h0.5 M26 52 h2 M31 52 h2 M36 52 h0.5", "M45 14 q6 6 0 12", "M50 9 q11 11 0 22"],
+    // 3-inch quad from the top: arms, props, body, camera
+    FPV: ["M17 17 L47 47 M47 17 L17 47", ring(14, 14, 10), ring(50, 14, 10), ring(14, 50, 10), ring(50, 50, 10), "M25 25 H39 V39 H25 Z", "M29 25 V20 H35 V25"],
+};
+
 export function Icon({ name }: { name: string }) {
-    const paths: Record<string, string> = {
-        Photos: "M6 18 H14 L18 12 H30 L34 18 H42 V40 H6 Z M16 29 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M36 22 h2",
-        Subarus: "M4 34 V27 L10 26 L16 18 H30 L36 26 H44 V34 H39 M31 34 H17 M9 34 H4 M9 34 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0 M31 34 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0 M18 19 V26 M30 19 V26",
-        Radio: "M24 44 V12 M16 18 H32 M18 24 H30 M20 30 H28 M14 44 L24 12 L34 44 M38 10 q6 6 0 12 M10 10 q-6 6 0 12",
-        FPV: "M15 15 L33 33 M33 15 L15 33 M4 10 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M32 10 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M4 38 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M32 38 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M20 20 H28 V28 H20 Z",
-    };
     return <InView className="icon-wrap">
-        <svg className="drawing icon" viewBox="0 0 48 48" aria-hidden="true">
-            <path className="draw hot" d={paths[name] || ""} pathLength={1} style={at(0)} />
+        <svg className="drawing icon" viewBox="0 0 64 64" aria-hidden="true">
+            {(icons[name] || []).map((d, i) => <path key={i} className={"draw" + (i === 0 ? " hot" : "")} d={d} pathLength={1} style={at(i * 0.18)} />)}
         </svg>
     </InView>;
 }

@@ -20,7 +20,14 @@ export const metadata: Metadata = {
     },
     twitter: { card: "summary_large_image", title: "Kieran Wittstruck", description, images: ["/og.png"] },
     robots: { index: true, follow: true },
-    icons: { icon: "/favicon.svg" },
+    icons: {
+        icon: [
+            { url: "/favicon.ico", sizes: "any" },
+            { url: "/favicon.svg", type: "image/svg+xml" },
+            { url: "/icon.png", type: "image/png", sizes: "512x512" },
+        ],
+        apple: "/apple-icon.png",
+    },
 };
 
 // Discord uses this for the color bar on the embed.
