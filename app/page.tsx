@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Navigation } from "./components/nav";
 import Footer from "./components/footer";
-import Activity from "./components/activity";
 import SystemMap from "./components/system-map";
+import { Rack, Icon } from "./components/drawings";
 import { MaskText, InView } from "./components/reveal";
-import { experience, offClock, profile, projects, skills } from "../lib/profile";
+import { experience, offClock, profile, skills, work } from "../lib/profile";
 
 export default function Home() {
     return <>
@@ -38,6 +38,16 @@ export default function Home() {
                     <p className="section-note">All of this is real and in my house. This page is one of the boxes.</p>
                 </div>
                 <div className="wrap"><SystemMap /></div>
+                <div className="wrap rack-block">
+                    <Rack />
+                    <div className="rack-copy">
+                        <p className="label">The HamLab rack</p>
+                        <MaskText lines={["Traced from", "the real thing."]} />
+                        <p>That's my basement. Every Ethernet run in the house lands here. I wired all of it.</p>
+                        <p>Four PowerEdge hosts run vSphere HA on shared iSCSI storage. The UDM up top is the edge for both HamLab and Raskal. Two UPSes keep it up when the power blinks.</p>
+                        <Link className="text-link" href="/projects/hamlab/">How HamLab works</Link>
+                    </div>
+                </div>
             </section>
 
             <section className="work-section wrap" id="work" aria-labelledby="work-title">
@@ -47,7 +57,7 @@ export default function Home() {
                     <p className="section-note">Some for school, most because I wanted it to exist.</p>
                 </div>
                 <ol className="work-list">
-                    {projects.map((project, i) => <li key={project.slug}>
+                    {work.map((project, i) => <li key={project.slug}>
                         <Link className="work-row" href={"/projects/" + project.slug + "/"}>
                             <span className="work-num">{String(i + 1).padStart(2, "0")}</span>
                             <span className="work-name">{project.name}</span>
@@ -77,7 +87,7 @@ export default function Home() {
                 </InView>)}
                 <div className="skills">
                     {skills.map(skill => <div key={skill.name}><p className="label">{skill.name}</p><p>{skill.tools}</p></div>)}
-                    <div><p className="label">School & certs</p><p>RIT Cybersecurity BS (May 2027) / MS (Dec 2027). Security+ CE. FCC General, {profile.callsign}. 3rd at IRSeC 2024.</p></div>
+                    <div><p className="label">School & certs</p><p>RIT Cybersecurity BS (May 2027) / MS (Dec 2027). Security+ CE. FCC General, {profile.callsign}. 3rd at IRSeC 2024. Education Chair, Pi Kappa Phi.</p></div>
                 </div>
             </section>
 
@@ -87,21 +97,18 @@ export default function Home() {
                     <MaskText id="off-title" lines={["The rest of me."]} />
                 </div>
                 <dl className="off-list">
-                    {offClock.map(item => <div key={item.label}><dt className="label">{item.label}</dt><dd>{item.text}</dd></div>)}
+                    {offClock.map(item => <div key={item.label}>
+                        <Icon name={item.label} />
+                        <dt className="label">{item.label}</dt>
+                        <dd>{item.text}</dd>
+                        {item.href && <dd><Link className="text-link" href={item.href}>{item.link}</Link></dd>}
+                    </div>)}
                 </dl>
                 <p className="section-note">The less serious stuff goes on <a className="text-link" href={profile.chipnuke}>Chipnuke</a>.</p>
             </section>
 
-            <section className="activity-section wrap" aria-labelledby="activity-title">
-                <div className="section-head">
-                    <p className="label">05 / Commits</p>
-                    <h2 id="activity-title" className="small-title">Still building.</h2>
-                </div>
-                <Activity />
-            </section>
-
             <section className="contact-section wrap" aria-labelledby="contact-title">
-                <p className="label">06 / Contact</p>
+                <p className="label">05 / Contact</p>
                 <MaskText id="contact-title" lines={["Got a system", "I should work on?"]} />
                 <a className="contact-email" href={"mailto:" + profile.email}>{profile.email}</a>
                 <div className="contact-links">

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Navigation } from "../components/nav";
 import Footer from "../components/footer";
 import { MaskText } from "../components/reveal";
-import { projects } from "../../lib/profile";
+import { work } from "../../lib/profile";
 
 export const metadata = { title: "Work" };
 
@@ -14,7 +14,7 @@ export default function Projects() {
             <MaskText as="h1" lines={["Stuff I've built."]} />
             <p className="page-lead">Some for school, most because I wanted it to exist.</p>
             <ol className="work-list">
-                {projects.map((project, i) => <li key={project.slug}>
+                {work.map((project, i) => <li key={project.slug}>
                     <Link className="work-row" href={"/projects/" + project.slug + "/"}>
                         <span className="work-num">{String(i + 1).padStart(2, "0")}</span>
                         <span className="work-name">{project.name}</span>

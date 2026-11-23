@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Navigation } from "../../components/nav";
 import Footer from "../../components/footer";
 import { MaskText, InView } from "../../components/reveal";
+import { ProjectDrawing } from "../../components/drawings";
 import { getProject, projects } from "../../../lib/profile";
 
 export const dynamicParams = false;
@@ -44,6 +45,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 {project.facts.map(fact => <div key={fact.label}><strong>{fact.value}</strong><span>{fact.label}</span></div>)}
             </InView>
 
+            <div className="case-drawing"><ProjectDrawing slug={project.slug} /></div>
+
             <div className="case-body">
                 <section>
                     <p className="label">What it is</p>
@@ -52,6 +55,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 <section>
                     <p className="label">What I did</p>
                     <ul className="did">{project.did.map(item => <li key={item}>{item}</li>)}</ul>
+                </section>
+                <section>
+                    <p className="label">What broke</p>
+                    <ul className="did broke">{project.broke.map(item => <li key={item}>{item}</li>)}</ul>
                 </section>
                 <section>
                     <p className="label">Where it's at</p>

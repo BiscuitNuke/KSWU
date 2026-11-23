@@ -1,16 +1,30 @@
 import "../global.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import LocalFont from "next/font/local";
 import { profile } from "../lib/profile";
 
+const description = "Cybersecurity BS/MS at RIT. I build networks, run a homelab with my own SSO, and work on keeping it all secure. Looking for infrastructure, security engineering, and IR work.";
+
 export const metadata: Metadata = {
     metadataBase: new URL("https://ksw.dev"),
-    title: { default: "ksw.dev — Kieran Wittstruck", template: "%s | ksw.dev" },
-    description: "I build networks, run too many servers, and work on keeping them secure. Cybersecurity BS/MS at RIT. Infrastructure, security engineering, and incident response.",
-    openGraph: { title: "Kieran Wittstruck", description: profile.focus, url: "https://ksw.dev", siteName: "ksw.dev", type: "website" },
+    title: { default: "Kieran Wittstruck — ksw.dev", template: "%s | ksw.dev" },
+    description,
+    // The link preview. Discord, iMessage, Slack, and LinkedIn all read these.
+    openGraph: {
+        title: "Kieran Wittstruck",
+        description,
+        url: "https://ksw.dev",
+        siteName: "ksw.dev",
+        type: "website",
+        images: [{ url: "/og.png", width: 1200, height: 630, alt: "ksw.dev: I build networks. Then I figure out how they break." }],
+    },
+    twitter: { card: "summary_large_image", title: "Kieran Wittstruck", description, images: ["/og.png"] },
     robots: { index: true, follow: true },
     icons: { icon: "/favicon.svg" },
 };
+
+// Discord uses this for the color bar on the embed.
+export const viewport: Viewport = { themeColor: "#f2850d" };
 
 // Same two fonts the old ksw.dev used. Naut for labels, Bee for the wordmark.
 const naut = LocalFont({ src: "../public/fonts/naut.ttf", variable: "--font-naut", display: "swap" });
