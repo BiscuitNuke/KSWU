@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T20:57:55.091Z",
+  "updatedAt": "2026-11-23T21:10:36.864Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "dc94c876608c0412be344ffd898dc810c2c91f20",
+      "title": "Real resume PDF, Projects tab, PGP key (#11)",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/dc94c876608c0412be344ffd898dc810c2c91f20",
+      "date": "2026-11-23T21:10:19Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "68c637fecf6bb05c66e0c5611b0b83419d6b4e2f",
@@ -29,13 +36,6 @@
       "title": "Trace the hardware over real photos",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/fad275dfc44b0dd351e28bf9c895cbbbe40be48a",
       "date": "2026-11-23T18:29:27Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "43f7c9d3339507167bad481d5be9e77dd0a422e8",
-      "title": "Cable the rack like the real one",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/43f7c9d3339507167bad481d5be9e77dd0a422e8",
-      "date": "2026-11-23T18:06:28Z"
     }
   ]
 }
