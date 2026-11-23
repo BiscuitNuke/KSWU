@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T17:35:31.535Z",
+  "updatedAt": "2026-11-23T18:05:36.679Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "016617ced88949feef7a37080b8d279521802678",
+      "title": "Animate the drawings with GSAP, smooth scroll with Lenis",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/016617ced88949feef7a37080b8d279521802678",
+      "date": "2026-11-23T18:02:30Z"
+    },
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "cf794cdfbf9ef6448e57479fecf1413d7a76d55f",
+      "title": "More technical: blueprint figures, real hardware, new icon",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/cf794cdfbf9ef6448e57479fecf1413d7a76d55f",
+      "date": "2026-11-23T17:53:07Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "976d67c18d4719d98e070c258fdfe16a0037c3b1",
@@ -22,20 +36,6 @@
       "title": "Redesign KSWU for infrastructure and security hiring",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/b4c0795eb0f202dd17d1ef0a810aa658a8d2182f",
       "date": "2026-11-23T16:13:10Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "a4eb797fd95dc46b2e94e650928ebf3c1544806d",
-      "title": "Note",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/a4eb797fd95dc46b2e94e650928ebf3c1544806d",
-      "date": "2026-02-20T14:19:40Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "8a3384d8f22a1877e4abe5668513afcc67f9e345",
-      "title": "Fix bugs, security issues, and code quality across the site",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/8a3384d8f22a1877e4abe5668513afcc67f9e345",
-      "date": "2026-02-19T19:08:36Z"
     }
   ]
 }
