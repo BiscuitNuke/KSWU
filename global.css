@@ -138,7 +138,7 @@ section { scroll-margin-top: 2rem; }
 .fig .fig-n { color: var(--orange); }
 .fig .fig-meta { margin-left: auto; }
 .fig .map-wrap { border: 0; padding: 0; }
-.fig-rack .rack-wrap { max-width: 760px; margin: 0 auto; }
+.fig-rack .drawing-wrap { max-width: 620px; margin: 0 auto; }
 
 /* The metal */
 .metal-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 2.5rem; align-items: start; }
@@ -204,20 +204,6 @@ section { scroll-margin-top: 2rem; }
 .drawing .cable.hot { stroke: var(--orange); stroke-width: 1.8; }
 .drawing .cable.dac { stroke: #5a4e45; stroke-width: 2.2; }
 .drawing .cable.power { stroke: #4a413a; stroke-width: 1.6; }
-.drawing.ptrace .draw { stroke-width: 3; }
-.drawing.ptrace .leader { stroke-width: 2; }
-.drawing.ptrace .rl-t { font-size: 46px; }
-.drawing.ptrace .rl-s { font-size: 30px; }
-.drawing.desk-trace .draw { stroke-width: 1.6; }
-.drawing.desk-trace .leader { stroke-width: 1.2; }
-.drawing.desk-trace .rl-t { font-size: 26px; }
-.drawing.desk-trace .rl-s { font-size: 17px; }
-.drawing.desk-trace .tube { stroke-width: 7; }
-.drawing.n2-trace .n2 { font-size: 230px; font-weight: 300; }
-.drawing.n2-trace .small.big rect { stroke-width: 2; }
-.drawing.n2-trace .vents { stroke-width: 2; }
-.drawing.n2-trace .cable { stroke-width: 4; }
-.drawing.n2-trace .stream { stroke-width: 3; stroke-dasharray: 6 26; }
 .drawing .liquid.res { fill: url(#res); }
 .drawing .card { font-family: var(--sans); font-size: 26px; fill: var(--ink); }
 .drawing .rl-t { font-family: var(--sans); font-size: 30px; fill: var(--ink); }
@@ -234,13 +220,45 @@ section { scroll-margin-top: 2rem; }
 .drawing.rack .hex polygon { stroke-width: 1.2; }
 .drawing.rack .draw { stroke-width: 2; }
 
-/* Photo vs trace */
-.compare { position: relative; }
-.compare .rack-photo, .compare .trace-photo { clip-path: inset(0 var(--hide, 45%) 0 0); opacity: 0.6; filter: grayscale(0.4) contrast(1.05); }
-.compare-track { position: absolute; top: 0; bottom: 0; }
-.compare-track input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
-.compare-handle { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--orange); pointer-events: none; }
-.compare-handle span { position: absolute; top: 46%; left: 0; transform: translateX(-50%); white-space: nowrap; background: var(--bg); border: 1px solid var(--orange); color: var(--orange); font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.3rem 0.5rem; }
+/* Simple hardware drawings */
+.drawing.simple .t { font-size: 20px; }
+.drawing.simple .s { font-size: 14px; }
+.drawing.simple .lab { font-size: 13px; }
+.drawing.simple .draw { stroke-width: 1.6; }
+.drawing.simple .tick { r: 3.5; }
+.drawing.simple .n2 { font-family: var(--sans); font-size: 48px; fill: var(--orange); letter-spacing: 0.08em; }
+.drawing.simple .small.big rect { stroke-width: 1.2; }
+.drawing .dim-text { fill: #5a524b; }
+.drawing .guard circle { fill: none; stroke: #6b5d52; stroke-width: 1.2; }
+.drawing .spokes { stroke: #8a7f76; stroke-width: 1.6; fill: none; }
+.drawing .body { stroke-width: 2.4 !important; stroke-linejoin: round; }
+.drawing .stream.road { stroke: #4d433c; stroke-width: 2; stroke-dasharray: 26 34; }
+/* Baja wireframe */
+.drawing.wf .draw { stroke: var(--orange); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.drawing.wf .outline { stroke-width: 3; }
+.drawing.wf .thin { stroke-width: 1.4; }
+.drawing.wf .body-line { stroke-width: 1.5; opacity: 0.7; }
+.drawing.wf .thin-line { stroke: var(--orange); stroke-width: 1.4; fill: none; opacity: 0.8; }
+/* Baja: military technical-manual sheet */
+.drawing.mil text { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.drawing.mil .sheet { stroke-width: 2.4; }
+.drawing.mil .sheet-in, .drawing.mil .tb { stroke-width: 1.2; }
+.drawing.mil .zone text { fill: var(--orange); font-size: 18px; }
+.drawing.mil .zone path { stroke: var(--orange); stroke-width: 1.2; fill: none; }
+.drawing.mil .leader { stroke: var(--orange); stroke-width: 1.4; }
+.drawing.mil .tip { fill: var(--orange); }
+.drawing.mil .balloon { fill: var(--bg); stroke: var(--orange); stroke-width: 2; }
+.drawing.mil .balloon-n { fill: var(--orange); font-size: 24px; }
+.drawing.mil .lens { fill: none; stroke: var(--orange); stroke-width: 1.4; }
+.drawing.mil .tb-big { fill: var(--orange); font-size: 26px; letter-spacing: 0.1em; }
+.drawing.mil .tb-s { fill: var(--orange); font-size: 16px; opacity: 0.85; }
+.drawing.mil .tb-k { fill: var(--orange); font-size: 11px; opacity: 0.6; }
+.baja-sheet { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+.legend { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.8rem; }
+.legend th { text-align: left; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); border-top: 2px solid var(--orange); border-bottom: 1px solid var(--orange); padding: 0.6rem 0.8rem; }
+.legend td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); color: #cfc9c2; vertical-align: top; }
+.legend td:nth-child(2) { text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); white-space: nowrap; }
+.legend .legend-n { color: var(--orange); width: 3rem; }
 .drawing .ups-bar { stroke: var(--orange); stroke-width: 3; }
 .drawing .hit { fill: transparent; stroke: none; pointer-events: all; cursor: crosshair; }
 .drawing .unit.lit > rect.draw { stroke: var(--orange); fill: rgba(242, 133, 13, 0.08); }

@@ -65,8 +65,8 @@ export default function Home() {
             <section className="metal-section wrap" id="metal" aria-labelledby="metal-title">
                 <div className="section-head">
                     <p className="label">02 / The metal</p>
-                    <MaskText id="metal-title" lines={["Three boxes,", "traced from photos."]} />
-                    <p className="section-note">The real hardware behind the map. Built, racked, and wired by me.</p>
+                    <MaskText id="metal-title" lines={["Three boxes", "I actually run."]} />
+                    <p className="section-note">The real hardware behind the map. Built, racked, and wired by me. Drawn simple on purpose.</p>
                 </div>
                 <div className="metal-grid">
                     <div className="metal-rack">
@@ -75,7 +75,7 @@ export default function Home() {
                     </div>
                     <div className="metal-side">
                         <Fig n="03" title="N2 · Raskal" meta="under my monitor"><NodeN2 /></Fig>
-                        <p className="metal-copy">One MS-01 runs every Raskal VM: the gateway, Authentik, GitLab, the game server, and the Docker host this site is on. 10G fiber back to the rack. <Link className="text-link" href="/projects/raskal/">Raskal</Link></p>
+                        <p className="metal-copy">One MS-01 runs every Raskal VM: the gateway, Authentik, GitLab, the game server, and the Docker host this site is on. 10G fiber back to the rack, and a GL.iNet Comet KVM on top for when ESXi won't answer. <Link className="text-link" href="/projects/raskal/">Raskal</Link></p>
                         <Fig n="04" title="The desk PC" meta="2 systems · 1 loop"><Desktop /></Fig>
                         <p className="metal-copy">Two PCs in one case on one hardline loop, with twin reservoirs. Yes, there's a playing card in there.</p>
                     </div>
