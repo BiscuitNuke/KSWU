@@ -62,7 +62,7 @@ export type Project = {
     did: string[];
     now: string;
     broke: string[];
-    photos?: { src: string; alt: string }[];
+    photos?: { src: string; alt: string; w: number; h: number }[];
 };
 
 export const projects: Project[] = [
@@ -130,8 +130,8 @@ export const projects: Project[] = [
             "On Junos, channelized subports have to be set per interface. Putting them in an interface-range block overlaps and breaks.",
         ],
         photos: [
-            { src: "/images/hamlab/Hamlab1.jpg", alt: "The HamLab rack with servers and network gear." },
-            { src: "/images/hamlab/Hamlab2.jpg", alt: "The patch panel and switches where the house wiring lands." },
+            { src: "/images/hamlab/Hamlab1-1200.webp", w: 1200, h: 1600, alt: "The HamLab rack with servers and network gear." },
+            { src: "/images/hamlab/Hamlab2-1200.webp", w: 1200, h: 2122, alt: "The patch panel and switches where the house wiring lands." },
         ],
     },
     {
@@ -281,9 +281,9 @@ export const projects: Project[] = [
             "Rust. Control arms and CV axles were shot before I did anything fun.",
         ],
         photos: [
-            { src: "/images/baja/baja.jpg", alt: "My 2005 Subaru Baja." },
-            { src: "/images/baja/bajahood.jpg", alt: "Under the hood of the Baja." },
-            { src: "/images/baja/bajaenginepull.jpg", alt: "The Baja's engine coming out." },
+            { src: "/images/baja/baja-1200.webp", w: 1200, h: 1600, alt: "My 2005 Subaru Baja." },
+            { src: "/images/baja/bajahood-1200.webp", w: 1200, h: 1600, alt: "Under the hood of the Baja." },
+            { src: "/images/baja/bajaenginepull-1200.webp", w: 1200, h: 1600, alt: "The Baja's engine coming out." },
         ],
     },
 ];

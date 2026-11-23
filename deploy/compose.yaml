@@ -3,7 +3,7 @@ name: kswu
 services:
   web:
     # CI replaces this only after a successful main-branch build and smoke check.
-    image: ghcr.io/biscuitnuke/kswu:sha-9bf3daeb7531bbde1cb11eea4fb6c3356cb22d9b-45255715202-1
+    image: &image ghcr.io/biscuitnuke/kswu:sha-9bf3daeb7531bbde1cb11eea4fb6c3356cb22d9b-45255715202-1
     restart: unless-stopped
     user: "101:101"
     read_only: true
@@ -13,6 +13,8 @@ services:
     security_opt: ["no-new-privileges:true"]
     pids_limit: 100
     mem_limit: 128m
+    volumes:
+      - live:/live:ro
     ports:
       # Set to the host's private LAN address for Caddy. Firewall allows gateway only.
       - "${KSWU_BIND_IP:-127.0.0.1}:${KSWU_PORT:-8088}:8080"
@@ -21,3 +23,37 @@ services:
       options:
         max-size: "5m"
         max-file: "3"
+
+  # Reads Prometheus and the Flight Wall on the home network every 2 minutes and
+  # writes /live/live.json for the site. Pull only; nothing in the lab is exposed.
+  # Leave PROM_URL / FLIGHTWALL_URL empty to turn a section off.
+  feed:
+    image: *image
+    restart: unless-stopped
+    user: "101:101"
+    read_only: true
+    entrypoint: ["python3", "-u", "/feed/feed.py"]
+    command: []
+    healthcheck:
+      disable: true
+    environment:
+      PROM_URL: "${KSWU_PROM_URL:-}"
+      JOB_LABELS: "${KSWU_JOB_LABELS:-}"
+      FLIGHTWALL_URL: "${KSWU_FLIGHTWALL_URL:-}"
+      INTERVAL: "120"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - live:/live
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 50
+    mem_limit: 64m
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "2"
+
+volumes:
+  live:

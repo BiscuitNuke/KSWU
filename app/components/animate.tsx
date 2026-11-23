@@ -166,7 +166,14 @@ export function SmoothScroll() {
             const tick = (t: number) => lenis.raf(t * 1000);
             gsap.ticker.add(tick);
             gsap.ticker.lagSmoothing(0);
-            stop = () => { gsap.ticker.remove(tick); lenis.destroy(); };
+            // Lazy photos and web fonts change the page height. Re-measure the triggers when they land.
+            let t = 0;
+            const refresh = () => { clearTimeout(t); t = window.setTimeout(() => ScrollTrigger.refresh(), 150); };
+            const imgs = Array.from(document.images).filter(i => !i.complete);
+            imgs.forEach(i => i.addEventListener("load", refresh, { once: true }));
+            window.addEventListener("load", refresh, { once: true });
+            document.fonts?.ready.then(refresh);
+            stop = () => { clearTimeout(t); gsap.ticker.remove(tick); lenis.destroy(); };
         });
         return () => stop();
     }, []);

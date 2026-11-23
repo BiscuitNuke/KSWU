@@ -4,6 +4,7 @@ import { Navigation } from "../../components/nav";
 import Footer from "../../components/footer";
 import { MaskText, InView } from "../../components/reveal";
 import { ProjectDrawing } from "../../components/drawings";
+import { LabStatus, FlightsNow } from "../../components/live";
 import { getProject, projects } from "../../../lib/profile";
 
 export const dynamicParams = false;
@@ -45,6 +46,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 {project.facts.map(fact => <div key={fact.label}><strong>{fact.value}</strong><span>{fact.label}</span></div>)}
             </InView>
 
+            {project.slug === "flight-wall" && <FlightsNow />}
+            {project.slug === "raskal" && <LabStatus />}
             <div className="case-drawing"><ProjectDrawing slug={project.slug} /></div>
 
             <div className="case-body">
@@ -68,7 +71,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
             {project.photos && <div className="case-photos">
                 {project.photos.map(photo => <figure key={photo.src}>
-                    <img src={photo.src} alt={photo.alt} loading="lazy" />
+                    <img src={photo.src} srcSet={photo.src.replace("-1200", "-720") + " 720w, " + photo.src + " 1200w"} sizes="(max-width: 600px) 100vw, 33vw" width={photo.w} height={photo.h} alt={photo.alt} loading="lazy" decoding="async" />
                     <figcaption>{photo.alt}</figcaption>
                 </figure>)}
             </div>}
