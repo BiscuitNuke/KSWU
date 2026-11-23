@@ -168,6 +168,26 @@ export function Rack() {
                 <circle className="fade led" data-blink cx="298" cy={y(34) + 9} r="3" />
             </Unit>
 
+            {/* cabling, same runs as the photo */}
+            <g className="cables" style={at(2.25)}>
+                {/* blue loop: UDM down to the UniFi switch */}
+                <path className="draw cable blue" d={"M236 " + (y(3) + 12) + " C210 " + (y(3) + 46) + " 40 " + (y(3) + 10) + " 112 " + (y(5) + 4)} pathLength={1} />
+                <path className="stream" d={"M236 " + (y(3) + 12) + " C210 " + (y(3) + 46) + " 40 " + (y(3) + 10) + " 112 " + (y(5) + 4)} data-stream="34" />
+                {/* white shorts: UniFi into the Cat6 panel */}
+                {[0, 1, 2, 3, 4, 5].map(i => { const x = 100 + i * 9; return <path key={"w" + i} className="draw cable" d={"M" + x + " " + (y(5) + 14) + " c-7 6 -7 12 " + (-3 + i * 0.4) + " " + (y(6) - y(5) - 6)} pathLength={1} />; })}
+                {/* white shorts: Cat6A panel into the Juniper */}
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 176 + i * 11; return <path key={"j" + i} className="draw cable" d={"M" + x + " " + (y(7) + 11) + " c6 8 4 14 " + (2 - i * 0.3) + " " + (y(8) - y(7) - 7)} pathLength={1} />; })}
+                {/* the orange run off the Juniper */}
+                <path className="draw cable hot" d={"M150 " + (y(8) + 10) + " C118 " + (y(8) - 22) + " 160 " + (y(6) + 2) + " 200 " + (y(7) + 8)} pathLength={1} />
+                <path className="stream" d={"M150 " + (y(8) + 10) + " C118 " + (y(8) - 22) + " 160 " + (y(6) + 2) + " 200 " + (y(7) + 8)} data-stream="34" />
+                {/* uplinks: core trunk taps into every host */}
+                {[0, 1, 2, 3].map(i => <path key={"t" + i} className="draw cable dac" d={"M318 " + (y(13 + i * 2) + 18) + " H302"} pathLength={1} />)}
+                <path className="draw cable dac" d={"M318 " + (y(21) + 30) + " H302"} pathLength={1} />
+                {/* power: UPS to PDU, and a riser up the left rail */}
+                {[0, 1].map(i => <path key={"p" + i} className="draw cable power" d={"M74 " + (y(30 + i * 2) + 20) + " C60 " + (y(30 + i * 2) + 30) + " 60 " + (y(34) + 2) + " 84 " + (y(34) + 9)} pathLength={1} />)}
+                <path className="draw cable power" d={"M64 " + (y(34) + 9) + " V" + (y(0) + 9)} pathLength={1} data-flow="2" data-dur="5" />
+            </g>
+
             {/* live links: edge to core, core down to the hosts */}
             <path className="draw link hot" d={"M318 " + (y(3) + 9) + " V" + (y(8) + 9)} pathLength={1} style={at(2.4)} data-flow="2" data-dur="1.4" />
             <path className="draw link" d={"M318 " + (y(8) + 9) + " V" + (y(21) + 30)} pathLength={1} style={at(2.5)} data-flow="3" data-dur="2.2" />
