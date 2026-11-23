@@ -1,115 +1,266 @@
-// Professional facts come from resume_master-6.pdf (November 2026).
-// Edit this file when experience, availability, or case-study facts change.
+// Everything the site says about me lives here.
+// Pro facts come from my resume (Nov 2026). Project facts come from the repos.
+// Keep it public-safe: no internal IPs, VLAN numbers, ports, or hostnames.
 export const profile = {
     name: "Kieran Wittstruck",
     email: "kieran@ksw.dev",
-    location: "North Chili, New York",
+    location: "North Chili, NY",
     github: "https://github.com/BiscuitNuke",
     linkedin: "https://www.linkedin.com/in/kieranwittstruck/",
     chipnuke: "https://chipnuke.com",
+    callsign: "K2KSW",
     focus: "Infrastructure, security engineering & incident response",
-    education: "B.S. Cybersecurity · May 2027 / M.S. Cybersecurity · December 2027",
 };
 
 export const experience = [
     {
-        company: "Rochester Institute of Technology",
-        team: "ITS Network Communications",
+        company: "RIT ITS",
+        team: "Network Communications",
         role: "Network Communications Student Employee",
-        dates: "Jan. 2026 — Present",
-        note: "Network Communications Intern · May — Sep. 2026",
+        dates: "Jan 2026 — now",
+        note: "Network Communications Intern · May — Sep 2026",
         points: [
-            "Supported RIT’s campus-wide Wi-Fi 7 refresh, a project replacing 8,000+ wireless access points.",
-            "Deploy enterprise switches, configure VLANs, and harden switch security across RIT’s production network.",
+            "Helped roll out RIT's campus-wide Wi-Fi 7 refresh. That's 8,000+ access points getting swapped.",
+            "Deploy enterprise switches, set up VLANs, and harden switch security on the production network.",
         ],
     },
     {
         company: "Vital Air Services",
         team: "Norcross, GA · Hybrid",
-        role: "Website Developer & Information Technology Manager",
-        dates: "Aug. 2023 — Present",
+        role: "Website Developer & IT Manager",
+        dates: "Aug 2023 — now",
         note: "",
-        points: ["Rebuilt the company site with HTTPS/TLS and WAF rules; run its mixed on-prem and cloud IT."],
+        points: ["Rebuilt the company site with HTTPS/TLS and WAF rules. I also run their mix of on-prem and cloud IT."],
     },
     {
         company: "iVue",
         team: "Cumming, GA",
         role: "System Administrator & Photographer",
-        dates: "Apr. — Aug. 2023",
+        dates: "Apr — Aug 2023",
         note: "",
-        points: ["Administered Windows Server and Active Directory across hybrid cloud and on-prem systems."],
+        points: ["Ran Windows Server and Active Directory across hybrid cloud and on-prem systems."],
     },
 ];
 
 export const skills = [
-    { name: "Infrastructure", tools: "ESXi / vCenter, Docker, K3s / Rancher, Windows Server, RHEL / Rocky Linux" },
+    { name: "Infrastructure", tools: "ESXi / vCenter, Docker, K3s / Rancher, Windows Server, RHEL / Rocky, TrueNAS" },
     { name: "Identity & access", tools: "Authentik, OIDC, Active Directory, two-tier PKI, LDAPS, 802.1X / RADIUS" },
     { name: "Detection & monitoring", tools: "Wazuh, Prometheus, Loki, Grafana, Wireshark, incident response" },
-    { name: "Networks & automation", tools: "JunOS, VLANs, iptables, Caddy, TLS, Python, PowerShell, Bash, Ansible" },
+    { name: "Networks & automation", tools: "Junos, VLANs, iptables, Caddy, TLS, Python, PowerShell, Bash, Ansible" },
 ];
 
 export type Project = {
     slug: string;
     name: string;
-    category: string;
+    kind: string;
+    status: string;
     dates: string;
     summary: string;
-    tools: string;
-    context: string;
-    decisions: { title: string; text: string }[];
-    result: string;
-    limits: string;
+    stack: string;
+    facts: { value: string; label: string }[];
+    story: string[];
+    did: string[];
+    now: string;
+    photos?: { src: string; alt: string }[];
 };
 
 export const projects: Project[] = [
     {
         slug: "raskal",
         name: "Raskal",
-        category: "Identity & access",
-        dates: "2026 — Present",
-        summary: "One access platform for the services I run. Central identity, a hardened gateway, and a clear boundary between public and administrative access.",
-        tools: "Authentik / OIDC / Caddy / GitLab / Guacamole / Docker",
-        context: "I deployed Raskal as an SSO access platform for my services. It brings GitLab and Apache Guacamole under Authentik, with TOTP MFA and a shared Caddy gateway.",
-        decisions: [
-            { title: "Centralize identity.", text: "I configured Authentik as the identity provider and connected GitLab and Guacamole through OIDC single sign-on with TOTP MFA." },
-            { title: "Define the access boundary.", text: "I put the applications behind Caddy with Authentik forward authentication, and blocked the identity provider’s administrative UI from outside access." },
-            { title: "Keep useful records.", text: "I enabled JSON access logs and session recording, then hardened the edge with ACME TLS, HSTS, and security headers." },
-            { title: "Treat maintenance as part of the system.", text: "I restricted container ports to administrative subnets with iptables and wrote nightly backups with Discord failure alerts." },
+        kind: "Identity & access",
+        status: "Running",
+        dates: "2026 — now",
+        summary: "My own little enterprise. One login with MFA in front of everything I run, a hardened gateway at the edge, and boxes that update, back up, and report on themselves.",
+        stack: "Authentik / OIDC / Caddy / GitLab / Guacamole / Docker / ESXi",
+        facts: [
+            { value: "1", label: "login for every app" },
+            { value: "6", label: "VMs on one MS-01" },
+            { value: "Nightly", label: "updates, backups, config commits" },
         ],
-        result: "The platform provides centralized sign-on, MFA, and a consistent access boundary across the deployed services. Backups and failure alerts are part of the operating workflow.",
-        limits: "This is a personally operated platform. The controls described here reflect the deployed project; they are not a claim of independent security certification.",
+        story: [
+            "I wanted to reach my stuff from anywhere without opening a pile of ports. So I built it like a company would. Raskal is the practice run for the bigger HamLab portal.",
+            "Everything comes in through one gateway. The private apps behind it need an Authentik session first, and they only ever see traffic from that gateway. This site is the one public thing back there.",
+        ],
+        did: [
+            "Set up Authentik as the identity provider. GitLab, Guacamole, and the game panel all sign in through OIDC with MFA.",
+            "Put Caddy at the edge with forward auth, ACME TLS, HSTS, and security headers. The IdP admin UI isn't reachable from outside.",
+            "Split it into zones on the UDM: a DMZ for the gateway, an internal zone for the apps, and a games zone that can't talk back in.",
+            "Locked down Docker's published ports with iptables, since Docker skips the host firewall.",
+            "Every VM commits its own config to Git each night. A secret scan runs first. If it finds anything, nothing gets pushed and I get a Discord ping.",
+            "This site runs on it now. I moved it off Vercel in November 2026.",
+        ],
+        now: "Running every day. Next up is an SNI router so HamLab and Raskal can share one public IP.",
     },
     {
         slug: "hamlab",
         name: "HamLab",
-        category: "Infrastructure & detection",
-        dates: "2024 — Present",
-        summary: "A working lab for virtualization, network segmentation, identity, and monitoring. Built on real hardware, with services I have to keep running.",
-        tools: "ESXi / vCenter / Wazuh / Prometheus / JunOS / Active Directory / PKI",
-        context: "I run ESXi 8 and vCenter on four Dell PowerEdge servers with 512 GB of RAM and 100 TB of storage, including an iSCSI high-availability cluster. The lab lets me work across networking, systems, and security rather than treating each as a separate exercise.",
-        decisions: [
-            { title: "Separate the lab from the household.", text: "I wired the house network and segmented household Wi-Fi from an isolated lab VLAN using Juniper and Ubiquiti equipment." },
-            { title: "Make the infrastructure observable.", text: "I deployed Wazuh agents across lab VMs, and use Prometheus, Loki, and Grafana to monitor servers, switches, and storage through iDRAC, SNMP, and vCenter." },
-            { title: "Build identity into the network.", text: "I run Active Directory, DNS, and FreeRADIUS 802.1X. A two-tier PKI backs LDAPS for vCenter." },
+        kind: "Infrastructure & detection",
+        status: "Running",
+        dates: "2024 — now",
+        summary: "The rack in my house. A vSphere cluster, real storage, real identity, and real monitoring. The house runs on it, so I can't just break it whenever I want.",
+        stack: "ESXi / vCenter / TrueNAS / iSCSI / AD / PKI / Wazuh / Junos",
+        facts: [
+            { value: "512 GB", label: "RAM across the cluster" },
+            { value: "100 TB", label: "raw storage" },
+            { value: "2-tier", label: "PKI with an offline root" },
         ],
-        result: "The lab combines virtualized services, segmented networking, centralized identity, security events, and infrastructure monitoring in one environment I operate.",
-        limits: "Capacity figures describe the installed lab, not benchmark results. This project is ongoing; the photograph is an existing build record rather than a live inventory.",
+        story: [
+            "HamLab started as a couple of boxes and a domain name. It's grown into the house's production environment. I wired every Ethernet run in the house myself and they all land at this rack.",
+            "It's where I learn the stuff classes only talk about. If something's broken here, the house notices.",
+        ],
+        did: [
+            "Built a vSphere HA cluster on Dell PowerEdge EPYC hosts, backed by TrueNAS over iSCSI with MPIO.",
+            "Stood up Active Directory and a two-tier PKI: offline root, issuing CA, and working AIA/CDP. vCenter signs in over LDAPS.",
+            "Segmented the network on a Juniper EX4400 core and UniFi. Household Wi-Fi stays away from the lab.",
+            "Run FreeRADIUS for 802.1X, and Technitium for split-horizon DNS.",
+            "Deployed Wazuh agents across the VMs. Prometheus, Loki, and Grafana watch servers, switches, and storage through iDRAC, SNMP, and vCenter.",
+        ],
+        now: "Always changing. Next is Wazuh tuning and a remote access portal using the same model as Raskal.",
+        photos: [
+            { src: "/images/hamlab/Hamlab1.jpg", alt: "The HamLab rack with servers and network gear." },
+            { src: "/images/hamlab/Hamlab2.jpg", alt: "The patch panel and switches where the house wiring lands." },
+        ],
+    },
+    {
+        slug: "hambot",
+        name: "HamBot",
+        kind: "Automation & ops",
+        status: "Running",
+        dates: "2026 — now",
+        summary: "A Discord bot for the house. Everyone at home uses it for chores and the cat's litter box. I use it to patch my VMs, check on things, and get alerts before stuff breaks.",
+        stack: "Python / discord.py / Docker / GitHub Actions / GHCR / Dockhand",
+        facts: [
+            { value: "20", label: "modules" },
+            { value: "15 min", label: "from push to running" },
+            { value: "0", label: "third-party alert services" },
+        ],
+        story: [
+            "This started as two webhooks: a morning cyber briefing and a ping when the Litter-Robot drawer got full. Now it's the house's control panel.",
+            "One rule: nothing leaves my server. No hosted price trackers or alert services. If I need it, I build it and run it myself.",
+        ],
+        did: [
+            "Each bot runs in its own container. GitHub Actions builds only what changed and pins the image. Dockhand sees the commit and swaps just that container.",
+            "Wrote /update and /ops. They patch, snapshot, and reboot my Raskal VMs over SSH. Each VM only accepts a fixed set of commands from HamBot's key.",
+            "Built pricewatch, a headless-browser price tracker, as its own container instead of signing up for a service.",
+            "Morning and night digests: weather and SPC risk, power use from the Emporia monitor, chores, packages, and the litter box.",
+            "Reads Flight Wall's API for rare and military aircraft alerts.",
+        ],
+        now: "Running. I keep adding modules when the house asks for something.",
+    },
+    {
+        slug: "flight-wall",
+        name: "Flight Wall",
+        kind: "Hardware & radio",
+        status: "On the wall",
+        dates: "2026",
+        summary: "An LED sign in my room that shows the planes flying over the house, decoded live by my own ADS-B receiver. It turns itself off at night because I sleep in there.",
+        stack: "Raspberry Pi 4 / RTL-SDR / readsb / Python / HUB75 matrix",
+        facts: [
+            { value: "~100 nm", label: "range, up from 5" },
+            { value: "256×64", label: "LED pixels" },
+            { value: "1 min", label: "from git push to the wall" },
+        ],
+        story: [
+            "I wanted something on my wall that was actually live. A USB SDR, a 1090 MHz filter, and an antenna jammed between my window and the screen got me about 100 nautical miles of planes.",
+            "The Pi doesn't take SSH from outside. It pulls main from GitHub every minute and deploys itself. If a commit doesn't compile, it rolls back and never tries that one again.",
+        ],
+        did: [
+            "Soldered the GPIO 4 to 18 jumper for hardware PWM. Flicker gone, ~176 Hz refresh.",
+            "Wrote the board: airliners first, rare types highlighted, overhead alerts, distance and direction, logos, themes.",
+            "Built a web control page with a live mirror of the panels, a map, stats, and a PIN lock.",
+            "Self-deploy, daily backups to a Git branch, a network watchdog, and status reports pushed back to the repo.",
+            "Feeds Flightradar24. Sends alerts through HamBot.",
+        ],
+        now: "On the wall and running. The 3D-printed mount is still on version two.",
+    },
+    {
+        slug: "roamarc",
+        name: "RoamArc",
+        kind: "iOS app",
+        status: "In progress",
+        dates: "2026 — now",
+        summary: "An iPhone app that turns driving into exploring. It tracks the roads you've actually driven, the towns you've covered, and gives you a reason to take the long way home.",
+        stack: "Swift / SwiftUI / MapKit / ActivityKit / Live Activities",
+        facts: [
+            { value: "0", label: "third-party packages" },
+            { value: "iOS 18+", label: "native SwiftUI" },
+            { value: "CarPlay", label: "waiting on Apple" },
+        ],
+        story: [
+            "I road trip a lot. I drove Rochester to Spokane on I-90. I wanted an app that cared about where I'd been, not just where I'm going.",
+            "A road only counts once you've actually moved along it. Driving through an intersection doesn't count. Getting that right took most of the work.",
+        ],
+        did: [
+            "Road discovery from GPS movement, with nearby ambiguous roads held back so you can't get credit by accident.",
+            "Drive recaps, town and state progress, badges, and NPS site details.",
+            "Live Activities on the lock screen and in CarPlay's dashboard, including pause, finish, and delayed-GPS states.",
+            "GPX import, private zones, and hidden endpoints so a shared recap doesn't give away where you live.",
+        ],
+        now: "In progress. The full CarPlay app is waiting on Apple's category approval.",
     },
     {
         slug: "wannacry",
-        name: "WannaCry analysis",
-        category: "Malware analysis",
-        dates: "CSEC 202 · Course project",
-        summary: "Static and dynamic malware analysis, working through the sample with IDA, x32dbg, and x86 assembly.",
-        tools: "IDA / x32dbg / x86 assembly",
-        context: "For CSEC 202, I analyzed WannaCry using basic and advanced static analysis in IDA, alongside basic and advanced dynamic analysis in x32dbg.",
-        decisions: [
-            { title: "Read the code.", text: "I used IDA and x86 assembly for the static-analysis portion of the coursework." },
-            { title: "Examine execution.", text: "I used x32dbg for the dynamic-analysis portion, complementing the static work." },
+        name: "WannaCry",
+        kind: "Malware analysis",
+        status: "Done",
+        dates: "CSEC 202",
+        summary: "I took WannaCry apart for my reverse engineering final, both statically and dynamically, down to the x86.",
+        stack: "IDA / x32dbg / x86 assembly",
+        facts: [
+            { value: "4", label: "analysis phases" },
+            { value: "x86", label: "read by hand" },
+            { value: "1", label: "very isolated VM" },
         ],
-        result: "Completed a course project covering both static and dynamic malware-analysis techniques.",
-        limits: "The course report and analysis artifacts are not published here. This summary does not claim original vulnerability research or findings beyond the completed coursework.",
+        story: [
+            "This was my CSEC 202 final. Reading about ransomware is one thing. Stepping through it in a debugger is another.",
+        ],
+        did: [
+            "Basic static analysis: strings, imports, and resources.",
+            "Advanced static analysis in IDA, working through the disassembly.",
+            "Basic and advanced dynamic analysis in x32dbg, watching what it actually does when it runs.",
+        ],
+        now: "Done. The report isn't public, and I'm not claiming any new research here. It's coursework.",
     },
+    {
+        slug: "baja",
+        name: "Baja",
+        kind: "Garage",
+        status: "In the shop",
+        dates: "2025 — now",
+        summary: "A 2005 Subaru Baja Turbo with a stick. It's turning into a wardriving and overlanding rig, with a closed-deck engine to back it up.",
+        stack: "IAG 750 closed-deck / FP Red turbo / ETS FMIC / ID1300 injectors",
+        facts: [
+            { value: "2005", label: "Baja Turbo, manual" },
+            { value: "750", label: "closed-deck long block" },
+            { value: "Rust", label: "the real enemy up here" },
+        ],
+        story: [
+            "I'm a Subaru guy and I always wanted one. The Baja is half Outback, half pickup, and almost nobody bought one. That's exactly why I wanted it.",
+            "The plan is servers and radios in the bed for wardriving, antennas on the roof, and enough gear to camp out of it.",
+        ],
+        did: [
+            "Replaced control arms and CV axles first. Rochester salt eats old Subarus.",
+            "Engine's being built at a shop: closed-deck IAG long block, FP Red turbo, front-mount intercooler, bigger injectors, dual-pump fuel.",
+            "Planning the bed: power, networking, and radios for wardriving off-grid.",
+        ],
+        now: "In the shop. Then it's on to the wardriving setup.",
+        photos: [
+            { src: "/images/baja/baja.jpg", alt: "My 2005 Subaru Baja." },
+            { src: "/images/baja/bajahood.jpg", alt: "Under the hood of the Baja." },
+            { src: "/images/baja/bajaenginepull.jpg", alt: "The Baja's engine coming out." },
+        ],
+    },
+];
+
+// The stuff that doesn't fit on a resume.
+export const offClock = [
+    { label: "Photos", text: "Astro, lightning, and storm chasing on a Sony A7R V. Dark skies and supercells are worth the drive." },
+    { label: "Subarus", text: "I daily a 2025 WRX tS on E50 and drove it across the country on I-90. The Baja is the project car." },
+    { label: "Radio", text: "General class, K2KSW. HF, mobile, and digital modes, plus the ADS-B antenna in my window." },
+    { label: "FPV", text: "Building my first FPV quad from scratch. 3-inch, DJI O4 Pro. Cinewhoops are the end goal." },
+    { label: "Printing", text: "A Bambu H2D that's mostly printing mounts for my other projects." },
+    { label: "Pi Kappa Phi", text: "Associate Member Education Chair. I run onboarding for new members." },
 ];
 
 export function getProject(slug: string) {
