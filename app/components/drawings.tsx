@@ -372,40 +372,11 @@ export function Baja() {
         <path className="draw outline" d={bajaTrace.outline} pathLength={1} style={at(0.3)} />
         {bajaTrace.lines.map((d, i) => <path key={i} className="draw body-line" d={d} pathLength={1} style={at(0.6 + (bajaTrace.xs[i] / bajaTrace.w) * 1.4)} />)}
 
-        {/* glass */}
-        <g style={at(0.8)}>
-            <path className="draw" d={bpoly([[296, 330], [512, 322], [506, 420], [202, 408]])} pathLength={1} />
-            <path className="draw thin" d={bpoly([[518, 332], [573, 330], [575, 410], [520, 416]])} pathLength={1} />
-            <path className="draw thin" d={bpoly([[580, 330], [622, 338], [632, 402], [580, 408]])} pathLength={1} />
-            <path className="draw thin" d={bpoly([[525, 388], [578, 383], [582, 412], [528, 416]])} pathLength={1} />
-        </g>
-        {/* roof bar slats */}
-        <path className="draw thin" d={[560, 590, 620, 650].map(x => "M" + bx(x) + " " + by(285 + (x - 540) * 0.13) + " L" + bx(x + 2) + " " + by(312)).join(" ")} pathLength={1} style={at(1)} />
-        {/* hood scoop */}
-        <path className="draw" d={"M" + bx(197) + " " + by(425) + " C" + bx(205) + " " + by(415) + " " + bx(305) + " " + by(415) + " " + bx(312) + " " + by(426) + " C" + bx(300) + " " + by(434) + " " + bx(208) + " " + by(434) + " " + bx(197) + " " + by(425) + " Z"} pathLength={1} style={at(1.1)} />
-        {/* headlights, grille, intake, fogs */}
-        <g style={at(1.2)}>
-            <path className="draw" d={bpoly([[258, 480], [378, 468], [392, 478], [388, 522], [262, 524], [256, 510]])} pathLength={1} />
-            <path className="draw thin" d={bell(318, 500, 15, 14)} pathLength={1} />
-            <path className="draw thin" d={bell(366, 495, 10, 11)} pathLength={1} />
-            <path className="draw" d={bpoly([[45, 458], [66, 460], [68, 506], [27, 500], [30, 472]])} pathLength={1} />
-            <path className="draw" d={bpoly([[75, 482], [245, 490], [247, 526], [82, 516]])} pathLength={1} />
-            <path className="draw thin" d={"M" + bx(160) + " " + by(486) + " L" + bx(162) + " " + by(521) + " M" + bx(80) + " " + by(499) + " L" + bx(160) + " " + by(503) + " M" + bx(162) + " " + by(505) + " L" + bx(245) + " " + by(508)} pathLength={1} />
-            <path className="draw" d={bpoly([[58, 566], [250, 572], [262, 612], [65, 604]])} pathLength={1} />
-            <path className="draw" d={bell(323, 599, 21, 21)} pathLength={1} />
-            <path className="draw thin" d={bell(323, 599, 12, 12)} pathLength={1} />
-            <path className="draw thin" d={bell(28, 572, 10, 11)} pathLength={1} />
-        </g>
         {/* lights: housing + lens */}
         {bajaLights.map(([x, yy], i) => <g key={i} style={at(1.3 + i * 0.03)}>
             <rect className="draw thin" x={bx(x)} y={by(yy)} width={13 * BK} height={12 * BK} rx="4" pathLength={1} />
             <circle className="lens" cx={bx(x + 6.5)} cy={by(yy + 6)} r="6" data-blink />
         </g>)}
-        {/* wheels */}
-        <path className="draw thin" d={"M" + bx(66) + " " + by(612) + " C" + bx(70) + " " + by(660) + " " + bx(172) + " " + by(668) + " " + bx(182) + " " + by(618)} pathLength={1} style={at(1.4)} />
-        <BajaWheel cx={448} cy={607} rx={61} ry={87} rim={{ x: 470, rx: 34, ry: 60 }} d={1.4} />
-        <BajaWheel cx={647} cy={546} rx={35} ry={60} rim={{ x: 661, rx: 17, ry: 38 }} d={1.5} />
-
         {/* callouts */}
         {bajaCallouts.map(c => {
             const tx = bx(c.t[0]), ty = by(c.t[1]), [cx, cy] = c.b;
