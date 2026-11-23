@@ -233,14 +233,19 @@ section { scroll-margin-top: 2rem; }
 .drawing .spokes { stroke: #8a7f76; stroke-width: 1.6; fill: none; }
 .drawing .body { stroke-width: 2.4 !important; stroke-linejoin: round; }
 .drawing .stream.road { stroke: #4d433c; stroke-width: 2; stroke-dasharray: 26 34; }
-.drawing .ink { stroke: #bdb7b0; }
-.drawing.baja .draw.ink { stroke-width: 2; }
-.drawing .wrap { fill: rgba(0, 0, 0, 0.55); stroke: none; }
-.drawing .tread { stroke: #6b6159; stroke-width: 1.4; fill: none; }
-.drawing .mesh { stroke: #4d433c; stroke-width: 0.9; fill: none; }
-.drawing .pod { fill: rgba(242, 133, 13, 0.85); stroke: var(--orange); filter: drop-shadow(0 0 5px var(--orange)); opacity: 0.95; }
-.drawing .lamp { fill: rgba(255, 230, 190, 0.85); stroke: none; filter: drop-shadow(0 0 6px rgba(255, 220, 170, 0.9)); }
-.drawing .c3 { font-family: var(--sans); font-size: 18px; font-weight: 700; fill: #6b6159; letter-spacing: 0.05em; }
+/* Baja wireframe */
+.drawing.wf .outline { stroke: var(--orange); stroke-width: 2.6; stroke-linejoin: round; }
+.drawing.wf .wire-line { stroke: var(--orange); stroke-width: 1.3; opacity: 0.85; stroke-linejoin: round; stroke-linecap: round; }
+.drawing.wf .glow-dot { fill: rgba(242, 133, 13, 0.35); stroke: none; filter: blur(3px); }
+.drawing.wf .mark-ring { fill: var(--bg); stroke: var(--orange); stroke-width: 2; }
+.drawing.wf .mark-n { font-family: var(--mono); font-size: 22px; fill: var(--orange); }
+.baja-sheet { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(16rem, 1fr); gap: 2rem; align-items: center; }
+.spec-sheet { margin: 0; border-top: 1px solid var(--line); }
+.spec-sheet > div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+.spec-sheet dt { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.spec-sheet .spec-n { color: var(--orange); margin-right: 0.6rem; }
+.spec-sheet dd { margin: 0; color: #cfc9c2; font-size: 0.95rem; }
+@media (max-width: 900px) { .baja-sheet { grid-template-columns: 1fr; } }
 .drawing .ups-bar { stroke: var(--orange); stroke-width: 3; }
 .drawing .hit { fill: transparent; stroke: none; pointer-events: all; cursor: crosshair; }
 .drawing .unit.lit > rect.draw { stroke: var(--orange); fill: rgba(242, 133, 13, 0.08); }

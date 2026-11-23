@@ -1,4 +1,5 @@
 import { Animated } from "./animate";
+import bajaTrace from "../../lib/baja-trace.json";
 
 // Line drawings for the site. animate.tsx explains the markup.
 // --d is when a piece starts drawing, in seconds.
@@ -303,122 +304,53 @@ export function Desktop() {
     </Frame>;
 }
 
-/* ───────────── Baja: front three-quarter, like my photo of it ─────────────
-   Matte olive, black hood with the scoop, amber pods in the grille and the bumper,
-   C3 roof platform, all-terrains on black wheels. */
-function ellipsePath(cx: number, cy: number, rx: number, ry: number) {
-    return "M" + (cx - rx) + " " + cy + " a" + rx + " " + ry + " 0 1 0 " + 2 * rx + " 0 a" + rx + " " + ry + " 0 1 0 " + -2 * rx + " 0";
-}
-
-function BajaWheel({ cx, cy, rx, ry, rimX, rimRx, rimRy, d }: { cx: number; cy: number; rx: number; ry: number; rimX: number; rimRx: number; rimRy: number; d: number }) {
-    const spokes = [0, 60, 120, 180, 240, 300].map(a => {
-        const t = (a * Math.PI) / 180;
-        return "M" + (rimX + 6 * Math.cos(t)).toFixed(1) + " " + (cy + 10 * Math.sin(t)).toFixed(1) + " L" + (rimX + rimRx * 0.9 * Math.cos(t)).toFixed(1) + " " + (cy + rimRy * 0.9 * Math.sin(t)).toFixed(1);
-    }).join(" ");
-    // tread blocks around the outer edge
-    const tread = Array.from({ length: 22 }, (_, i) => {
-        const t = (i / 22) * Math.PI * 2;
-        const x1 = cx + rx * Math.cos(t), y1 = cy + ry * Math.sin(t);
-        const x2 = cx + (rx - 7) * Math.cos(t), y2 = cy + (ry - 9) * Math.sin(t);
-        return "M" + x1.toFixed(1) + " " + y1.toFixed(1) + " L" + x2.toFixed(1) + " " + y2.toFixed(1);
-    }).join(" ");
-    return <g style={at(d)}>
-        <path className="draw ink" d={ellipsePath(cx, cy, rx, ry)} pathLength={1} />
-        <path className="fade tread" d={tread} />
-        <path className="draw" d={ellipsePath(rimX, cy, rimRx, rimRy)} pathLength={1} />
-        <path className="fade spokes" d={spokes} />
-        <path className="fade" d={ellipsePath(rimX, cy, rimRx * 0.25, rimRy * 0.25)} />
-    </g>;
-}
+/* ───────────── Baja: orange wireframe, traced from my photo of it ─────────────
+   lib/baja-trace.json comes from the photo: GrabCut to cut the truck out,
+   then Canny edges inside it. 1400 × 879 units. Lines draw in left to right. */
+const bajaMarks = [
+    { n: 1, x: 500, y: 316 },   // hood scoop
+    { n: 2, x: 1062, y: 40 },   // C3 platform
+    { n: 3, x: 330, y: 474 },   // grille pods
+    { n: 4, x: 881, y: 672 },   // front tire
+    { n: 5, x: 1330, y: 330 },  // the bed
+];
+const bajaGlow = [[281, 472, 9], [368, 474, 9], [181, 635, 10], [381, 655, 10], [602, 53, 8], [635, 53, 8], [963, 47, 8], [997, 47, 8], [635, 657, 12]];
 
 export function Baja() {
-    return <Frame label="Front three-quarter drawing of my 2005 Subaru Baja Turbo: black hood with the scoop, mesh grille with amber pods, projector headlights, amber pods and fogs in the bumper, a C3 roof platform with amber pods, and all-terrain tires on black wheels." view="-300 250 1320 470" className="simple baja">
-        {/* ground */}
-        <path className="draw faint" d="M-20 668 L430 700 L760 612" pathLength={1} style={at(0)} />
-
-        {/* C3 roof platform */}
-        <g style={at(0.2)}>
-            <path className="draw ink" d="M280 284 L540 280 L545 314 L282 318 Z" pathLength={1} />
-            <path className="draw ink" d="M540 280 L688 300 L690 312 L545 314" pathLength={1} />
-            <path className="draw" d="M560 284 L566 312 M590 288 L594 312 M620 292 L623 312 M650 296 L652 312" pathLength={1} />
-            <path className="draw" d="M302 318 L306 330 M520 316 L516 326" pathLength={1} />
-            <rect className="draw" x="630" y="318" width="52" height="58" rx="3" pathLength={1} />
-            <path className="fade" d="M638 326 H674 M638 336 H674 M638 346 H674 M638 356 H674 M638 366 H674" />
-            <text className="fade c3" x="400" y="306" textAnchor="middle">C3</text>
-        </g>
-        {[[300, 286], [316, 286], [484, 283], [500, 283]].map(([x, yy], i) => <rect key={i} className="pod" x={x} y={yy} width="13" height="12" rx="1.5" data-blink />)}
-
-        {/* glass, pillars, mirrors, wipers */}
-        <g style={at(0.4)}>
-            <path className="draw ink" d="M296 330 L512 322 L506 420 L202 408 Z" pathLength={1} />
-            <path className="draw ink" d="M512 322 L560 318 L625 335 L690 396" pathLength={1} />
-            <path className="draw" d="M518 332 L573 330 L575 410 L520 416 Z" pathLength={1} />
-            <path className="draw" d="M580 330 L622 338 L632 402 L580 408 Z" pathLength={1} />
-            <path className="draw ink" d="M525 388 L578 383 L582 412 L528 416 Z" pathLength={1} />
-            <path className="draw ink" d="M195 380 L222 378 L222 400 L197 402 Z" pathLength={1} />
-            <path className="fade" d="M240 404 L300 398 M330 410 L420 405" />
-        </g>
-
-        {/* body side, doors, handles, bed */}
-        <g style={at(0.6)}>
-            <path className="draw ink" d="M506 422 L695 408 L700 470 L690 500" pathLength={1} />
-            <path className="draw ink" d="M515 548 L512 568 L610 548 L620 540" pathLength={1} />
-            <path className="draw" d="M598 412 L604 552 M650 405 L652 540" pathLength={1} />
-            <path className="draw" d="M520 470 L690 452" pathLength={1} />
-            <rect className="fade" x="582" y="445" width="13" height="6" rx="2" />
-            <rect className="fade" x="642" y="432" width="10" height="6" rx="2" />
-            <rect className="draw hot" x="690" y="410" width="7" height="22" pathLength={1} />
-            <path className="draw ink" d="M612 545 C620 482 676 470 692 500" pathLength={1} />
-        </g>
-
-        {/* hood, black wrap, scoop, fender */}
-        <g style={at(0.8)}>
-            <path className="wrap" d="M100 466 C140 440 190 434 260 436 L392 452 L340 474 L250 480 L160 478 Z" />
-            <path className="draw ink" d="M202 408 L45 457 C80 470 160 478 255 478 L392 470 C420 445 470 430 506 422" pathLength={1} />
-            <path className="draw hot" d="M197 424 C200 417 305 417 312 426 C305 434 200 434 197 424 Z" pathLength={1} />
-            <path className="draw ink" d="M392 540 C400 488 440 470 470 474 C495 478 512 505 515 548" pathLength={1} />
-        </g>
-
-        {/* headlights, grille, pods */}
-        <g style={at(1)}>
-            <path className="draw ink" d="M45 458 L66 460 L68 506 L27 500 L30 472 Z" pathLength={1} />
-            <path className="draw ink" d="M258 480 L378 468 L392 478 L388 522 L262 524 L256 510 Z" pathLength={1} />
-            <path className="draw" d={ellipsePath(318, 500, 15, 14)} pathLength={1} />
-            <path className="draw" d={ellipsePath(366, 495, 10, 11)} pathLength={1} />
-            <path className="draw ink" d="M75 482 L245 490 L247 526 L82 516 Z" pathLength={1} />
-            <path className="draw" d="M160 486 L162 521" pathLength={1} />
-            <path className="fade mesh" d={Array.from({ length: 12 }, (_, i) => "M" + (86 + i * 13.5) + " 486 l-4 30").join(" ") + " M80 499 H243 M81 509 H244"} />
-        </g>
-        <circle className="lamp" cx="318" cy="500" r="7" data-blink />
-        <circle className="lamp" cx="46" cy="482" r="6" data-blink />
-        {[[137, 500], [181, 501]].map(([x, yy], i) => <rect key={i} className="pod" x={x} y={yy} width="13" height="11" rx="1.5" data-blink />)}
-
-        {/* bumper, intake, fogs */}
-        <g style={at(1.2)}>
-            <path className="draw ink" d="M18 520 C120 532 260 540 400 540" pathLength={1} />
-            <path className="draw ink" d="M10 528 C0 580 20 600 60 607 L260 618 L405 628 L470 625" pathLength={1} />
-            <path className="draw" d="M58 566 L250 572 L262 612 L65 604 Z" pathLength={1} />
-            <path className="draw" d={ellipsePath(323, 599, 21, 21)} pathLength={1} />
-            <path className="draw" d={ellipsePath(323, 599, 12, 12)} pathLength={1} />
-            <path className="draw" d={ellipsePath(28, 572, 10, 11)} pathLength={1} />
-        </g>
-        {[[85, 580], [187, 590]].map(([x, yy], i) => <rect key={i} className="pod" x={x} y={yy} width="15" height="15" rx="2" data-blink />)}
-        <circle className="lamp" cx="323" cy="599" r="8" data-blink />
-
-        {/* wheels */}
-        <BajaWheel cx={448} cy={607} rx={61} ry={87} rimX={470} rimRx={30} rimRy={57} d={1.4} />
-        <BajaWheel cx={648} cy={545} rx={34} ry={60} rimX={661} rimRx={16} rimRy={36} d={1.5} />
-        <path className="draw ink" d="M65 606 C72 652 168 662 180 614" pathLength={1} style={at(1.5)} />
-
-        <Callouts d={1.8} items={[
-            { tx: 200, ty: 425, x: -40, t: "Hood scoop", s: "IAG 750 closed deck under it", hot: true },
-            { tx: 12, ty: 520, x: -40, t: "FP Red turbo", s: "ETS front mount · ID1300s" },
-            { tx: 58, ty: 600, x: -40, t: "Amber pods", s: "grille, bumper, and roof" },
-            { tx: 688, ty: 304, x: 740, t: "C3 roof platform", s: "antennas go here next" },
-            { tx: 695, ty: 440, x: 740, t: "Wardriving rig", s: "planned for the bed" },
-            { tx: 509, ty: 612, x: 740, y: 640, elbow: 600, t: "All-terrains", s: "control arms + CVs done first" },
-        ]} />
+    return <Frame label="Orange wireframe of my 2005 Subaru Baja Turbo, traced from a photo of it from the front left: black hood with the scoop, amber pods in the grille, bumper, and roof platform, and all-terrain tires." view="-20 -30 1440 930" className="baja wf">
+        <path className="draw outline" d={bajaTrace.outline} pathLength={1} style={at(0)} />
+        {bajaTrace.lines.map((d, i) => <path key={i} className="draw wire-line" d={d} pathLength={1} style={at(0.3 + (bajaTrace.xs[i] / bajaTrace.w) * 1.8)} />)}
+        {bajaGlow.map(([x, yy, r], i) => <circle key={i} className="glow-dot" cx={x} cy={yy} r={r} data-blink />)}
+        {bajaMarks.map(m => <g key={m.n} className="mark" style={at(2.4 + m.n * 0.1)}>
+            <circle className="fade mark-ring" cx={m.x} cy={m.y} r="22" />
+            <text className="fade mark-n" x={m.x} y={m.y + 8} textAnchor="middle">{m.n}</text>
+        </g>)}
     </Frame>;
+}
+
+// The facts next to the drawing. Numbers match the marks on the truck.
+const bajaFacts: { n?: number; k: string; v: string }[] = [
+    { k: "Truck", v: "2005 Subaru Baja Turbo · 5-speed manual · AWD" },
+    { k: "Stock", v: "2.5 L turbo flat-four, 210 hp" },
+    { k: "Size", v: "193.3 in long · 104.3 in wheelbase · 41.5 in bed" },
+    { n: 1, k: "Engine", v: "IAG 750 closed-deck long block, FP Red turbo, ETS front-mount intercooler" },
+    { k: "Fuel", v: "ID1300XDS injectors, Radium dual-pump hanger" },
+    { n: 2, k: "Roof", v: "C3 platform with amber pods. Antennas go here next" },
+    { n: 3, k: "Lights", v: "Amber pods in the grille and the bumper" },
+    { n: 4, k: "Wheels", v: "All-terrains on black wheels. Control arms and CV axles replaced first" },
+    { n: 5, k: "Bed", v: "Wardriving rig, planned: power, network, radios" },
+];
+
+function BajaSheet() {
+    return <div className="baja-sheet">
+        <Baja />
+        <dl className="spec-sheet">
+            {bajaFacts.map(f => <div key={f.k}>
+                <dt><span className="spec-n">{f.n ? String(f.n).padStart(2, "0") : "··"}</span>{f.k}</dt>
+                <dd>{f.v}</dd>
+            </div>)}
+        </dl>
+    </div>;
 }
 
 /* ───────────── Raskal: opening a private app ───────────── */
@@ -596,7 +528,7 @@ const drawings: Record<string, D[]> = {
         { C: AuthFlow, title: "Opening a private app", meta: "Caddy forward auth" },
     ],
     hamlab: [{ C: Rack, title: "The HamLab rack", meta: "48U · hover a unit" }],
-    baja: [{ C: Baja, title: "2005 Baja Turbo", meta: "front three-quarter" }],
+    baja: [{ C: BajaSheet, title: "2005 Baja Turbo", meta: "traced from a photo" }],
     hambot: [{ C: BotPipeline, title: "Push to running", meta: "≤ 15 min" }],
     "flight-wall": [{ C: SignalChain, title: "Window to wall", meta: "1090 MHz" }],
     roamarc: [{ C: PhoneRoads, title: "How road credit works", meta: "SwiftUI" }],
