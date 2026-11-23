@@ -70,7 +70,7 @@ export default function Home() {
                 </div>
                 <div className="metal-grid">
                     <div className="metal-rack">
-                        <Fig n="02" title="HamLab rack" meta="basement · 35U" className="fig-rack"><Rack /></Fig>
+                        <Fig n="02" title="HamLab rack" meta="basement · 48U" className="fig-rack"><Rack /></Fig>
                         <p className="metal-copy">Every Ethernet run in the house lands here. Four PowerEdge hosts run vSphere HA. The HL15 is TrueNAS, their shared storage over iSCSI. The UDM up top is the edge for everything. <Link className="text-link" href="/projects/hamlab/">HamLab</Link></p>
                     </div>
                     <div className="metal-side">
