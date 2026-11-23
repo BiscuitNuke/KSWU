@@ -597,6 +597,15 @@ a[data-profile] { cursor: pointer; }
 .section-head .mask { position: relative; }
 @keyframes sweep { from { top: 0; opacity: 1; } to { top: 100%; opacity: 0; } }
 
+/* Resume: the real PDF up front, text version underneath */
+.resume-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.resume-sheet { display: block; max-width: 52rem; margin: 2.5rem 0; border: 1px solid var(--line-2); box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6); transition: transform 0.4s var(--ease), border-color 0.3s; }
+.resume-sheet:hover { transform: translateY(-4px); border-color: var(--orange); }
+.resume-sheet img { display: block; width: 100%; height: auto; }
+.resume-text { margin: 0 0 4rem; }
+.resume-text summary { cursor: pointer; font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 1rem 0; }
+.pgp-line { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); word-break: break-all; }
+
 /* Page transitions */
 ::view-transition-old(root) { animation: vt-out 0.22s var(--ease) both; }
 ::view-transition-new(root) { animation: vt-in 0.38s var(--ease) both; }
