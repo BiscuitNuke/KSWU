@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Navigation } from "./components/nav";
 import Footer from "./components/footer";
 import SystemMap from "./components/system-map";
+import { LabStatus } from "./components/live";
 import { Rack, NodeN2, Desktop, Icon, Fig } from "./components/drawings";
 import { MaskText, InView } from "./components/reveal";
 import { experience, offClock, profile, skills, work } from "../lib/profile";
@@ -59,7 +60,7 @@ export default function Home() {
                     <MaskText id="lab-title" lines={["What's running", "right now."]} />
                     <p className="section-note">All of this is real and in my house. This page is one of the boxes.</p>
                 </div>
-                <div className="wrap"><Fig n="01" title="Everything I run, one page" meta="live layout · no IPs"><SystemMap /></Fig></div>
+                <div className="wrap"><Fig n="01" title="Everything I run, one page" meta="live layout · no IPs"><SystemMap /></Fig><LabStatus /></div>
             </section>
 
             <section className="metal-section wrap" id="metal" aria-labelledby="metal-title">

@@ -1,4 +1,5 @@
 import { Animated } from "./animate";
+import { ZoomButton } from "./zoom";
 import bajaTrace from "../../lib/baja-trace.json";
 
 // Line drawings for the site. animate.tsx explains the markup.
@@ -597,7 +598,7 @@ export function KillSwitch() {
 // Every drawing sits in a figure with a blueprint-style caption.
 export function Fig({ n, title, meta, children, className = "" }: { n: string; title: string; meta?: string; children: React.ReactNode; className?: string }) {
     return <figure className={"fig " + className}>
-        <figcaption><span className="fig-n">FIG. {n}</span><span>{title}</span>{meta && <span className="fig-meta">{meta}</span>}</figcaption>
+        <figcaption><span className="fig-n">FIG. {n}</span><span>{title}</span>{meta && <span className="fig-meta">{meta}</span>}<ZoomButton title={"Fig. " + n + ": " + title} /></figcaption>
         {children}
     </figure>;
 }

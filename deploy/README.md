@@ -36,6 +36,22 @@ This mirrors the **Raskal-QoL (Ops)** pattern: GitHub is authoritative, GHCR sto
 5. Prefer a dedicated web VM/network. Reusing RaskalDev is possible with a gateway-only firewall rule, but keep the portfolio separate from the QoL stack, its volumes, credentials, and Docker socket.
 6. Check `/healthz`, `/`, a case study, the printable resume page, fonts/assets, and an unknown route over the internal connection. Check `docker compose ps` and logs.
 
+## Live feed (`feed` service)
+
+The `feed` service uses the same image as `web`. It runs `feed/feed.py`, which reads Prometheus and the Flight Wall every 2 minutes and writes `live.json` into the `live` volume. nginx serves that file at `/live.json`. The feed only pulls. Nothing in the lab gets a new inbound route.
+
+Set these variables on the `kswu` stack in Dockhand:
+
+| Variable | Example | Effect |
+|---|---|---|
+| `KSWU_PROM_URL` | `http://host.docker.internal:9090` | Prometheus base URL. Empty turns the lab status off. |
+| `KSWU_JOB_LABELS` | `caddy=Gateway,authentik=SSO,gitlab=Git,amp=Game server` | Prometheus `job` names and their public names. The feed publishes only the jobs in this list. |
+| `KSWU_FLIGHTWALL_URL` | the same value as HamBot's `FLIGHTWALL_URL` | Flight Wall base URL. Empty turns the flight numbers off. |
+
+Public output: public service name, up or down, 24-hour uptime, aircraft in range, aircraft heard today, farthest range today, and the type and rounded altitude of the aircraft on the board. The feed does not publish job names, targets, addresses, callsigns, positions, or distances.
+
+When a source fails, the feed keeps the last good values and marks them `stale`. The site shows "Feed stale" when the file is older than 15 minutes.
+
 ## Public gateway and cutover
 
 Use `Caddyfile.snippet` as a reviewed addition to the live gateway config, after setting `KSWU_UPSTREAM` in the Caddy container environment to the site's private address and port. This site intentionally imports `common` without `gate`: employers must not see Authentik login. Existing SSO-protected applications keep their existing routes.

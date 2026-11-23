@@ -114,7 +114,7 @@ jobs:
           from pathlib import Path
           path = Path('deploy/compose.yaml')
           text = path.read_text()
-          text, count = re.subn(r'(?m)^(\s*image: )ghcr\.io/biscuitnuke/kswu:[^\s]+', lambda m: m[1] + os.environ['IMAGE'], text)
+          text, count = re.subn(r'(?m)^(\s*image: (?:&image )?)ghcr\.io/biscuitnuke/kswu:[^\s]+', lambda m: m[1] + os.environ['IMAGE'], text)
           if count != 1:
               raise SystemExit('Expected exactly one portfolio image')
           path.write_text(text)

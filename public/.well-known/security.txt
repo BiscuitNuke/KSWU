@@ -1,0 +1,5 @@
+# Found something on ksw.dev or anything I run? Tell me. I'll answer.
+Contact: mailto:kieran@ksw.dev
+Expires: 2027-11-23T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://ksw.dev/.well-known/security.txt
