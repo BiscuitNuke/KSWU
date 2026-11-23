@@ -138,7 +138,7 @@ section { scroll-margin-top: 2rem; }
 .fig .fig-n { color: var(--orange); }
 .fig .fig-meta { margin-left: auto; }
 .fig .map-wrap { border: 0; padding: 0; }
-.fig-rack .rack-wrap { max-width: 520px; margin: 0 auto; }
+.fig-rack .rack-wrap { max-width: 760px; margin: 0 auto; }
 
 /* The metal */
 .metal-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 2.5rem; align-items: start; }
@@ -199,6 +199,48 @@ section { scroll-margin-top: 2rem; }
 .drawing .link { stroke: #3f3731; }
 .drawing .link.hot { stroke: rgba(242, 133, 13, 0.5); }
 .drawing .ram { stroke: #b6a08c; }
+.drawing .cable { stroke: #8f877f; stroke-width: 1.3; stroke-linecap: round; }
+.drawing .cable.blue { stroke: #6f8fbf; stroke-width: 1.8; }
+.drawing .cable.hot { stroke: var(--orange); stroke-width: 1.8; }
+.drawing .cable.dac { stroke: #5a4e45; stroke-width: 2.2; }
+.drawing .cable.power { stroke: #4a413a; stroke-width: 1.6; }
+.drawing.ptrace .draw { stroke-width: 3; }
+.drawing.ptrace .leader { stroke-width: 2; }
+.drawing.ptrace .rl-t { font-size: 46px; }
+.drawing.ptrace .rl-s { font-size: 30px; }
+.drawing.desk-trace .draw { stroke-width: 1.6; }
+.drawing.desk-trace .leader { stroke-width: 1.2; }
+.drawing.desk-trace .rl-t { font-size: 26px; }
+.drawing.desk-trace .rl-s { font-size: 17px; }
+.drawing.desk-trace .tube { stroke-width: 7; }
+.drawing.n2-trace .n2 { font-size: 230px; font-weight: 300; }
+.drawing.n2-trace .small.big rect { stroke-width: 2; }
+.drawing.n2-trace .vents { stroke-width: 2; }
+.drawing.n2-trace .cable { stroke-width: 4; }
+.drawing.n2-trace .stream { stroke-width: 3; stroke-dasharray: 6 26; }
+.drawing .liquid.res { fill: url(#res); }
+.drawing .card { font-family: var(--sans); font-size: 26px; fill: var(--ink); }
+.drawing .rl-t { font-family: var(--sans); font-size: 30px; fill: var(--ink); }
+.drawing .rl-s { font-family: var(--mono); font-size: 21px; fill: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.drawing .hot .rl-t { fill: var(--orange); }
+.drawing .dimtext { font-family: var(--mono); font-size: 20px; fill: var(--muted); letter-spacing: 0.06em; }
+.drawing .rack .tick, .drawing.rack .tick { r: 4; }
+.drawing .guard { fill: none; stroke: #4d433c; stroke-width: 1; }
+.drawing .chevrons path { fill: none; stroke: #4d433c; stroke-width: 1; }
+.drawing .led.red { fill: #ff4a3d; filter: drop-shadow(0 0 4px #ff4a3d); }
+.drawing .led.blue { fill: #7fb4ff; filter: drop-shadow(0 0 4px #7fb4ff); }
+.drawing .cable.dark { stroke: #3a332e; stroke-width: 2; }
+.drawing.rack .small rect { stroke-width: 1; }
+.drawing.rack .hex polygon { stroke-width: 1.2; }
+.drawing.rack .draw { stroke-width: 2; }
+
+/* Photo vs trace */
+.compare { position: relative; }
+.compare .rack-photo, .compare .trace-photo { clip-path: inset(0 var(--hide, 45%) 0 0); opacity: 0.6; filter: grayscale(0.4) contrast(1.05); }
+.compare-track { position: absolute; top: 0; bottom: 0; }
+.compare-track input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+.compare-handle { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--orange); pointer-events: none; }
+.compare-handle span { position: absolute; top: 46%; left: 0; transform: translateX(-50%); white-space: nowrap; background: var(--bg); border: 1px solid var(--orange); color: var(--orange); font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.3rem 0.5rem; }
 .drawing .ups-bar { stroke: var(--orange); stroke-width: 3; }
 .drawing .hit { fill: transparent; stroke: none; pointer-events: all; cursor: crosshair; }
 .drawing .unit.lit > rect.draw { stroke: var(--orange); fill: rgba(242, 133, 13, 0.08); }
