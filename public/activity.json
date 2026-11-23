@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T20:44:03.517Z",
+  "updatedAt": "2026-11-23T20:57:55.091Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "68c637fecf6bb05c66e0c5611b0b83419d6b4e2f",
+      "title": "ksw.OS layer, light mode, RoamArc film, N1, two-loop desk PC, scroll fix (#10)",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/68c637fecf6bb05c66e0c5611b0b83419d6b4e2f",
+      "date": "2026-11-23T20:57:36Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "124cbb46f6eda63953a594c01667f18f3355cf36",
@@ -29,13 +36,6 @@
       "title": "Cable the rack like the real one",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/43f7c9d3339507167bad481d5be9e77dd0a422e8",
       "date": "2026-11-23T18:06:28Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "016617ced88949feef7a37080b8d279521802678",
-      "title": "Animate the drawings with GSAP, smooth scroll with Lenis",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/016617ced88949feef7a37080b8d279521802678",
-      "date": "2026-11-23T18:02:30Z"
     }
   ]
 }
