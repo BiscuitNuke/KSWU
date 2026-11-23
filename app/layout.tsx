@@ -4,6 +4,8 @@ import LocalFont from "next/font/local";
 import { profile } from "../lib/profile";
 import { SmoothScroll } from "./components/animate";
 import { PageTransitions } from "./components/transitions";
+import { themeScript } from "./components/theme";
+import { Boot, Profiler } from "./components/ctos";
 
 const description = "Cybersecurity BS/MS at RIT. I build networks, run a homelab with my own SSO, and work on keeping it all secure. Looking for infrastructure, security engineering, and IR work.";
 
@@ -40,10 +42,13 @@ const naut = LocalFont({ src: "../public/fonts/naut.ttf", variable: "--font-naut
 const bee = LocalFont({ src: "../public/fonts/bee.ttf", variable: "--font-bee", display: "swap" });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return <html lang="en" className={naut.variable + " " + bee.variable}>
+    return <html lang="en" className={naut.variable + " " + bee.variable} data-theme="dark" suppressHydrationWarning>
+        <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
         <body>
             <SmoothScroll />
             <PageTransitions />
+            <Boot />
+            <Profiler />
             <a className="skip-link" href="#main">Skip to content</a>
             {children}
         </body>

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 // GSAP runs every drawing. Mark up the SVG, this does the rest:
 //   .draw          strokes trace on (pathLength=1, offset 1 → 0), timed by --d
@@ -155,13 +156,18 @@ export function Animated({ children, className = "" }: { children: React.ReactNo
 }
 
 // Smooth scroll, same feel as Nullify. Keeps ScrollTrigger in sync.
+type LenisLike = { scrollTo: (t: number | HTMLElement, o?: { immediate?: boolean; offset?: number; force?: boolean }) => void };
+let lenisRef: LenisLike | null = null;
+
 export function SmoothScroll() {
+    const path = usePathname();
     useEffect(() => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         let stop = () => {};
         Promise.all([import("lenis"), import("gsap"), import("gsap/ScrollTrigger")]).then(([{ default: Lenis }, { gsap }, { ScrollTrigger }]) => {
             gsap.registerPlugin(ScrollTrigger);
             const lenis = new Lenis({ lerp: 0.1, anchors: true });
+            lenisRef = lenis;
             lenis.on("scroll", ScrollTrigger.update);
             const tick = (t: number) => lenis.raf(t * 1000);
             gsap.ticker.add(tick);
@@ -173,9 +179,23 @@ export function SmoothScroll() {
             imgs.forEach(i => i.addEventListener("load", refresh, { once: true }));
             window.addEventListener("load", refresh, { once: true });
             document.fonts?.ready.then(refresh);
-            stop = () => { clearTimeout(t); gsap.ticker.remove(tick); lenis.destroy(); };
+            stop = () => { clearTimeout(t); gsap.ticker.remove(tick); lenis.destroy(); lenisRef = null; };
         });
         return () => stop();
     }, []);
+
+    // New page: start at the top, or at the #section the link pointed to.
+    // Lenis holds its own scroll position, so the browser's reset alone isn't enough.
+    useEffect(() => {
+        const hash = decodeURIComponent(location.hash.slice(1));
+        const go = () => {
+            const el = hash ? document.getElementById(hash) : null;
+            if (lenisRef) lenisRef.scrollTo(el || 0, { immediate: true, force: true });
+            else if (el) el.scrollIntoView();
+            else window.scrollTo(0, 0);
+            import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => ScrollTrigger.refresh());
+        };
+        requestAnimationFrame(go);
+    }, [path]);
     return null;
 }

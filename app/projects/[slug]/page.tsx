@@ -5,6 +5,7 @@ import Footer from "../../components/footer";
 import { MaskText, InView } from "../../components/reveal";
 import { ProjectDrawing } from "../../components/drawings";
 import { LabStatus, FlightsNow } from "../../components/live";
+import { RoamDemo } from "../../components/roam-demo";
 import { getProject, projects } from "../../../lib/profile";
 
 export const dynamicParams = false;
@@ -48,6 +49,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
             {project.slug === "flight-wall" && <FlightsNow />}
             {project.slug === "raskal" && <LabStatus />}
+            {project.slug === "roamarc" && <RoamDemo />}
             <div className="case-drawing"><ProjectDrawing slug={project.slug} /></div>
 
             <div className="case-body">
