@@ -69,7 +69,7 @@ ul, ol { margin: 0; padding: 0; }
 .hero-title h1 { font-size: clamp(3rem, 9.5vw, 8.75rem); line-height: 0.95; letter-spacing: -0.045em; }
 .hero-title .mask-line:last-child > span { color: var(--orange); }
 .hero { position: relative; }
-.hero::before { content: ""; position: absolute; inset: -6rem -50vw 0; z-index: -1; pointer-events: none;
+.hero::before { content: ""; position: absolute; inset: -6rem calc(50% - 50vw) 0; z-index: -1; pointer-events: none;
     background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
     background-size: 56px 56px; background-position: center top;
     -webkit-mask-image: radial-gradient(ellipse 60% 70% at 40% 35%, #000 30%, transparent 75%); mask-image: radial-gradient(ellipse 60% 70% at 40% 35%, #000 30%, transparent 75%); }
@@ -366,7 +366,7 @@ section { scroll-margin-top: 2rem; }
 .case-body p:not(.label) { color: #cfc9c2; font-size: 1.1rem; }
 .case-photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.5rem; margin: 5rem 0; }
 .case-photos figure { margin: 0; }
-.case-photos img { width: 100%; height: 28rem; object-fit: cover; filter: grayscale(0.25); }
+.case-photos img { display: block; width: 100%; height: 28rem; object-fit: cover; filter: grayscale(0.25); background: #121010; }
 .case-photos figcaption { font-family: var(--label); font-size: 0.75rem; color: var(--muted); margin-top: 0.75rem; }
 .next-project { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--line); margin-top: 5rem; padding: 2.5rem 0; }
 .next-project .label { margin: 0; }
@@ -403,8 +403,26 @@ section { scroll-margin-top: 2rem; }
     .wrap { width: calc(100% - 2rem); }
     .site-header nav { gap: 1rem; font-size: 0.8rem; }
     .map-wrap { display: none; }
-    .case-drawing .drawing:not(.rack), .metal-side .drawing { min-width: 640px; }
-    .case-drawing .fig:not(.fig-rack), .metal-side .fig { overflow-x: auto; }
+    /* drawings scale to the screen; labels grow so they stay readable */
+    .drawing { width: 100%; height: auto; }
+    .drawing.simple text { font-size: 22px; }
+    .drawing.simple .s, .drawing.simple .dim-text { font-size: 17px; }
+    .drawing.simple .n2 { font-size: 60px; }
+    .drawing.rack text { font-size: 20px; }
+    .drawing.mil .balloon { stroke-width: 3; }
+    .drawing.mil .balloon-n { font-size: 30px; }
+    .drawing.mil .zone text { font-size: 26px; }
+    .drawing.mil .tb-big { font-size: 30px; }
+    .drawing.mil .tb-s { font-size: 19px; }
+    .drawing.mil .tb-k { font-size: 14px; }
+    .legend thead { display: none; }
+    .legend, .legend tbody, .legend tr { display: block; }
+    .legend tr { display: grid; grid-template-columns: 2.2rem 1fr; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+    .legend td { border: 0; padding: 0; }
+    .legend td:nth-child(2) { white-space: normal; }
+    .legend td:nth-child(3) { grid-column: 2; margin-top: 0.3rem; font-size: 0.78rem; }
+    .work-meta { flex-wrap: wrap; gap: 0.25rem 1rem; }
+    .work-meta .status { white-space: nowrap; }
     .fig { padding: 3rem 0.75rem 0.75rem; }
     .fig figcaption { white-space: nowrap; overflow: hidden; }
     .fig .fig-meta { display: none; }

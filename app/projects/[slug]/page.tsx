@@ -68,7 +68,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
             {project.photos && <div className="case-photos">
                 {project.photos.map(photo => <figure key={photo.src}>
-                    <img src={photo.src} alt={photo.alt} loading="lazy" />
+                    <img src={photo.src} srcSet={photo.src.replace("-1200", "-720") + " 720w, " + photo.src + " 1200w"} sizes="(max-width: 600px) 100vw, 33vw" width={photo.w} height={photo.h} alt={photo.alt} loading="lazy" decoding="async" />
                     <figcaption>{photo.alt}</figcaption>
                 </figure>)}
             </div>}
