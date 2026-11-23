@@ -73,8 +73,7 @@ export default function SystemMap() {
     return <>
     <MobileTrace />
     <InView className="map-wrap">
-        <svg className="map" viewBox="0 0 1200 660" role="img" aria-labelledby="map-title map-desc">
-            <title id="map-title">What I run</title>
+        <svg className="map" viewBox="0 0 1200 660" role="img" aria-describedby="map-desc">
             <desc id="map-desc">Traffic from the internet hits my edge router, then a Caddy gateway that checks every request against Authentik. Behind it are GitLab, Guacamole, a game server, and a Docker host that runs this site and HamBot. The house's HamLab cluster has vSphere, TrueNAS, Active Directory with a PKI, and Wazuh. A Raspberry Pi runs Flight Wall. GitHub Actions builds the containers and the Docker host deploys them.</desc>
 
             {zones.map(zone => <g key={zone.label} className="zone" style={{ ["--d" as string]: zone.d + "s" }}>
@@ -104,8 +103,11 @@ export default function SystemMap() {
 
             <path className="antenna" d="M1130 450 V404 M1121 414 H1139 M1124 424 H1136 M1127 434 H1133" pathLength={1} style={{ ["--d" as string]: "1.8s" }} />
 
+            {/* The packet only shows on the wires. It hides while it's inside Edge and Gateway. */}
             <circle className="packet" r="4">
                 <animateMotion dur="3.2s" repeatCount="indefinite" path="M180 282 H920 V147 H940" />
+                <animate attributeName="opacity" dur="3.2s" repeatCount="indefinite" calcMode="discrete"
+                    values="1;0;1;0;1;0" keyTimes="0;0.067;0.246;0.335;0.525;0.99" />
             </circle>
         </svg>
     </InView>

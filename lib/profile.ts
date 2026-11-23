@@ -61,6 +61,7 @@ export type Project = {
     story: string[];
     did: string[];
     now: string;
+    broke: string[];
     photos?: { src: string; alt: string }[];
 };
 
@@ -91,6 +92,11 @@ export const projects: Project[] = [
             "This site runs on it now. I moved it off Vercel in November 2026.",
         ],
         now: "Running every day. Next up is an SNI router so HamLab and Raskal can share one public IP.",
+        broke: [
+            "Docker skips the host firewall. My published ports were wide open until I put rules in the DOCKER-USER chain.",
+            "Moving this site over, the gateway couldn't reach it. A tcpdump showed SYNs with no replies, and the culprit was my own iptables chain. I fixed it in the script that builds the rules, not with a one-off.",
+            "Caddy doesn't reload on docker compose up -d. You have to restart it.",
+        ],
     },
     {
         slug: "hamlab",
@@ -117,6 +123,12 @@ export const projects: Project[] = [
             "Deployed Wazuh agents across the VMs. Prometheus, Loki, and Grafana watch servers, switches, and storage through iDRAC, SNMP, and vCenter.",
         ],
         now: "Always changing. Next is Wazuh tuning and a remote access portal using the same model as Raskal.",
+        broke: [
+            "iSCSI mutual CHAP kept failing with \"Invalid parameter\" from the ESXi side. One-way CHAP works. Mutual is still on the list.",
+            "Swapped a PSU in the 45Drives HL15 and three backplane segments went dark. That one went to their support.",
+            "LDAPS to vCenter wouldn't trust the cert until the PKI's AIA and CDP paths were published right. Both CA certs have to be there.",
+            "On Junos, channelized subports have to be set per interface. Putting them in an interface-range block overlaps and breaks.",
+        ],
         photos: [
             { src: "/images/hamlab/Hamlab1.jpg", alt: "The HamLab rack with servers and network gear." },
             { src: "/images/hamlab/Hamlab2.jpg", alt: "The patch panel and switches where the house wiring lands." },
@@ -147,6 +159,11 @@ export const projects: Project[] = [
             "Reads Flight Wall's API for rare and military aircraft alerts.",
         ],
         now: "Running. I keep adding modules when the house asks for something.",
+        broke: [
+            "GitLab CE can't pull-mirror. That's a paid feature. So I wrote a small container that pushes copies from GitHub every 15 minutes.",
+            "The Litter-Robot carbon filter reset kept getting stuck. I pulled the feature instead of shipping something flaky.",
+            "Letting a bot reboot servers is scary. Each VM only takes a fixed list of verbs from HamBot's key, so a bad command can't become a shell.",
+        ],
     },
     {
         slug: "flight-wall",
@@ -173,6 +190,13 @@ export const projects: Project[] = [
             "Feeds Flightradar24. Sends alerts through HamBot.",
         ],
         now: "On the wall and running. The 3D-printed mount is still on version two.",
+        broke: [
+            "The stock whip antenna got about 5 nm. Max gain gave zero messages. A real 1090 antenna in the window fixed it.",
+            "The logo flickered at about 60 Hz until I soldered the PWM jumper.",
+            "Under systemd there's no HOME, so git threw \"dubious ownership\" and the updater kept retrying a bad commit every minute.",
+            "The Pi dropped off Wi-Fi at night. It got a watchdog that restarts Wi-Fi, then reboots.",
+            "A smoke test on a fake panel caught a crash that py_compile missed. Now it runs before every push.",
+        ],
     },
     {
         slug: "roamarc",
@@ -198,6 +222,10 @@ export const projects: Project[] = [
             "GPX import, private zones, and hidden endpoints so a shared recap doesn't give away where you live.",
         ],
         now: "In progress. The full CarPlay app is waiting on Apple's category approval.",
+        broke: [
+            "Early builds gave you credit for a road just by passing its intersection. Now you have to actually move along it.",
+            "Live Activity updates could land out of order and overwrite a finished drive with old data. Updates are ordered now.",
+        ],
     },
     {
         slug: "wannacry",
@@ -210,7 +238,7 @@ export const projects: Project[] = [
         facts: [
             { value: "4", label: "analysis phases" },
             { value: "x86", label: "read by hand" },
-            { value: "1", label: "very isolated VM" },
+            { value: "2017", label: "the outbreak it came from" },
         ],
         story: [
             "This was my CSEC 202 final. Reading about ransomware is one thing. Stepping through it in a debugger is another.",
@@ -221,6 +249,10 @@ export const projects: Project[] = [
             "Basic and advanced dynamic analysis in x32dbg, watching what it actually does when it runs.",
         ],
         now: "Done. The report isn't public, and I'm not claiming any new research here. It's coursework.",
+        broke: [
+            "The kill-switch domain is sitting right there in the strings. Static analysis gets it before anything runs.",
+            "Dynamic analysis only works in a box that can't reach anything, with a snapshot to roll back to.",
+        ],
     },
     {
         slug: "baja",
@@ -245,6 +277,9 @@ export const projects: Project[] = [
             "Planning the bed: power, networking, and radios for wardriving off-grid.",
         ],
         now: "In the shop. Then it's on to the wardriving setup.",
+        broke: [
+            "Rust. Control arms and CV axles were shot before I did anything fun.",
+        ],
         photos: [
             { src: "/images/baja/baja.jpg", alt: "My 2005 Subaru Baja." },
             { src: "/images/baja/bajahood.jpg", alt: "Under the hood of the Baja." },
@@ -254,14 +289,15 @@ export const projects: Project[] = [
 ];
 
 // The stuff that doesn't fit on a resume.
-export const offClock = [
+export const offClock: { label: string; text: string; href?: string; link?: string }[] = [
     { label: "Photos", text: "Astro, lightning, and storm chasing on a Sony A7R V. Dark skies and supercells are worth the drive." },
-    { label: "Subarus", text: "I daily a 2025 WRX tS on E50 and drove it across the country on I-90. The Baja is the project car." },
+    { label: "Subarus", text: "I daily a 2025 WRX tS on E50 and drove it Rochester to Spokane on I-90. The project car is a 2005 Baja Turbo.", href: "/projects/baja/", link: "The Baja build" },
     { label: "Radio", text: "General class, K2KSW. HF, mobile, and digital modes, plus the ADS-B antenna in my window." },
     { label: "FPV", text: "Building my first FPV quad from scratch. 3-inch, DJI O4 Pro. Cinewhoops are the end goal." },
-    { label: "Printing", text: "A Bambu H2D that's mostly printing mounts for my other projects." },
-    { label: "Pi Kappa Phi", text: "Associate Member Education Chair. I run onboarding for new members." },
 ];
+
+// Baja is a garage project. It has a page but isn't in the work list.
+export const work = projects.filter(project => project.kind !== "Garage");
 
 export function getProject(slug: string) {
     return projects.find(project => project.slug === slug);
