@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T18:32:08.393Z",
+  "updatedAt": "2026-11-23T20:05:47.976Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "dc711c7486adc3aad3aa6bea1dbe3de8f6612243",
+      "title": "Simpler drawings, no photos, a Baja drawing (#8)",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/dc711c7486adc3aad3aa6bea1dbe3de8f6612243",
+      "date": "2026-11-23T20:05:31Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "fad275dfc44b0dd351e28bf9c895cbbbe40be48a",
@@ -29,13 +36,6 @@
       "title": "More technical: blueprint figures, real hardware, new icon",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/cf794cdfbf9ef6448e57479fecf1413d7a76d55f",
       "date": "2026-11-23T17:53:07Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "976d67c18d4719d98e070c258fdfe16a0037c3b1",
-      "title": "Draw everything: rack, project diagrams, link preview",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/976d67c18d4719d98e070c258fdfe16a0037c3b1",
-      "date": "2026-11-23T17:32:01Z"
     }
   ]
 }
