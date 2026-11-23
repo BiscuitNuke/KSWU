@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T16:13:34.965Z",
+  "updatedAt": "2026-11-23T17:17:14.757Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "f47b17a79daa5bf436efb33645fc8ba17e93d80f",
+      "title": "Make the site personal again",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/f47b17a79daa5bf436efb33645fc8ba17e93d80f",
+      "date": "2026-11-23T17:14:30Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "b4c0795eb0f202dd17d1ef0a810aa658a8d2182f",
@@ -29,13 +36,6 @@
       "title": "TotalCleanup",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/e48eaa91283e540071f4f20c51f26dedebd05125",
       "date": "2025-12-26T17:07:24Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "383c8e518b4a52489cc45ce173c9331e9cb3bde1",
-      "title": "Updating stuff.",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/383c8e518b4a52489cc45ce173c9331e9cb3bde1",
-      "date": "2025-12-23T01:51:46Z"
     }
   ]
 }
