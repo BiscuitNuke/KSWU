@@ -1,64 +1,8 @@
-"use client";
-import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "../components/nav";
-import { Card } from "../components/card";
-
-const socials = [
-	{
-		icon: <Linkedin size={20} />,
-		href: "https://www.linkedin.com/in/kieranwittstruck/",
-		label: "Linkedin",
-		handle: "Kieran W",
-	},
-	{
-		icon: <Mail size={20} />,
-		href: "mailto:kieran@ksw.dev",
-		label: "Email",
-		handle: "kieran@ksw.dev",
-	},
-	{
-		icon: <Github size={20} />,
-		href: "https://github.com/BiscuitNuke",
-		label: "Github",
-		handle: "@BiscuitNuke",
-	},
-];
-
-export default function ContactPage() {
-	return (
-		<div className=" bg-gradient-to-tl from-black via-zinc-400/20 to-black">
-			<Navigation />
-			<div className="container font-naut flex items-center justify-center min-h-screen px-4 mx-auto">
-				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
-					{socials.map((s) => (
-						<Card key={s.href}>
-							<Link
-								href={s.href}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="p-4 relative flex flex-col items-center gap-4 duration-700 group md:gap-8 md:py-24  lg:pb-48  md:p-16"
-							>
-								<span
-									className="absolute w-px h-2/3 bg-gradient-to-b from-amber-500 via-amber-500/50 to-transparent"
-									aria-hidden="true"
-								/>
-								<span className="relative z-10 flex items-center justify-center w-12 h-12 text-sm duration-500 border rounded-full text-amber-500 group-hover:text-white group-hover:bg-zinc-900 border-zinc-500 bg-zinc-800 group-hover:border-zinc-200 drop-shadow-orange">
-									{s.icon}
-								</span>{" "}
-								<div className="z-10 flex flex-col items-center">
-									<span className="lg:text-xl font-medium duration-150 xl:text-3xl text-zinc-200 group-hover:text-white font-display">
-										{s.handle}
-									</span>
-									<span className="mt-4 text-sm text-center duration-1000 text-zinc-400 group-hover:text-zinc-200">
-										{s.label}
-									</span>
-								</div>
-							</Link>
-						</Card>
-					))}
-				</div>
-			</div>
-		</div>
-	);
+import Footer from "../components/footer";
+import { profile } from "../../lib/profile";
+export const metadata = { title: "Contact" };
+export default function Contact() {
+    return <><Navigation /><main className="wrap inner-page contact-page" id="main"><p className="eyebrow">Contact</p><h1>Let’s put<br /><span>something to work.</span></h1><p className="page-lead">I’m looking for opportunities in infrastructure, security engineering, and incident response. I’m also happy to talk about the projects here.</p><a className="contact-email" href={"mailto:" + profile.email}>{profile.email}</a><div className="contact-links"><a href={profile.linkedin}>LinkedIn</a><a href={profile.github}>GitHub</a><Link href="/resume/">Resume</Link></div><div className="availability"><h2>RIT · Cybersecurity B.S./M.S.</h2><p>B.S. expected May 2027. M.S. expected December 2027.</p><p>Based in {profile.location}.</p></div></main><Footer /></>;
 }
