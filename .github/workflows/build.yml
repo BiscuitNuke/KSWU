@@ -23,12 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: '24'
           cache: npm
       - run: npm ci
       - run: npm run build
@@ -38,7 +38,7 @@ jobs:
         run: |
           docker build --pull -f deploy/Dockerfile -t kswu-check .
           bash deploy/smoke-container.sh kswu-check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: portfolio-preview-${{ github.run_id }}
           path: out/
@@ -52,13 +52,13 @@ jobs:
       contents: write
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: '24'
           cache: npm
       - run: npm ci
       - name: Refresh public activity and build
@@ -84,12 +84,12 @@ jobs:
           test "$source_sha" = "$remote_sha" || { echo 'Main advanced; refusing stale image promotion.'; exit 1; }
           echo "sha=$source_sha" >> "$GITHUB_OUTPUT"
           echo "image=ghcr.io/${GITHUB_REPOSITORY,,}:sha-$source_sha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - name: Package validated export
         run: docker build --pull -f deploy/Dockerfile -t kswu-check .
       - name: Smoke test hardened container
         run: bash deploy/smoke-container.sh kswu-check
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
