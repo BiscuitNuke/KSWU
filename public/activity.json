@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-23T18:05:36.679Z",
+  "updatedAt": "2026-11-23T18:32:08.393Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "fad275dfc44b0dd351e28bf9c895cbbbe40be48a",
+      "title": "Trace the hardware over real photos",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/fad275dfc44b0dd351e28bf9c895cbbbe40be48a",
+      "date": "2026-11-23T18:29:27Z"
+    },
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "43f7c9d3339507167bad481d5be9e77dd0a422e8",
+      "title": "Cable the rack like the real one",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/43f7c9d3339507167bad481d5be9e77dd0a422e8",
+      "date": "2026-11-23T18:06:28Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "016617ced88949feef7a37080b8d279521802678",
@@ -22,20 +36,6 @@
       "title": "Draw everything: rack, project diagrams, link preview",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/976d67c18d4719d98e070c258fdfe16a0037c3b1",
       "date": "2026-11-23T17:32:01Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "f47b17a79daa5bf436efb33645fc8ba17e93d80f",
-      "title": "Make the site personal again",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/f47b17a79daa5bf436efb33645fc8ba17e93d80f",
-      "date": "2026-11-23T17:14:30Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "b4c0795eb0f202dd17d1ef0a810aa658a8d2182f",
-      "title": "Redesign KSWU for infrastructure and security hiring",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/b4c0795eb0f202dd17d1ef0a810aa658a8d2182f",
-      "date": "2026-11-23T16:13:10Z"
     }
   ]
 }
