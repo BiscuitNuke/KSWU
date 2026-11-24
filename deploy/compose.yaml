@@ -3,7 +3,7 @@ name: kswu
 services:
   web:
     # CI replaces this only after a successful main-branch build and smoke check.
-    image: &image ghcr.io/biscuitnuke/kswu:sha-2f266ae6e1844c070f9d3c8b59118a2c81e737cf-45318592376-1
+    image: &image ghcr.io/biscuitnuke/kswu:sha-b8299680fd1acc26e13107faef0a76d8d35e1658-45323273821-1
     restart: unless-stopped
     user: "101:101"
     read_only: true
