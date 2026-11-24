@@ -6,6 +6,8 @@ import { MaskText, InView } from "../../components/reveal";
 import { ProjectDrawing } from "../../components/drawings";
 import { LabStatus, FlightsNow } from "../../components/live";
 import { RoamDemo } from "../../components/roam-demo";
+import { RoamTabs, RoamGallery } from "../../components/roam-more";
+import { RoamPrivacy } from "../../components/roam-privacy";
 import { getProject, projects } from "../../../lib/profile";
 
 export const dynamicParams = false;
@@ -29,7 +31,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     return <>
         <Navigation />
         <main id="main" className="wrap case">
-            <Link className="text-link back" href="/#work">All work</Link>
+            <Link className="text-link back" href="/projects/">All projects</Link>
             <p className="label">{String(i + 1).padStart(2, "0")} / {project.kind} / {project.dates}</p>
             <MaskText as="h1" lines={[project.name + "."]} className="case-title" />
             <div className="glow-line" aria-hidden="true" />
@@ -49,8 +51,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
             {project.slug === "flight-wall" && <FlightsNow />}
             {project.slug === "raskal" && <LabStatus />}
-            {project.slug === "roamarc" && <RoamDemo />}
+            {project.slug === "roamarc" && <><RoamDemo /><RoamTabs /></>}
             <div className="case-drawing"><ProjectDrawing slug={project.slug} /></div>
+            {project.slug === "roamarc" && <RoamPrivacy />}
 
             <div className="case-body">
                 <section>
@@ -70,6 +73,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     <p>{project.now}</p>
                 </section>
             </div>
+
+            {project.slug === "roamarc" && <RoamGallery />}
 
             {project.photos && <div className="case-photos">
                 {project.photos.map(photo => <figure key={photo.src}>

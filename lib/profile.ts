@@ -208,23 +208,27 @@ export const projects: Project[] = [
         stack: "Swift / SwiftUI / MapKit / ActivityKit / Live Activities",
         facts: [
             { value: "0", label: "third-party packages" },
-            { value: "iOS 18+", label: "native SwiftUI" },
-            { value: "CarPlay", label: "waiting on Apple" },
+            { value: "39", label: "badges to earn" },
+            { value: "4", label: "tabs: Drive, Explore, Roadbook, Garage" },
         ],
         story: [
             "I road trip a lot. I drove Rochester to Spokane on I-90. I wanted an app that cared about where I'd been, not just where I'm going.",
             "A road only counts once you've actually moved along it. Driving through an intersection doesn't count. Getting that right took most of the work.",
+            "Road data comes straight from the Census Bureau's TIGER service, and towns are real Census boundaries. No API keys, no accounts, no third-party code.",
         ],
         did: [
             "Road discovery from GPS movement, with nearby ambiguous roads held back so you can't get credit by accident.",
             "Drive recaps, town and state progress, badges, and NPS site details.",
             "Live Activities on the lock screen and in CarPlay's dashboard, including pause, finish, and delayed-GPS states.",
             "GPX import, private zones, and hidden endpoints so a shared recap doesn't give away where you live.",
+            "Walking detection that pauses recording when you get out of the car, so a gas station stop doesn't count as a road.",
+            "Speedrun mode: time a free drive or race a saved route in order.",
         ],
         now: "In progress. The full CarPlay app is waiting on Apple's category approval.",
         broke: [
             "Early builds gave you credit for a road just by passing its intersection. Now you have to actually move along it.",
             "Live Activity updates could land out of order and overwrite a finished drive with old data. Updates are ordered now.",
+            "Town maps flickered while panning because every redraw rebuilt the shapes. Boundaries now wait for the camera to settle and build off the main thread.",
         ],
     },
     {
