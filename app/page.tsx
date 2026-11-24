@@ -78,7 +78,7 @@ export default function Home() {
                         <Fig n="03" title="N2 · Raskal" meta="under my monitor" profile="N2|ROLE:Raskal host|HW:Minisforum MS-01|HYPERVISOR:ESXi|STATUS:Online"><NodeN2 /></Fig>
                         <p className="metal-copy">One MS-01 runs every Raskal VM: the gateway, Authentik, GitLab, the game server, and the Docker host this site is on. 10G fiber back to the rack, and a GL.iNet Comet KVM on top for when ESXi won't answer. <Link className="text-link" href="/projects/raskal/">Raskal</Link></p>
                         <Fig n="04" title="The desk PC" meta="2 systems · 2 loops" profile="DESK|SYSTEMS:2 in one case|COOLING:2 hardline loops|CARD:8 of clubs|STATUS:Online"><Desktop /></Fig>
-                        <p className="metal-copy">Two PCs in one case, each on its own hardline loop with its own reservoir. Yes, that's an eight of clubs in there.</p>
+                        <p className="metal-copy">Two PCs in one case on red hardline, two flow meters, two pump/res combos. Yes, that's an eight of clubs in there.</p>
                     </div>
                 </div>
             </section>

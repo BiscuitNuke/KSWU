@@ -251,7 +251,6 @@ export function NodeN2() {
     </Frame>;
 }
 
-/* ───────────── Desk PC: two systems, one hardline loop ───────────── */
 // Club pip: three lobes and a stem.
 function club(cx: number, cy: number, r: number) {
     return <g className="pip">
@@ -276,85 +275,155 @@ function EightOfClubs({ x, y, rot }: { x: number; y: number; rot: number }) {
     </g>;
 }
 
-/* ───────────── Desk PC: one case, two PCs, two loops ─────────────
-   Loosely traced from my photo: radiator across the top, PC 1's board and GPU
-   up top-left, PC 2 below it, two tall reservoirs on pumps. Each PC has its own loop:
-   loop A (PC 1) runs through the top radiator, loop B (PC 2) through the side one. */
+/* ───────────── Desk PC: one case, two PCs ─────────────
+   Drawn from close-up photos of the real build: red coolant, frosted red hardline,
+   black fittings, two pump/res combos, two flow meters, and the eight of clubs. */
+
+// Orthogonal hardline with bent (rounded) corners.
+function bend(pts: number[][], r = 16) {
+    let d = "M" + pts[0][0] + " " + pts[0][1];
+    for (let i = 1; i < pts.length - 1; i++) {
+        const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+        const l1 = Math.hypot(x1 - x0, y1 - y0), l2 = Math.hypot(x2 - x1, y2 - y1);
+        const k = Math.min(r, l1 / 2, l2 / 2);
+        d += " L" + (x1 - ((x1 - x0) / l1) * k) + " " + (y1 - ((y1 - y0) / l1) * k);
+        d += " Q" + x1 + " " + y1 + " " + (x1 + ((x2 - x1) / l2) * k) + " " + (y1 + ((y2 - y1) / l2) * k);
+    }
+    const e = pts[pts.length - 1];
+    return d + " L" + e[0] + " " + e[1];
+}
+
+// A compression fitting: short collar where a tube meets a part.
+const Fitting = ({ x, y, v }: { x: number; y: number; v?: boolean }) =>
+    <rect className="fade fit" x={v ? x - 9 : x - 5} y={v ? y - 5 : y - 9} width={v ? 18 : 10} height={v ? 10 : 18} rx="2" />;
+
+// Tall reservoir on a pump/res combo: black cap with a plug and a port, coolant,
+// a white collar, then the pump body and its knurled base ring.
+function Reservoir({ x, w, top, bot, d, n }: { x: number; w: number; top: number; bot: number; d: number; n: string }) {
+    const cx = x + w / 2;
+    return <g style={at(d)}>
+        <rect className="coolant-fill" x={x + 4} y={top + 70} width={w - 8} height={bot - top - 74} data-fill />
+        <rect className="draw glass" x={x} y={top + 30} width={w} height={bot - top - 30} pathLength={1} />
+        <path className="fade bubbles" d={"M" + (x + 14) + " " + (top + 48) + " h2 M" + (x + 30) + " " + (top + 56) + " h2 M" + (x + w - 22) + " " + (top + 46) + " h2 M" + (x + w / 2) + " " + (top + 60) + " h2"} />
+        <path className="fade sheen" d={"M" + (x + w - 14) + " " + (top + 80) + " V" + (bot - 20)} />
+        <rect className="draw cap" x={x - 6} y={top} width={w + 12} height="32" rx="5" pathLength={1} />
+        <circle className="fade plug" cx={cx - 18} cy={top - 12} r="11" />
+        <rect className="fade port" x={cx + 6} y={top - 18} width="24" height="18" rx="3" />
+        <rect className="draw collar" x={x - 6} y={bot} width={w + 12} height="22" rx="4" pathLength={1} />
+        <rect className="draw" x={x - 10} y={bot + 22} width={w + 20} height="44" rx="6" pathLength={1} />
+        <circle className="fade plug" cx={x + w - 4} cy={bot + 42} r="8" />
+        <rect className="draw" x={x - 4} y={bot + 66} width={w + 8} height="36" rx="5" pathLength={1} />
+        <path className="fade knurl" d={Array.from({ length: Math.floor((w + 4) / 9) }, (_, i) => "M" + (x + i * 9) + " " + (bot + 72) + " v24").join(" ")} />
+        <text className="fade res-n" x={cx} y={top + 21} textAnchor="middle">{n}</text>
+    </g>;
+}
+
+// Inline flow meter: clear housing, four screws, a red impeller that spins.
+function FlowMeter({ x, y, d }: { x: number; y: number; d: number }) {
+    return <g style={at(d)}>
+        <rect className="draw" x={x - 34} y={y - 34} width="68" height="68" rx="14" pathLength={1} />
+        {[[-24, -24], [24, -24], [-24, 24], [24, 24]].map(([dx, dy]) => <circle key={dx + "" + dy} className="fade screw" cx={x + dx} cy={y + dy} r="3" />)}
+        <circle className="coolant-solid" cx={x} cy={y} r="22" />
+        <g className="impeller" data-spin="3">
+            {[0, 60, 120, 180, 240, 300].map(a => <path key={a} d={"M" + x + " " + y + " L" + (x + 19 * Math.cos((a * Math.PI) / 180)) + " " + (y + 19 * Math.sin((a * Math.PI) / 180))} />)}
+        </g>
+        <circle className="fade hub" cx={x} cy={y} r="4" />
+    </g>;
+}
+
 export function Desktop() {
-    const loopA = [
-        "M640 112 V150",                    // top radiator → reservoir A
-        "M590 520 H575 V268 H520",          // pump A → GPU block
-        "M300 268 H286 V184 H300",           // GPU → CPU 1
-        "M330 150 V112",                    // CPU 1 → top radiator
+    // Hardline runs, traced off the photos (frosted red tube).
+    const runs = [
+        [[248, 214], [248, 300], [290, 300]],                      // roof radiator → CPU block
+        [[226, 176], [618, 176]],                                  // across the top → reservoir A cap
+        [[592, 176], [592, 716]],                                  // drop through the floor grommet
+        [[376, 316], [376, 336], [446, 336], [446, 352]],          // CPU block → GPU terminal
+        [[446, 428], [446, 476], [486, 476]],                      // GPU → flow meter 1
+        [[554, 476], [874, 476]],                                  // flow meter 1 → side radiator
+        [[338, 608], [338, 572], [470, 572]],                      // PC 2 → flow meter 2
+        [[538, 572], [612, 572], [612, 600], [622, 600]],          // flow meter 2 → pump A
+        [[566, 572], [566, 716]],                                  // second drop through the floor
+        [[874, 140], [848, 140]],                                  // side radiator → reservoir B cap
     ];
-    const loopB = [
-        "M750 560 H722 V584 H550 V420 H382",   // pump B → CPU 2
-        "M330 420 H252 V560",                  // CPU 2 → side radiator (bottom)
-        "M252 352 V325 H698 V128 H795 V150",   // side radiator (top) → reservoir B
-    ];
-    return <Frame label="Front view of my desk PC: one wide case with two computers and two separate water loops. Radiator across the top, PC 1 with a CPU block, four RAM sticks and a water-blocked GPU, PC 2 below it, a side radiator, two tall reservoirs on pumps, and an eight of clubs leaning on a tube." view="0 0 1160 660" className="simple desk">
-        <defs>
-            <linearGradient id="res" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#f2850d" stopOpacity="0.5" />
-                <stop offset="1" stopColor="#f2850d" stopOpacity="0.1" />
-            </linearGradient>
-        </defs>
-        {/* case: wide, glass front */}
-        <rect className="draw" x="220" y="50" width="720" height="560" rx="10" pathLength={1} style={at(0)} />
-        <rect className="draw faint" x="232" y="62" width="696" height="536" rx="6" pathLength={1} style={at(0.1)} />
-        {/* top radiator, 4 fans (loop A) */}
-        <g style={at(0.15)}>
-            <rect className="draw" x="250" y="78" width="660" height="34" rx="3" pathLength={1} />
-            {[330, 480, 630, 780].map(cx => <g key={cx} className="fade guard"><circle cx={cx} cy="95" r="13" /><circle cx={cx} cy="95" r="5" /></g>)}
+    return <Frame label="Front view of my desk PC, drawn from photos. One wide case with two computers. A thick radiator in the roof and a fan wall on the right. PC 1 up top has a mirror-finish CPU block, four RAM sticks, a GPU under a clear water block, and an M.2 expansion card. PC 2 is a small board at the bottom left. Two flow meters with red impellers sit between them. Two tall reservoirs of red coolant stand on their pumps on a perforated floor. Frosted red hardline ties it together, two runs drop through a floor grommet, and an eight of clubs leans on reservoir A behind a tube." view="0 0 1160 790" className="simple desk">
+        {/* case, roof radiator, fan walls, perforated floor */}
+        <rect className="draw" x="200" y="30" width="760" height="730" rx="10" pathLength={1} style={at(0)} />
+        <g style={at(0.1)}>
+            <rect className="draw" x="214" y="44" width="732" height="70" rx="6" pathLength={1} />
+            <path className="fade mesh" d={Array.from({ length: 3 }, (_, r) => Array.from({ length: 70 }, (_, c) => "M" + (230 + c * 10 + (r % 2) * 5) + " " + (58 + r * 7) + " h2").join(" ")).join(" ")} />
+            <rect className="draw" x="214" y="114" width="660" height="34" pathLength={1} />
+            <path className="fade fins" d={Array.from({ length: 92 }, (_, k) => "M" + (220 + k * 7) + " 118 V144").join(" ")} />
         </g>
-        {/* side radiator (loop B) */}
-        <g style={at(0.2)}>
-            <rect className="draw" x="240" y="352" width="24" height="208" rx="3" pathLength={1} />
-            <path className="fade fins" d={Array.from({ length: 12 }, (_, i) => "M244 " + (366 + i * 16) + " H260").join(" ")} />
+        <g style={at(0.18)}>
+            <rect className="draw" x="214" y="160" width="48" height="140" rx="4" pathLength={1} />
+            <path className="fade fins" d="M220 176 h36 M220 230 h36 M220 284 h36" />
+            <rect className="draw" x="874" y="114" width="72" height="560" rx="4" pathLength={1} />
+            {[0, 1, 2].map(i => <g key={i} className="fade fanwall">
+                <rect x="884" y={150 + i * 172} width="52" height="150" rx="6" />
+                <path d={"M910 " + (160 + i * 172) + " V" + (290 + i * 172) + " M890 " + (225 + i * 172) + " h40"} />
+            </g>)}
         </g>
-        {/* PC 1: board, CPU block with a plate, RAM, GPU on a block */}
+        <g style={at(0.22)}>
+            <path className="draw" d="M214 704 H946" pathLength={1} />
+            <path className="fade mesh" d={Array.from({ length: 4 }, (_, r) => Array.from({ length: 68 }, (_, c) => "M" + (226 + c * 10 + (r % 2) * 5) + " " + (714 + r * 10) + " h3").join(" ")).join(" ")} />
+            <ellipse className="draw" cx="579" cy="712" rx="34" ry="8" pathLength={1} />
+        </g>
+
+        {/* PC 1: board, chrome CPU block, RAM, GPU, M.2 card */}
         <g style={at(0.3)}>
-            <rect className="draw" x="276" y="130" width="250" height="180" pathLength={1} />
-            <rect className="draw hot" x="300" y="150" width="62" height="64" rx="6" pathLength={1} />
-            <path className="fade plate" d="M316 168 h30 M316 182 h30 M316 196 h20" />
-            {[0, 1, 2, 3].map(i => <rect key={i} className="draw ram" x={392 + i * 12} y="140" width="7" height="92" pathLength={1} data-blink />)}
-            <rect className="draw" x="270" y="248" width="260" height="42" pathLength={1} />
-            <rect className="draw hot" x="300" y="254" width="200" height="30" rx="4" pathLength={1} />
-            <text className="fade dim-text" x="400" y="274" textAnchor="middle">GPU</text>
+            <rect className="draw faint" x="276" y="156" width="330" height="168" rx="3" pathLength={1} />
+            <path className="fade diag" d="M424 170 l30 40 M436 170 l30 40 M448 170 l30 40 M424 200 l30 40 M436 200 l30 40" />
+            <rect className="draw hot" x="290" y="190" width="120" height="126" rx="6" pathLength={1} />
+            <path className="fade chrome" d="M300 300 L400 200 M318 308 L404 222 M300 266 L372 196" />
+            {[0, 1, 2, 3].map(i => <g key={i}>
+                <rect className="draw ram" x={500 + i * 15} y="164" width="10" height="150" rx="1.5" pathLength={1} />
+                <path className="fade ram-top" d={"M" + (502 + i * 15) + " 170 V196"} />
+            </g>)}
         </g>
-        {/* PC 2: smaller board below, PSU at the bottom */}
+        <g style={at(0.4)}>
+            <rect className="draw" x="244" y="352" width="356" height="20" rx="3" pathLength={1} />
+            <rect className="draw hot glass" x="244" y="372" width="356" height="40" rx="4" pathLength={1} />
+            <path className="fade fins" d={Array.from({ length: 30 }, (_, k) => "M" + (256 + k * 11) + " 378 V406").join(" ")} />
+            <rect className="draw term" x="396" y="388" width="104" height="40" rx="5" pathLength={1} />
+            <text className="fade gpu-t" x="448" y="413" textAnchor="middle">GPU</text>
+            <rect className="draw" x="244" y="436" width="300" height="20" rx="2" pathLength={1} />
+            <path className="fade vents" d="M256 446 h120" />
+        </g>
+        {/* PC 2: the small board at the bottom */}
         <g style={at(0.5)}>
-            <rect className="draw" x="276" y="370" width="160" height="110" pathLength={1} />
-            <rect className="draw hot" x="330" y="394" width="52" height="52" rx="6" pathLength={1} />
-            <rect className="draw" x="276" y="500" width="150" height="70" rx="3" pathLength={1} />
-            <path className="fade vents" d="M290 520 H410 M290 532 H410 M290 544 H410 M290 556 H410" />
+            <rect className="draw" x="230" y="608" width="260" height="92" rx="4" pathLength={1} />
+            <rect className="draw" x="244" y="620" width="120" height="30" rx="3" pathLength={1} />
+            <path className="fade diag" d="M250 640 l20 -14 M266 640 l20 -14 M282 640 l20 -14 M298 640 l20 -14" />
+            <path className="fade vents" d="M250 668 H460 M250 680 H430" />
+            {[0, 1].map(i => <rect key={i} className="draw ram" x={440 + i * 14} y="614" width="9" height="56" rx="1.5" pathLength={1} />)}
         </g>
-        {/* reservoirs on pump bases */}
-        {[{ x: 610, w: 60, top: 150, bot: 470, d: 0.7 }, { x: 765, w: 66, top: 150, bot: 500, d: 0.82 }].map((r, i) => <g key={i} style={at(r.d)} className="hot">
-            <rect className="liquid res" x={r.x + 4} y={r.top + 18} width={r.w - 8} height={r.bot - r.top - 24} data-fill />
-            <rect className="draw" x={r.x} y={r.top} width={r.w} height={r.bot - r.top} rx="14" pathLength={1} />
-            <rect className="draw" x={r.x - 8} y={r.bot + 10} width={r.w + 16} height="66" rx="8" pathLength={1} />
-            <ellipse className="draw faint" cx={r.x + r.w / 2} cy={r.bot + 10} rx={r.w / 2 + 6} ry="7" pathLength={1} />
-        </g>)}
-        {/* loop A */}
-        {loopA.map((t, i) => <g key={t}>
-            <path className="draw tube" d={t} pathLength={1} style={at(1.1 + i * 0.08)} />
+        <FlowMeter x={520} y={476} d={0.62} />
+        <FlowMeter x={504} y={572} d={0.68} />
+
+        <Reservoir x={636} w={80} top={160} bot={584} d={0.74} n="A" />
+        <Reservoir x={772} w={84} top={160} bot={584} d={0.82} n="B" />
+
+        {/* card goes in before the tubes: it sits behind the lower run */}
+        <g style={at(0.95)}><g transform="translate(642 398) scale(1.55)"><EightOfClubs x={0} y={0} rot={-4} /></g></g>
+
+        {runs.map((pts, i) => { const t = bend(pts, 18); return <g key={i}>
+            <path className="draw tube" d={t} pathLength={1} style={at(1.05 + i * 0.06)} />
             <path className="stream coolant" d={t} data-stream="40" />
-        </g>)}
-        {/* loop B */}
-        {loopB.map((t, i) => <g key={t}>
-            <path className="draw tube b" d={t} pathLength={1} style={at(1.3 + i * 0.08)} />
-            <path className="stream coolant b" d={t} data-stream="34" />
-        </g>)}
-        <g style={at(1.6)}><g transform="translate(462 462) scale(1.35)"><EightOfClubs x={0} y={0} rot={-12} /></g></g>
-        <Callouts d={1.7} items={[
-            { tx: 276, ty: 180, x: 160, t: "PC 1", s: "main board" },
-            { tx: 270, ty: 270, x: 160, t: "GPU", s: "water block", hot: true },
-            { tx: 276, ty: 420, x: 160, t: "PC 2", s: "same case" },
-            { tx: 240, ty: 520, x: 160, t: "Side rad", s: "loop B" },
-            { tx: 910, ty: 95, x: 1000, t: "Top rad", s: "loop A" },
-            { tx: 831, ty: 300, x: 1000, t: "Reservoirs", s: "one per loop", hot: true },
-            { tx: 480, ty: 548, x: 160, y: 594, t: "8 of clubs", s: "it lives there" },
+        </g>; })}
+        <g style={at(1.7)}>
+            {[[248, 214, 1], [290, 300, 0], [618, 176, 0], [376, 316, 1], [446, 352, 1], [446, 428, 1], [486, 476, 0], [554, 476, 0], [470, 572, 0], [538, 572, 0], [622, 600, 0], [338, 608, 1], [848, 140, 0], [592, 690, 1], [566, 690, 1], [874, 476, 0], [874, 140, 0]].map(([x, y, v], i) =>
+                <Fitting key={i} x={x} y={y} v={!!v} />)}
+        </g>
+
+        <Callouts d={1.9} items={[
+            { tx: 214, ty: 130, x: 150, t: "Roof rad", s: "fans on top", hot: true },
+            { tx: 290, ty: 250, x: 150, t: "PC 1", s: "chrome CPU block" },
+            { tx: 244, ty: 392, x: 150, t: "GPU", s: "clear block", hot: true },
+            { tx: 486, ty: 520, x: 150, y: 520, t: "Flow meters", s: "one per loop", hot: true },
+            { tx: 230, ty: 650, x: 150, t: "PC 2", s: "same case" },
+            { tx: 946, ty: 250, x: 1010, t: "Side rad", s: "fan wall" },
+            { tx: 856, ty: 420, x: 1010, t: "Reservoirs", s: "pump/res combos", hot: true },
+            { tx: 612, ty: 716, x: 1010, y: 690, elbow: 620, t: "Floor pass", s: "two runs down" },
         ]} />
     </Frame>;
 }

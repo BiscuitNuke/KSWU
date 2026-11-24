@@ -174,6 +174,7 @@ section { scroll-margin-top: 2rem; }
 .drawing .wire { stroke: var(--dim); stroke-width: 1.5; }
 .drawing .hot .draw, .drawing .draw.hot, .drawing .wire.hot { stroke: var(--orange); }
 .drawing .faint { stroke: #2c2622; }
+:root[data-theme="light"] .drawing .faint { stroke: #d6ccbf; }
 .drawing .thick { stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .drawing .leader { stroke: var(--dim); }
 .drawing text { fill: var(--ink); stroke: none; }
@@ -235,6 +236,32 @@ section { scroll-margin-top: 2rem; }
 .drawing .tube.b { stroke: #ffb35c; }
 .drawing .stream.coolant.b { stroke: #fff0d9; }
 .drawing .fins, .drawing .plate { stroke: var(--dim-2); stroke-width: 1.2; fill: none; }
+.drawing.desk { --coolant: #d8321f; --tube: #e0675a; }
+:root[data-theme="light"] .drawing.desk { --coolant: #c62a17; --tube: #d9574a; }
+.drawing.desk .fins { stroke: var(--dim); stroke-width: 1; }
+.drawing.desk .mesh { stroke: var(--dim); stroke-width: 2; stroke-linecap: round; }
+.drawing.desk .fit { fill: var(--bg); stroke: var(--ink); stroke-width: 1.4; }
+.drawing.desk .port { fill: var(--panel); stroke: var(--dim-2); stroke-width: 1.4; }
+.drawing.desk .plug { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+.drawing.desk .cap { fill: var(--panel); }
+.drawing.desk .collar { fill: #ebe6df; stroke: var(--dim-2); }
+.drawing.desk .coolant-fill { fill: var(--coolant); opacity: 0.85; }
+.drawing.desk .coolant-solid { fill: var(--coolant); opacity: 0.9; }
+.drawing.desk .glass { stroke: var(--ink); }
+.drawing.desk .sheen { stroke: rgba(255, 255, 255, 0.45); stroke-width: 3; stroke-linecap: round; }
+.drawing.desk .bubbles { stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; }
+.drawing.desk .knurl, .drawing.desk .diag, .drawing.desk .chrome { stroke: var(--dim-2); stroke-width: 1.2; }
+.drawing.desk .chrome { stroke: var(--text-3); opacity: 0.6; }
+.drawing.desk .ram-top { stroke: var(--text-2); stroke-width: 3; }
+.drawing.desk .term { fill: var(--panel); }
+.drawing.desk .gpu-t { font-family: var(--mono); font-size: 13px; fill: var(--ink); letter-spacing: 0.1em; }
+.drawing.desk .fanwall rect, .drawing.desk .fanwall path { fill: none; stroke: var(--dim); stroke-width: 1.2; }
+.drawing.desk .screw { fill: none; stroke: var(--text-3); stroke-width: 1.2; }
+.drawing.desk .impeller path { stroke: #2a0603; stroke-width: 4.5; stroke-linecap: round; }
+.drawing.desk .hub { fill: var(--ink); }
+.drawing.desk .res-n { font-family: var(--mono); font-size: 13px; fill: var(--muted); }
+.drawing.desk .draw.tube { stroke: var(--tube); stroke-width: 11; stroke-linecap: round; opacity: 0.92; }
+.drawing.desk .stream.coolant { stroke: #ffd2c8; stroke-width: 2; }
 .drawing .rl-t { font-family: var(--sans); font-size: 30px; fill: var(--ink); }
 .drawing .rl-s { font-family: var(--mono); font-size: 21px; fill: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
 .drawing .hot .rl-t { fill: var(--orange); }
