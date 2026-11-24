@@ -8,6 +8,7 @@ import { LabStatus, FlightsNow } from "../../components/live";
 import { RoamDemo } from "../../components/roam-demo";
 import { RoamTabs, RoamGallery } from "../../components/roam-more";
 import { RoamPrivacy } from "../../components/roam-privacy";
+import { CountUp, LedBoard, DiscordDemo, RevTerminal, RequestTrace, StackLayers } from "../../components/showcase";
 import { getProject, projects } from "../../../lib/profile";
 
 export const dynamicParams = false;
@@ -46,11 +47,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             </div>
 
             <InView className="facts">
-                {project.facts.map(fact => <div key={fact.label}><strong>{fact.value}</strong><span>{fact.label}</span></div>)}
+                {project.facts.map(fact => <div key={fact.label}><CountUp value={fact.value} /><span>{fact.label}</span></div>)}
             </InView>
 
-            {project.slug === "flight-wall" && <FlightsNow />}
-            {project.slug === "raskal" && <LabStatus />}
+            {project.slug === "flight-wall" && <><FlightsNow /><LedBoard /></>}
+            {project.slug === "raskal" && <><LabStatus /><RequestTrace /></>}
+            {project.slug === "hamlab" && <StackLayers />}
+            {project.slug === "hambot" && <DiscordDemo />}
+            {project.slug === "wannacry" && <RevTerminal />}
             {project.slug === "roamarc" && <><RoamDemo /><RoamTabs /></>}
             <div className="case-drawing"><ProjectDrawing slug={project.slug} /></div>
             {project.slug === "roamarc" && <RoamPrivacy />}
@@ -71,6 +75,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 <section>
                     <p className="label">Where it's at</p>
                     <p>{project.now}</p>
+                    {project.slug === "raskal" && <p><Link className="text-link" href="/writeups/one-login/">The twelve things that broke on the way</Link></p>}
                 </section>
             </div>
 
