@@ -1,7 +1,14 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-24T03:04:05.689Z",
+  "updatedAt": "2026-11-24T03:18:53.309Z",
   "items": [
+    {
+      "repository": "BiscuitNuke/KSWU",
+      "sha": "4c73f4e90c5d8a85a68b0b6f4ed9e0b62a8283c9",
+      "title": "Project pages: a signature piece on each (#15)",
+      "url": "https://github.com/BiscuitNuke/KSWU/commit/4c73f4e90c5d8a85a68b0b6f4ed9e0b62a8283c9",
+      "date": "2026-11-24T03:18:32Z"
+    },
     {
       "repository": "BiscuitNuke/KSWU",
       "sha": "96a49e8d369e7a8ed1959f9d2b85a1ebcfd42c32",
@@ -29,13 +36,6 @@
       "title": "Restore next-env.d.ts (dev server rewrote it)",
       "url": "https://github.com/BiscuitNuke/KSWU/commit/aeec14df365de7cec7d9b7c6434b85de52f0dd04",
       "date": "2026-11-23T22:26:21Z"
-    },
-    {
-      "repository": "BiscuitNuke/KSWU",
-      "sha": "fad7546a07784f15414d896b9b03e2903195ce8a",
-      "title": "Update all dependencies and CI actions",
-      "url": "https://github.com/BiscuitNuke/KSWU/commit/fad7546a07784f15414d896b9b03e2903195ce8a",
-      "date": "2026-11-23T22:25:58Z"
     }
   ]
 }
