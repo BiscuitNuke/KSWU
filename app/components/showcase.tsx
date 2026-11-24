@@ -20,7 +20,10 @@ const still = () => typeof window !== "undefined" && matchMedia("(prefers-reduce
 export function CountUp({ value }: { value: string }) {
     const m = value.match(/^(~?)(\d+)(.*)$/);
     const { ref, on } = useOnScreen<HTMLElement>(0.6);
-    const [n, setN] = useState(m ? 0 : null);
+    // Server HTML keeps the real number (search engines, no-JS). The facts row is hidden
+    // until it scrolls in, so dropping to 0 on mount never shows.
+    const [n, setN] = useState(m ? parseInt(m[2], 10) : null);
+    useEffect(() => { if (m && !still()) setN(0); }, []); // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(() => {
         if (!m || !on) return;
         const end = parseInt(m[2], 10);
