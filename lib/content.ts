@@ -16,13 +16,15 @@ function parse(file: string) {
     return { meta, html: marked.parse(m ? m[2] : raw, { async: false }) as string };
 }
 
-export type Writeup = { slug: string; title: string; date: string; summary: string; tags: string[]; html: string };
+export type Writeup = { slug: string; title: string; date: string; summary: string; tags: string[]; html: string; minutes: number };
 
 export function getWriteups(): Writeup[] {
     const dir = path.join(root, "writeups");
     return fs.readdirSync(dir).filter(f => f.endsWith(".md")).map(f => {
+        const raw = fs.readFileSync(path.join(dir, f), "utf8");
         const { meta, html } = parse(path.join(dir, f));
-        return { slug: f.replace(/\.md$/, ""), title: meta.title, date: meta.date, summary: meta.summary, tags: (meta.tags || "").split(",").map(t => t.trim()).filter(Boolean), html };
+        const minutes = Math.max(1, Math.round(raw.split(/\s+/).length / 220));
+        return { slug: f.replace(/\.md$/, ""), title: meta.title, date: meta.date, summary: meta.summary, tags: (meta.tags || "").split(",").map(t => t.trim()).filter(Boolean), html, minutes };
     }).sort((a, b) => b.date.localeCompare(a.date));
 }
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Navigation } from "../../components/nav";
 import Footer from "../../components/footer";
 import { getWriteup, getWriteups, niceDate } from "../../../lib/content";
+import { ReadingAids } from "../../components/pages";
 
 export const dynamicParams = false;
 
@@ -22,11 +23,14 @@ export default async function WriteupPage({ params }: { params: Promise<{ slug: 
         <Navigation />
         <main id="main" className="wrap case">
             <Link className="text-link back" href="/writeups/">All writeups</Link>
-            <p className="label">{niceDate(post.date)} · {post.tags.join(" · ")}</p>
+            <p className="label">{niceDate(post.date)} · {post.minutes} min read · {post.tags.join(" · ")}</p>
             <h1 className="post-h1">{post.title}</h1>
             <p className="case-summary">{post.summary}</p>
             <div className="glow-line" aria-hidden="true" />
-            <article className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
+            <div className="post-grid">
+                <article className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
+                <ReadingAids />
+            </div>
         </main>
         <Footer />
     </>;

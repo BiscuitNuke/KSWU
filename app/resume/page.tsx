@@ -1,12 +1,14 @@
 import { Navigation } from "../components/nav";
 import Footer from "../components/footer";
 import { experience, profile, projects, skills } from "../../lib/profile";
+import { CareerPath } from "../components/pages";
 export const metadata = { title: "Resume" };
 const PDF = "/resume/Kieran-Wittstruck-Resume.pdf";
 export default function Resume() {
     return <><Navigation /><main className="wrap resume-page" id="main"><div className="resume-heading"><div><p className="label">Resume</p><h1>Kieran Wittstruck</h1><p>{profile.location} · <a href={"mailto:" + profile.email}>{profile.email}</a></p><p><a href={profile.linkedin}>LinkedIn</a> · <a href={profile.github}>GitHub</a></p></div>
             <div className="resume-actions"><a className="button" href={PDF} download>Download PDF</a><a className="text-link" href={PDF} target="_blank" rel="noopener">Open full size</a></div></div>
         <a className="resume-sheet" href={PDF} target="_blank" rel="noopener" aria-label="Open my resume as a PDF"><img src="/resume/page1.webp" width={1275} height={1650} alt="My resume, page one. The text version is below." /></a>
+        <CareerPath />
         <details className="resume-text"><summary>Text version</summary>
         <section><h2>Education</h2><h3>Rochester Institute of Technology</h3><p>B.S./M.S. in Cybersecurity · B.S. May 2027, M.S. December 2027 expected.</p><p>Coursework: cyber defense techniques, network security administration, reverse engineering, security policy.</p></section>
         <section><h2>Certifications</h2><p>CompTIA Security+ CE · May 2024, active through May 2027.</p><p>FCC Amateur Radio License · General Class · K2KSW.</p></section>
